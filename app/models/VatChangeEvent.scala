@@ -36,4 +36,5 @@ object VatChangeEvent {
     (__ \ "refNumber").write[String] and
     (__ \ "changeType").write[String]
   )(unlift(VatChangeEvent.unapply))
+
 }

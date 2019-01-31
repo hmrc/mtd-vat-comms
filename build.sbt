@@ -30,6 +30,9 @@ lazy val plugins: Seq[Plugins] = Seq.empty
 val compile = Seq(
   ws,
   "uk.gov.hmrc"     %% "play-reactivemongo"    % "6.2.0",
+  "uk.gov.hmrc"     %% "work-item-repo"        % "5.2.0",
+  "uk.gov.hmrc"     %% "play-scheduling"       % "5.4.0",
+  "uk.gov.hmrc"     %% "play-reactivemongo"    % "6.2.0",
   "uk.gov.hmrc"     %% "bootstrap-play-25"     % "4.8.0"
 )
 
@@ -42,7 +45,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "com.github.tomakehurst" %  "wiremock"                     % "2.20.0"            % scope,
   "org.mockito"            %  "mockito-core"                 % "2.23.4"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
-  "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope
+  "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
+  "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
