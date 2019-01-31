@@ -1,1 +1,8 @@
 # microservice specific routes
+
+POST        /events/subscription            controllers.DeregistrationController.handleEvent
+POST        /events/ppob                    controllers.PPOBController.handleEvent
+POST        /events/repyt-bank-account      controllers.BankAccountController.handleEvent
+POST        /events/vat/stagger             controllers.StaggerController.handleEvent
+POST        /events/comm-email              controllers.EmailController.handleEvent
+POST        /events/business-name           controllers.BusinessNameController.handleEvent
