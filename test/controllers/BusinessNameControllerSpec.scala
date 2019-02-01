@@ -19,7 +19,7 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import play.api.http.Status.{BAD_REQUEST, OK}
+import play.api.http.Status.{BAD_REQUEST, NO_CONTENT}
 import play.api.mvc.Result
 
 class BusinessNameControllerSpec extends BaseSpec {
@@ -32,7 +32,7 @@ class BusinessNameControllerSpec extends BaseSpec {
 
       "return 200" in {
         val result: Result = controller.handleEvent(request.withJsonBody(validDesRequestJson("Business Name Change")))
-        status(result) shouldBe OK
+        status(result) shouldBe NO_CONTENT
       }
     }
 

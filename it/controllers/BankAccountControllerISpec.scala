@@ -16,7 +16,7 @@
 
 package controllers
 
-import play.api.http.Status.OK
+import play.api.http.Status.NO_CONTENT
 import common.ApiConstants._
 import helpers.IntegrationBaseSpec
 import play.api.libs.ws.WSRequest
@@ -33,7 +33,7 @@ class BankAccountControllerISpec extends IntegrationBaseSpec {
 
         val response = await(request.post(validDesRequestJson("Repayment Bank Account Change")))
 
-        response.status shouldBe OK
+        response.status shouldBe NO_CONTENT
       }
     }
   }

@@ -28,7 +28,7 @@ class BusinessNameController extends MicroserviceBaseController {
 
     parseJsonBody[VatChangeEvent] match {
       case Right(_) =>
-        Ok
+        NoContent
 
       case Left(error) =>
         BadRequest(Json.toJson(error))
