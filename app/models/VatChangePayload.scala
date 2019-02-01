@@ -16,10 +16,10 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class VatChangePayload(status: String, refNumber: String, changeType: String)
 
 object VatChangePayload {
-  implicit val formats = Json.format[VatChangePayload]
+  implicit val formats: OFormat[VatChangePayload] = Json.format[VatChangePayload]
 }

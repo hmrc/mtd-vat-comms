@@ -17,11 +17,10 @@
 package config
 
 import com.google.inject.ImplementedBy
-import com.typesafe.config.{Config, ConfigObject}
+import com.typesafe.config.Config
 import javax.inject.{Inject, Singleton}
 import play.api._
 import uk.gov.hmrc.play.config.ServicesConfig
-import scala.collection.JavaConversions._
 
 @ImplementedBy(classOf[MicroserviceAppConfig])
 trait AppConfig {

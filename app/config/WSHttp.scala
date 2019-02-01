@@ -18,8 +18,10 @@ package config
 
 import akka.actor.ActorSystem
 import javax.inject.{Inject, Singleton}
+import play.api.Mode.Mode
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.hooks.HttpHook
 import uk.gov.hmrc.play.config.{AppName, RunMode}
 import uk.gov.hmrc.play.http.ws._
 
@@ -29,9 +31,9 @@ class WSHttp @Inject()(override val runModeConfiguration: Configuration, environ
   with HttpPost with WSPost
   with HttpDelete with WSDelete
   with AppName with RunMode {
-  override val hooks = NoneRequired
-  override val appNameConfiguration = runModeConfiguration
-  override val mode = environment.mode
-  override val actorSystem = ActorSystem()
-  override val configuration = None
+  override val hooks: Seq[AnyRef with HttpHook] = NoneRequired
+  override val appNameConfiguration: Configuration = runModeConfiguration
+  override val mode: Mode = environment.mode
+  override val actorSystem: ActorSystem = ActorSystem()
+  override val configuration: None.type = None
 }

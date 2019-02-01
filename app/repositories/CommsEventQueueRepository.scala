@@ -19,7 +19,7 @@ package repositories
 import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, Duration}
 import play.api.Configuration
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{Format, JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers._
@@ -31,7 +31,7 @@ import uk.gov.hmrc.workitem._
 import scala.concurrent.{ExecutionContext, Future}
 
 object MongoPayloadDetailsFormats {
-  val formats     = WorkItem.workItemMongoFormat[VatChangePayload]
+  val formats: Format[WorkItem[VatChangePayload]] = WorkItem.workItemMongoFormat[VatChangePayload]
 }
 
 @Singleton

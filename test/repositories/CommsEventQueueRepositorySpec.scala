@@ -39,7 +39,7 @@ class CommsEventQueueRepositorySpec extends UnitSpec
   with LoneElement
   with IntegrationPatience {
 
-  val anInstant = DateTimeUtils.now
+  val anInstant: DateTime = DateTimeUtils.now
 
   def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository =
     new CommsEventQueueRepository(Configuration(), new ReactiveMongoComponent {
@@ -50,7 +50,7 @@ class CommsEventQueueRepositorySpec extends UnitSpec
       override def now: DateTime                       = anInstant
     }
 
-  lazy val repo = repoAtInstant(anInstant)
+  lazy val repo: CommsEventQueueRepository = repoAtInstant(anInstant)
 
   override protected def beforeEach(): Unit = {
     await(repo.drop)
