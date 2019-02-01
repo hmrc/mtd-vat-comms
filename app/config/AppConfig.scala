@@ -38,4 +38,8 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
 
+  val secureCommsHost: String = runModeConfiguration.getString("microservice.services.secureComms.host").getOrElse("localhost")
+  val secureCommsPort: String = runModeConfiguration.getString("microservice.services.secureComms.port").getOrElse("9068")
+  //noinspection ScalaStyle
+  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String = s"$secureCommsHost:$secureCommsPort/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
 }
