@@ -17,7 +17,7 @@
 package models
 
 import base.BaseSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{JsResultException, Json}
 
 class VatChangeEventSpec extends BaseSpec {
 
@@ -40,12 +40,25 @@ class VatChangeEventSpec extends BaseSpec {
       inputJson.as[VatChangeEvent] shouldBe eventModel
     }
 
+    "fail to be constructed if a key is missing from the JSON (or named incorrectly)" in {
+
+      val inputJson = Json.obj(
+        "changeStatus" -> "Approved",
+        "BPContactNumber" -> "1234567890",
+        "BPContactType" -> "Email Address Change"
+      )
+
+      intercept[JsResultException] {
+        inputJson.as[VatChangeEvent] shouldBe eventModel
+      }
+    }
+
     "write to the correct JSON structure" in {
 
       val outputJson = Json.obj(
         "status" -> "Approved",
-        "refNumber" -> "1234567890",
-        "changeType" -> "Email Address Change"
+        "BPContactNumber" -> "1234567890",
+        "BPContactType" -> "Email Address Change"
       )
 
       Json.toJson(eventModel) shouldBe outputJson

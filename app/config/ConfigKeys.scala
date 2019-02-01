@@ -13,19 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package config
 
-package utils
+object ConfigKeys {
 
-import play.api.Logger
+  val failureRetryAfterProperty: String = "queue.retryAfter"
 
-// $COVERAGE-OFF$
-
-object LoggerUtil {
-
-  def logInfo(content: String): Unit = Logger.info(content)
-  def logDebug(content: String): Unit = Logger.debug(content)
-  def logWarn(content: String): Unit = Logger.warn(content)
-  def logError(content: String): Unit = Logger.error(content)
 }
-
-// $COVERAGE-ON$

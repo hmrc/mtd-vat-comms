@@ -16,24 +16,12 @@
 
 package models
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class VatChangeEvent(status: String,
-                          refNumber: String,
-                          changeType: String)
+                          BPContactNumber: String,
+                          BPContactType: String)
 
 object VatChangeEvent {
-
-  implicit val reads: Reads[VatChangeEvent] = (
-    (__ \ "status").read[String] and
-    (__ \ "BPContactNumber").read[String] and
-    (__ \ "BPContactType").read[String]
-  )(VatChangeEvent.apply _)
-
-  implicit val writes: Writes[VatChangeEvent] = (
-    (__ \ "status").write[String] and
-    (__ \ "refNumber").write[String] and
-    (__ \ "changeType").write[String]
-  )(unlift(VatChangeEvent.unapply))
+  implicit val formats: OFormat[VatChangeEvent] = Json.format[VatChangeEvent]
 }

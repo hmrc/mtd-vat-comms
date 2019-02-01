@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package utils
+package mocks
 
-import play.api.Logger
+import config.AppConfig
+import play.api.Mode.Mode
+import play.api.{Configuration, Mode}
 
-// $COVERAGE-OFF$
-
-object LoggerUtil {
-
-  def logInfo(content: String): Unit = Logger.info(content)
-  def logDebug(content: String): Unit = Logger.debug(content)
-  def logWarn(content: String): Unit = Logger.warn(content)
-  def logError(content: String): Unit = Logger.error(content)
+class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
+  override val retryIntervalMillis: Long = 10000L
 }
-
-// $COVERAGE-ON$
