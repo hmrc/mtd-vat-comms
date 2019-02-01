@@ -18,7 +18,7 @@ package controllers
 
 import common.ApiConstants._
 import helpers.IntegrationBaseSpec
-import play.api.http.Status.OK
+import play.api.http.Status.NO_CONTENT
 import play.api.libs.ws.WSRequest
 
 class StaggerControllerISpec extends IntegrationBaseSpec {
@@ -34,7 +34,7 @@ class StaggerControllerISpec extends IntegrationBaseSpec {
 
         val response = await(request.post(validDesRequestJson("VAT Stagger Change")))
 
-        response.status shouldBe OK
+        response.status shouldBe NO_CONTENT
       }
     }
   }
