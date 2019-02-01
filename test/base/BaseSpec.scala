@@ -17,11 +17,19 @@
 package base
 
 import akka.stream.Materializer
+import mocks.MockAppConfig
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.inject.Injector
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.UnitSpec
 
+import scala.concurrent.ExecutionContext
+
 trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
-  implicit val materializer: Materializer = app.materializer
+  val injector: Injector = app.injector
+  val mockAppConfig = new MockAppConfig(app.configuration)
   val request = FakeRequest()
+
+  implicit val materializer: Materializer = app.materializer
+  implicit val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 }
