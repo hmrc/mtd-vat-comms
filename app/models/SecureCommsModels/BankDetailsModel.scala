@@ -16,7 +16,13 @@
 
 package models.SecureCommsModels
 
+import play.api.libs.json.{Json, OFormat}
+
 case class BankDetailsModel(
                              bankAccountNumber: String,
                              bankSortCode: String
                            )
+
+object BankDetailsModel {
+  implicit val formats: OFormat[BankDetailsModel] = Json.format[BankDetailsModel]
+}

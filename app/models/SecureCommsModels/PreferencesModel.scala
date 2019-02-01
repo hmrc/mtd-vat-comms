@@ -16,9 +16,15 @@
 
 package models.SecureCommsModels
 
+import play.api.libs.json.{Json, OFormat}
+
 case class PreferencesModel(
                              notificationPreferences: String,
                              channelPreferences: String,
                              languagePreferences: String,
                              formatPreferences: String
                            )
+
+object PreferencesModel {
+  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
+}

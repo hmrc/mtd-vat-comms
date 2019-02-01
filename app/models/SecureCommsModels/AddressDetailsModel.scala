@@ -16,6 +16,8 @@
 
 package models.SecureCommsModels
 
+import play.api.libs.json.{Json, OFormat}
+
 case class AddressDetailsModel(
                            addressLine1: String,
                            addressLine2: String,
@@ -25,3 +27,7 @@ case class AddressDetailsModel(
                            postCode: String,
                            countryName: String
                          )
+
+object AddressDetailsModel {
+  implicit val formats: OFormat[AddressDetailsModel] = Json.format[AddressDetailsModel]
+}
