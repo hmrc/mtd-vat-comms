@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package config
 
-package models
+object ConfigKeys {
 
-object ModelFactory {
-
-  def vatChangeRequest: VatChangeEvent =
-    VatChangeEvent("Approved", "12345678", "PPOB Change")
+  val failureRetryAfterProperty: String = "queue.retryAfter"
 
 }

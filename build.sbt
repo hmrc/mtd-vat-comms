@@ -17,7 +17,7 @@
 import play.core.PlayVersion
 import sbt.Keys.testGrouping
 import sbt.Tests.{Group, SubProcess}
-import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings, targetJvm}
+import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
 import uk.gov.hmrc.SbtArtifactory
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
@@ -31,8 +31,6 @@ val compile = Seq(
   ws,
   "uk.gov.hmrc"     %% "play-reactivemongo"    % "6.2.0",
   "uk.gov.hmrc"     %% "work-item-repo"        % "5.2.0",
-  "uk.gov.hmrc"     %% "play-scheduling"       % "5.4.0",
-  "uk.gov.hmrc"     %% "play-reactivemongo"    % "6.2.0",
   "uk.gov.hmrc"     %% "bootstrap-play-25"     % "4.8.0"
 )
 

@@ -18,8 +18,9 @@ package repositories
 
 import org.joda.time.{DateTime, Duration}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatest.{BeforeAndAfterEach, Inspectors, LoneElement}
-import play.api.Configuration
+import org.scalatest.BeforeAndAfterEach
+import config.AppConfig
+import mocks.MockAppConfig
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
@@ -27,28 +28,29 @@ import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.WorkItem
-import models.VatChangePayload
+import models.VatChangeEvent
+import play.api.Configuration
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class CommsEventQueueRepositorySpec extends UnitSpec
-  with MongoSpecSupport
-  with BeforeAndAfterEach
-  with ScalaFutures
-  with Inspectors
-  with LoneElement
+class CommsEventQueueRepositorySpec extends UnitSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
   with IntegrationPatience {
+
+  implicit val mockAppConfig: AppConfig = new MockAppConfig(Configuration())
 
   val anInstant: DateTime = DateTimeUtils.now
 
-  def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository =
-    new CommsEventQueueRepository(Configuration(), new ReactiveMongoComponent {
-      override def mongoConnector: MongoConnector = mongoConnectorForTest
-    }) {
+  val mongoConnector: MongoConnector = mongoConnectorForTest
+
+  val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
+    override def mongoConnector: MongoConnector = mongoConnectorForTest
+  }
+
+  def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository = new CommsEventQueueRepository(
+    mockAppConfig, reactiveMongoComponent) {
       override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
-      override lazy val retryIntervalMillis: Long      = 10000L
       override def now: DateTime                       = anInstant
-    }
+  }
 
   lazy val repo: CommsEventQueueRepository = repoAtInstant(anInstant)
 
@@ -59,17 +61,17 @@ class CommsEventQueueRepositorySpec extends UnitSpec
 
   "CommsEventQueue Repository" should {
 
-    val vatChangePayload = VatChangePayload("Approved", "123", "PPOB Change")
+    val vatChangeEvent: VatChangeEvent = VatChangeEvent("Approved", "123", "PPOB Change")
 
     "ensure indexes are created" in {
       repo.collection.indexesManager.list().futureValue.size shouldBe 4
     }
 
     "be able to save and reload a vat change request" in {
-      val workItem       = repo.pushNew(vatChangePayload, anInstant).futureValue
+      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
 
       repo.findById(workItem.id).futureValue.get should have(
-        'item (vatChangePayload),
+        'item (vatChangeEvent),
         'status (uk.gov.hmrc.workitem.ToDo),
         'receivedAt (anInstant),
         'updatedAt (anInstant)
@@ -77,9 +79,9 @@ class CommsEventQueueRepositorySpec extends UnitSpec
     }
 
     "be able to save the same requests twice" in {
-      val payloadDetails = vatChangePayload
-      repo.pushNew(vatChangePayload, anInstant).futureValue
-      repo.pushNew(vatChangePayload, anInstant).futureValue
+      val payloadDetails = vatChangeEvent
+      repo.pushNew(vatChangeEvent, anInstant).futureValue
+      repo.pushNew(vatChangeEvent, anInstant).futureValue
 
       val requests = repo.findAll(ReadPreference.primaryPreferred).futureValue
       requests should have(size(2))
@@ -92,8 +94,8 @@ class CommsEventQueueRepositorySpec extends UnitSpec
       )
     }
 
-    "pull ToDo assess requests" in {
-      val payloadDetails = vatChangePayload
+    "pull ToDo vat change requests" in {
+      val payloadDetails = vatChangeEvent
       repo.pushNew(payloadDetails, anInstant).futureValue
 
       val repoLater: CommsEventQueueRepository = repoAtInstant(anInstant.plusMillis(1))
@@ -104,43 +106,34 @@ class CommsEventQueueRepositorySpec extends UnitSpec
       )
     }
 
-    "pull nothing if no assess requests exist" in {
+    "pull nothing if no vat change requests exist" in {
       repo.pullOutstanding.futureValue should be(None)
     }
 
-    "not pull assess requests failed after the failedBefore time" in {
-      val workItem: WorkItem[VatChangePayload] = repo.pushNew(vatChangePayload, anInstant).futureValue
+    "not pull vat change requests failed after the failedBefore time" in {
+      val workItem: WorkItem[VatChangeEvent] = repo.pushNew(vatChangeEvent, anInstant).futureValue
       repo.markAs(workItem.id, uk.gov.hmrc.workitem.Failed).futureValue should be(true)
 
       repo.pullOutstanding.futureValue should be(None)
     }
 
-    "complete and delete a assess requests if it is in progress" in {
-      //given
-      val workItem = repo.pushNew(vatChangePayload, anInstant).futureValue
+    "complete and delete a vat change request if it is in progress" in {
+      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
       repo.markAs(workItem.id, uk.gov.hmrc.workitem.InProgress).futureValue should be(true)
-
-      //when
       repo.complete(workItem.id).futureValue should be(true)
 
-      //then
       repo.findById(workItem.id).futureValue shouldBe None
     }
 
-    "not complete a assess requests if it is not in progress" in {
-      //given
-      val workItem = repo.pushNew(vatChangePayload, anInstant).futureValue
+    "not complete a vat change request if it is not in progress" in {
 
-      //when
+      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
       repo.complete(workItem.id).futureValue should be(false)
-
-      //then
       repo.findById(workItem.id).futureValue shouldBe Some(workItem)
     }
 
-    "not complete a assess requests if it cannot be found" in {
+    "not complete a vat change request if it cannot be found" in {
       repo.complete(BSONObjectID.generate).futureValue should be(false)
     }
   }
-
 }

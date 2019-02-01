@@ -16,14 +16,14 @@
 
 package repositories
 
+import config.AppConfig
 import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, Duration}
-import play.api.Configuration
 import play.api.libs.json.{Format, JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers._
-import models.VatChangePayload
+import models.VatChangeEvent
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
@@ -31,42 +31,37 @@ import uk.gov.hmrc.workitem._
 import scala.concurrent.{ExecutionContext, Future}
 
 object MongoPayloadDetailsFormats {
-  val formats: Format[WorkItem[VatChangePayload]] = WorkItem.workItemMongoFormat[VatChangePayload]
+  val formats: Format[WorkItem[VatChangeEvent]] = WorkItem.workItemMongoFormat[VatChangeEvent]
 }
 
 @Singleton
-class CommsEventQueueRepository @Inject()(configuration: Configuration, reactiveMongoComponent: ReactiveMongoComponent)
-  extends WorkItemRepository[VatChangePayload, BSONObjectID](
+class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
+  extends WorkItemRepository[VatChangeEvent, BSONObjectID](
     "CommsEventQueue",
     reactiveMongoComponent.mongoConnector.db,
     MongoPayloadDetailsFormats.formats) {
 
-      override def now: DateTime = DateTimeUtils.now
+    val inProgressRetryAfterProperty: String = ""
 
-      override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
-        val receivedAt   = "receivedAt"
-        val updatedAt    = "updatedAt"
-        val availableAt  = "receivedAt"
-        val status       = "status"
-        val id           = "_id"
-        val failureCount = "failureCount"
-      }
+    override def now: DateTime = DateTimeUtils.now
 
-      val failureRetryAfterProperty: String    = "queue.retryAfter"
-      val inProgressRetryAfterProperty: String = failureRetryAfterProperty
+    override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
+      val receivedAt   = "receivedAt"
+      val updatedAt    = "updatedAt"
+      val availableAt  = "receivedAt"
+      val status       = "status"
+      val id           = "_id"
+      val failureCount = "failureCount"
+    }
 
-      lazy val retryIntervalMillis: Long = configuration
-        .getMilliseconds(failureRetryAfterProperty)
-        .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
+    override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
-      override lazy val inProgressRetryAfter: Duration = Duration.millis(retryIntervalMillis)
+    def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangeEvent]]] =
+      super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
 
-      def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangePayload]]] =
-        super.pullOutstanding(now.minusMillis(retryIntervalMillis.toInt), now)
-
-      def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
-        val selector = JsObject(
-          Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
-        collection.remove(selector).map(_.n > 0)
-      }
+    def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
+      val selector = JsObject(
+        Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
+      collection.remove(selector).map(_.n > 0)
+    }
 }

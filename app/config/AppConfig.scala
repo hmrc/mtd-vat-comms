@@ -17,22 +17,25 @@
 package config
 
 import com.google.inject.ImplementedBy
-import com.typesafe.config.Config
 import javax.inject.{Inject, Singleton}
 import play.api._
 import uk.gov.hmrc.play.config.ServicesConfig
+import config.{ConfigKeys => Keys}
 
 @ImplementedBy(classOf[MicroserviceAppConfig])
-trait AppConfig {
-}
+trait AppConfig extends ServicesConfig {
 
-class AwsConfiguration(config: Config) {
-  private def optionalString(name: String): Option[String] = if(config.hasPath(name)) Some(config.getString(name)) else None
-  private def optionalInt(name: String): Option[Int] = if(config.hasPath(name)) Some(config.getInt(name)) else None
-  private def base64Decode(text: String): String = new String(java.util.Base64.getDecoder.decode(text))
+  val retryIntervalMillis: Long
 }
 
 @Singleton
-class MicroserviceAppConfig @Inject()(override val runModeConfiguration: Configuration, environment: Environment) extends AppConfig with ServicesConfig {
+class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment)
+  extends AppConfig {
+
   override def mode: Mode.Mode = environment.mode
+  val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
+
+  lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
+    .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
+
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package mocks
 
-import play.api.libs.json.{Json, OFormat}
+import config.AppConfig
+import play.api.Mode.Mode
+import play.api.{Configuration, Mode}
 
-case class VatChangePayload(status: String, refNumber: String, changeType: String)
-
-object VatChangePayload {
-  implicit val formats: OFormat[VatChangePayload] = Json.format[VatChangePayload]
+class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
+  override val retryIntervalMillis: Long = 10000L
 }
