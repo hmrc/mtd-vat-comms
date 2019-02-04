@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package models.SecureCommsModels
+package models.secureCommsModels
 
-import play.api.libs.json.{Json, OFormat}
+import base.BaseSpec
+import play.api.libs.json.{JsObject, Json}
 
-case class PreferencesModel(
-                             notificationPreferences: String,
-                             channelPreferences: String,
-                             languagePreferences: String,
-                             formatPreferences: String
-                           )
+class TransactorModelSpec extends BaseSpec {
+  val expectedModel: TransactorModel = TransactorModel(
+    "dovah@whiterun.co.uk", "Dovah Kin"
+  )
 
-object PreferencesModel {
-  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
+  val validJson: JsObject = Json.obj(
+    "transactorEmail" -> "dovah@whiterun.co.uk",
+    "transactorName" -> "Dovah Kin"
+  )
+
+  "AddressDetails model" should {
+    "parse from the correct json structure" in {
+      validJson.as[TransactorModel] shouldBe expectedModel
+    }
+  }
 }

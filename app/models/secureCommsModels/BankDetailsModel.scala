@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package models.SecureCommsModels
+package models.secureCommsModels
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TransactorModel(
-                            transactorEmail: String,
-                            transactorName: String
-                          )
+case class BankDetailsModel(
+                             bankAccountNumber: String,
+                             bankSortCode: String
+                           )
 
-object TransactorModel {
-  implicit val formats: OFormat[TransactorModel] = Json.format[TransactorModel]
+object BankDetailsModel {
+  implicit val formats: OFormat[BankDetailsModel] = Json.format[BankDetailsModel]
 }

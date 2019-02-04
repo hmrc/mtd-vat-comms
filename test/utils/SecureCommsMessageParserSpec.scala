@@ -17,14 +17,18 @@
 package utils
 
 import base.BaseSpec
-import com.fasterxml.jackson.databind.ObjectMapper
 import play.api.libs.json.{JsObject, JsValue, Json}
+import utils.Constants.EmailStatus.VERIFIED
+import utils.Constants.NotificationPreference.EMAIL
+import utils.Constants.ChannelPreferences.PAPER
+import utils.Constants.LanguagePreferences.ENGLISH
+import utils.Constants.FormatPreferences.TEXT
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
   val stringToParse: String = "<p>TEMPLATE-ID|VRT41A_SM1A</p><p>VRN|100065579</p>" +
     "<p>FORM BUNDLE REFERENCE|092000003080</p><p>BUSINESS NAME|CoC Company Holdings Ltd</p>" +
-    "<p>EFFECTIVE DATE OF REGISTRATION|20181227</p><p>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</p>" +
+    "<p>EFFECTIVE DATE OF DE-REGISTRATION|20181227</p><p>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</p>" +
     "<p>CUSTOMER EMAIL|info@CoCHoldings.co.uk</p>" +
     "<p>CUSTOMER EMAIL STATUS|VERIFIED</p><p>NOTIFICATION PREFERENCE|EMAIL</p><p>CHANNEL PREFERENCE|PAPER</p><p>LANGUAGE PREFERENCE|ENGLISH</p>" +
     "<p>FORMAT PREFERENCE|TEXT</p>"
@@ -34,14 +38,14 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     "vrn" -> "100065579",
     "formBundleReference" -> "092000003080",
     "businessName" -> "CoC Company Holdings Ltd",
-    "effectiveDateOfRegistration" -> "20181227",
+    "effectiveDateOfDeRegistration" -> "20181227",
     "transactorEmail" -> "Info_in_FB@CoCHoldingsLtd.co.uk",
     "customerEmail" -> "info@CoCHoldings.co.uk",
-    "customerEmailStatus" -> "VERIFIED",
-    "notificationPreference" -> "EMAIL",
-    "channelPreference" -> "PAPER",
-    "languagePreference" -> "ENGLISH",
-    "formatPreference" -> "TEXT"
+    "customerEmailStatus" -> VERIFIED,
+    "notificationPreference" -> EMAIL,
+    "channelPreference" -> PAPER,
+    "languagePreference" -> ENGLISH,
+    "formatPreference" -> TEXT
   )
 
   "parseMessage" should {

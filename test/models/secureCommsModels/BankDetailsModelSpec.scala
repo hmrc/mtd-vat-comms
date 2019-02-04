@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package models.SecureCommsModels
+package models.secureCommsModels
 
-import play.api.libs.json.{Json, OFormat}
+import base.BaseSpec
+import play.api.libs.json.{JsObject, Json}
 
-case class CustomerModel(
-                          customerEmail: String,
-                          customerEmailStatus: String
-                        )
+class BankDetailsModelSpec extends BaseSpec {
+  val expectedModel: BankDetailsModel = BankDetailsModel(
+    "1029384756", "11-11-11"
+  )
 
-object CustomerModel {
-  implicit val formats: OFormat[CustomerModel] = Json.format[CustomerModel]
+  val validJson: JsObject = Json.obj(
+    "bankAccountNumber" -> "1029384756",
+    "bankSortCode" -> "11-11-11"
+  )
+
+  "AddressDetails model" should {
+    "parse from the correct json structure" in {
+      validJson.as[BankDetailsModel] shouldBe expectedModel
+    }
+  }
 }
