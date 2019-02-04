@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package base
+package testOnly.controllers
 
-import akka.stream.Materializer
-import mocks.MockAppConfig
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.inject.Injector
-import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.UnitSpec
+import controllers.MicroserviceBaseController
+import javax.inject.Inject
+import play.api.mvc.{Action, AnyContent}
+import repositories.CommsEventQueueRepository
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
-trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
-  val injector: Injector = app.injector
-  val mockAppConfig = new MockAppConfig(app.configuration)
-  val request = FakeRequest()
+class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository)(
+                                          implicit ec: ExecutionContext) extends MicroserviceBaseController {
 
-  implicit val materializer: Materializer = app.materializer
-  implicit val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
+  def count: Action[AnyContent] = Action.async { implicit request =>
+    val result: Future[Int] = repository.count
+    result.map(count => Ok(count.toString))
+  }
 }

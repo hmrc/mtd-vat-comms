@@ -16,27 +16,20 @@
 
 package repositories
 
+import base.BaseSpec
 import org.joda.time.{DateTime, Duration}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.BeforeAndAfterEach
-import config.AppConfig
-import mocks.MockAppConfig
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
-import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.WorkItem
 import models.VatChangeEvent
-import play.api.Configuration
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
-class CommsEventQueueRepositorySpec extends UnitSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
+class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
   with IntegrationPatience {
-
-  implicit val mockAppConfig: AppConfig = new MockAppConfig(Configuration())
 
   val anInstant: DateTime = DateTimeUtils.now
 
