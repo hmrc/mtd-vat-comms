@@ -17,12 +17,16 @@
 package utils
 
 import base.BaseSpec
+import models.SpecificParsingError
+import models.secureCommsModels.messageTypes._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import utils.Constants.EmailStatus.VERIFIED
 import utils.Constants.NotificationPreference.EMAIL
 import utils.Constants.ChannelPreferences.PAPER
 import utils.Constants.LanguagePreferences.ENGLISH
 import utils.Constants.FormatPreferences.TEXT
+import utils.SecureCommsMessageTestData.Responses
+import utils.SecureCommsMessageTestData.ResponseAsModel
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
@@ -55,6 +59,30 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       val expectedJsonAsPrettyString = Json.prettyPrint(Json.toJson(expectedJson.fields.sortBy(_._1).toMap[String, JsValue]))
 
       parsedJsonAsPrettyString shouldBe expectedJsonAsPrettyString
+    }
+  }
+
+  val parsingTest = Seq(
+    ("DeRegistration", Responses.expectedResponseDeRegistration, ResponseAsModel.expectedResponseDeRegistration),
+    ("PPOB Change", Responses.expectedResponsePPOBChange, ResponseAsModel.expectedResponsePPOBChange),
+    ("Repayments Bank Account Change",
+      Responses.expectedResponseBankRepaymentAccountChange, ResponseAsModel.expectedResponseRepaymentsBankAccountChange),
+    ("VAT Stagger", Responses.expectedResponseStagger, ResponseAsModel.expectedResponseStagger),
+    ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange),
+    ("Business Name Change", Responses.expectedResponseBusinessNameChange, ResponseAsModel.expectedResponseBusinessNameChange)
+  )
+
+  parsingTest.foreach { case (testName, genericResponse, modelResponse) =>
+    s"Generic Message Model for $testName" should {
+      "parse into the correct model" in {
+        SecureCommsMessageParser.parseModel(genericResponse) shouldBe Right(modelResponse)
+      }
+    }
+  }
+
+  "An incorrectly populate generic model" should {
+    "throw an error" in {
+      SecureCommsMessageParser.parseModel(SecureCommsMessageTestData.Responses.expectedResponseEverything) shouldBe Left(SpecificParsingError)
     }
   }
 }

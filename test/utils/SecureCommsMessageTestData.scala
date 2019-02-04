@@ -18,6 +18,7 @@ package utils
 
 import models.SecureCommsMessageModel
 import models.secureCommsModels._
+import models.secureCommsModels.messageTypes._
 import play.api.libs.json.{JsObject, Json}
 import utils.Constants.ChannelPreferences.PAPER
 import utils.Constants.EmailStatus.VERIFIED
@@ -27,6 +28,7 @@ import utils.Constants.NotificationPreference.EMAIL
 import utils.Constants.SecureCommsMessageFields._
 
 object SecureCommsMessageTestData {
+
   object JsonModels {
     val validJsonEverything: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
@@ -259,6 +261,217 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+  }
+
+  object JsonModelForModels {
+    val validJsonForModelDeRegistration: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      EFFECTIVE_DOD -> "20181227",
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelPPOBChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      "addressDetails" -> Json.obj(
+        AL1 -> "4 Cloud District",
+        AL2 -> "Whiterun",
+        AL3 -> "",
+        AL4 -> "",
+        AL5 -> "",
+        POST_CODE -> "TA11RI",
+        COUNTRY_NAME -> "Skyrim"
+      ),
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelRepaymentsBankAccountChangeModel: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      "bankAccountDetails" -> Json.obj(
+        ACCOUNT_NUMBER -> "12039831",
+        SORT_CODE -> "11-11-11"
+      ),
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelVATStaggerChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      STAGGER -> "12jje7uw",
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelEmailAddressChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelBusinessNameChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Companions Guild",
+      "transactorDetails" -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      "customerDetails" -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      "preferences" -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+  }
+
+  object ResponseAsModel {
+    val expectedResponseDeRegistration = DeRegistrationModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      "20181227"
+    )
+
+    val expectedResponsePPOBChange = PPOBChangeModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")
+    )
+
+    val expectedResponseRepaymentsBankAccountChange = RepaymentsBankAccountChangeModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      BankDetailsModel("12039831", "11-11-11")
+    )
+
+    val expectedResponseStagger = VATStaggerChangeModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      "12jje7uw"
+    )
+
+    val expectedResponseEmailChange = EmailAddressChangeModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+     "dragonborn@winterhold.tam"
+    )
+
+    val expectedResponseBusinessNameChange = BusinessNameChangeModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "Companions Guild",
       TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
       CustomerModel("dovahkin@riften.tam", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)

@@ -27,3 +27,5 @@ object ErrorModel {
     (__ \ "body").write[String]
   )(unlift(ErrorModel.unapply))
 }
+
+object SpecificParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue parsing the generic MessageModel into a specific type")

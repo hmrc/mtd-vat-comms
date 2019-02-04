@@ -16,9 +16,14 @@
 
 package utils
 
-import play.api.libs.json.{JsValue, Json}
+import models.secureCommsModels.messageTypes._
+import models.{ErrorModel, SecureCommsMessageModel, SpecificParsingError}
+import play.api.Logger
+import play.api.libs.json.{JsValue, Json, OFormat}
 
 object SecureCommsMessageParser {
+  val logger: Logger = Logger(getClass.getSimpleName)
+
   private def convertToCamelCase(inputString: String): String = {
     val allLowerCase = inputString.toLowerCase
       .replace("-", " ")
@@ -36,4 +41,30 @@ object SecureCommsMessageParser {
 
     Json.toJson(stringAsMap)
   }
+
+  def parseModel(model: SecureCommsMessageModel): Either[ErrorModel, MessageModel] = {
+    model match {
+      case x@SecureCommsMessageModel(_, _, _, _, Some(_), None, None, None, None, _, _, _) => Right(toGivenModel[DeRegistrationModel](x))
+      case x@SecureCommsMessageModel(_, _, _, _, None, Some(_), None, None, None, _, _, _) => Right(toGivenModel[PPOBChangeModel](x))
+      case x@SecureCommsMessageModel(_, _, _, _, None, None, Some(_), None, None, _, _, _) => Right(toGivenModel[RepaymentsBankAccountChangeModel](x))
+      case x@SecureCommsMessageModel(_, _, _, _, None, None, None, Some(_), None, _, _, _) => Right(toGivenModel[VATStaggerChangeModel](x))
+      case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, Some(_), _, _, _) => Right(toGivenModel[EmailAddressChangeModel](x))
+      case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, _, _, _) => Right(toGivenModel[BusinessNameChangeModel](x))
+      case x: SecureCommsMessageModel =>
+        logger.error("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
+          "Populated optional fields:" + generateStringFromOptionalFields(x)
+        )
+        Left(SpecificParsingError)
+    }
+  }
+
+  private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String = {
+    ((if(input.effectiveDateOfDeRegistration.nonEmpty) "\n- Effective Date of DeRegistration" else "")
+    + (if(input.addressDetails.nonEmpty) "\n- Address Details" else "")
+    + (if(input.stagger.nonEmpty) "\n- Stagger" else "")
+    + (if(input.originalEmailAddress.nonEmpty) "\n- Original Email Address" else ""))
+  }
+
+  private def toGivenModel[T <: MessageModel](model: SecureCommsMessageModel)(implicit ev: OFormat[T]): T = Json.toJson(model).as[T]
+
 }

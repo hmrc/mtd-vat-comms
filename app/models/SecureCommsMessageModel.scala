@@ -17,10 +17,9 @@
 package models
 
 import models.secureCommsModels._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
-
+import play.api.libs.json.Reads._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import utils.Constants.SecureCommsMessageFields._
 
 case class SecureCommsMessageModel(
