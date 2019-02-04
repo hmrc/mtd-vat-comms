@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package utils
+package modules
 
-import play.api.Logger
+import play.api.inject.{Binding, Module}
+import play.api.{Configuration, Environment}
+import services.CommsEventQueuePollingService
 
-// $COVERAGE-OFF$
-
-object LoggerUtil {
-
-  def logInfo(content: String): Unit = Logger.info(content)
-  def logDebug(content: String): Unit = Logger.debug(content)
-  def logWarn(content: String): Unit = Logger.warn(content)
-  def logError(content: String): Unit = Logger.error(content)
-  def logError(content: String, throwable: Throwable): Unit = Logger.error(content, throwable)
+class SchedulerModule extends Module {
+  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
+    bind[CommsEventQueuePollingService].toSelf.eagerly
+  )
 }
-
-// $COVERAGE-ON$

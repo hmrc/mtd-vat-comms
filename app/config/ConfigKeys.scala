@@ -21,4 +21,8 @@ object ConfigKeys {
   val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
   val secureCommsHost: String = "microservice.services.secureComms.host"
   val secureCommsPort: String = "microservice.services.secureComms.port"
+  val queuePollingInterval: String = "queue.pollingInterval"
+  val queueInitialWait: String = "queue.initialWait"
+  val queueToggleProperty: String = "queue.toggle"
+
 }

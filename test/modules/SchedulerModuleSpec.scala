@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package base
+package modules
 
-import akka.stream.Materializer
-import mocks.MockAppConfig
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.inject.Injector
-import play.api.test.FakeRequest
+import org.scalamock.scalatest.MockFactory
+import play.api.{Configuration, Environment}
+import services.CommsEventQueuePollingService
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.ExecutionContext
+class SchedulerModuleSpec extends UnitSpec with MockFactory {
 
-trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
-  val injector: Injector = app.injector
-  val mockAppConfig = new MockAppConfig(app.configuration)
-  val request = FakeRequest()
+  val configuration: Configuration = mock[Configuration]
+  val environment: Environment = mock[Environment]
 
-  implicit val materializer: Materializer = app.materializer
-  implicit val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
+  "Schedule Module" should {
 
+    "bind the QueuePollingService eagerly" in {
+      val bindings = new SchedulerModule().bindings(environment, configuration)
+
+      bindings.filter(p => p.key.clazz == classOf[CommsEventQueuePollingService]).head.eager shouldBe true
+    }
+  }
 }
