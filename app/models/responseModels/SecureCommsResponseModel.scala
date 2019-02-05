@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.responseModels
 
-import play.api.libs.json.{Json, OFormat}
+import org.joda.time.DateTime
+import play.api.libs.json.{Json, Reads}
 
-case class PreferencesModel(
-                             notificationPreference: String,
-                             channelPreference: String,
-                             languagePreference: String,
-                             formatPreference: String
-                           )
+case class SecureCommsResponseModel(processingDate: DateTime, secureCommText: String)
 
-object PreferencesModel {
-  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
+object SecureCommsResponseModel {
+  implicit val reads: Reads[SecureCommsResponseModel] = Json.reads[SecureCommsResponseModel]
 }

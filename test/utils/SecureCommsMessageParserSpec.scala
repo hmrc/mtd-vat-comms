@@ -17,7 +17,8 @@
 package utils
 
 import base.BaseSpec
-import models.SpecificParsingError
+import models.secureCommsModels._
+import models.{SecureCommsMessageModel, SpecificParsingError}
 import models.secureCommsModels.messageTypes._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import utils.Constants.EmailStatus.VERIFIED
@@ -27,6 +28,8 @@ import utils.Constants.LanguagePreferences.ENGLISH
 import utils.Constants.FormatPreferences.TEXT
 import utils.SecureCommsMessageTestData.Responses
 import utils.SecureCommsMessageTestData.ResponseAsModel
+
+import scala.concurrent.Future
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
@@ -54,9 +57,9 @@ class SecureCommsMessageParserSpec extends BaseSpec {
 
   "parseMessage" should {
     "successfully parse an incoming string into valid json" in { //Need to find a less offensive way of doing this
-      val parsedJson = SecureCommsMessageParser.parseMessage(stringToParse).as[JsObject]
-      val parsedJsonAsPrettyString = Json.prettyPrint(Json.toJson(parsedJson.fields.sortBy(_._1).toMap[String, JsValue]))
-      val expectedJsonAsPrettyString = Json.prettyPrint(Json.toJson(expectedJson.fields.sortBy(_._1).toMap[String, JsValue]))
+      val parsedJson = SecureCommsMessageParser.parseMessage(stringToParse).right.get.as[JsObject]
+      val parsedJsonAsPrettyString = parsedJson.fields.sortBy(_._1).toMap[String, JsValue]
+      val expectedJsonAsPrettyString = expectedJson.fields.sortBy(_._1).toMap[String, JsValue]
 
       parsedJsonAsPrettyString shouldBe expectedJsonAsPrettyString
     }
@@ -80,9 +83,32 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     }
   }
 
-  "An incorrectly populate generic model" should {
-    "throw an error" in {
-      SecureCommsMessageParser.parseModel(SecureCommsMessageTestData.Responses.expectedResponseEverything) shouldBe Left(SpecificParsingError)
+  "An incorrectly populated generic model" should {
+    "throw an error" when {
+      val allInvalidCombinations = (for {
+        effectiveDODR <- Seq(Some("20180121"), None)
+        addressDetails <- Seq(Some(AddressDetailsModel("4 NotReal Way", "A Place", "", "", "", "SW42NR", "Fantasy Land")), None)
+        bankDetails <- Seq(Some(BankDetailsModel("8493483729273", "32-12-22")), None)
+        stagger <- Seq(Some("EE02"), None)
+        oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
+      } yield {
+        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, stagger, oEmail,
+          TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
+      }).filter { passedForwardModel =>
+        Seq(
+          passedForwardModel.effectiveDateOfDeRegistration,
+          passedForwardModel.addressDetails,
+          passedForwardModel.bankAccountDetails,
+          passedForwardModel.stagger,
+          passedForwardModel.originalEmailAddress).count(_.nonEmpty) > 1
+      }
+
+      allInvalidCombinations.foreach { model =>
+        s"the following combination of optional parameters are used: ${model.effectiveDateOfDeRegistration}," +
+          s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.stagger}, ${model.originalEmailAddress}" in {
+          SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
+        }
+      }
     }
   }
 }

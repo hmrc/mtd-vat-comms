@@ -16,8 +16,8 @@
 
 package utils
 
+import models._
 import models.secureCommsModels.messageTypes._
-import models.{ErrorModel, SecureCommsMessageModel, SpecificParsingError}
 import play.api.Logger
 import play.api.libs.json.{JsValue, Json, OFormat}
 
@@ -32,14 +32,20 @@ object SecureCommsMessageParser {
     allLowerCase.head + allLowerCase.tail.map(word => word.head.toUpper + word.tail).mkString
   }
 
-  def parseMessage(message: String): JsValue = {
-    val stringAsMap = message.replace("<p>", "").split("</p>").filter(_.nonEmpty)
-      .map { keyValuePair =>
-        val splitValues = keyValuePair.split("\\|", 2)
-        convertToCamelCase(splitValues.head) -> splitValues(1)
-      }.toMap[String, String]
+  def parseMessage(message: String): Either[ErrorModel, JsValue] = {
+    try {
+      val stringAsMap = message.replace("<p>", "").split("</p>").filter(_.nonEmpty)
+        .map { keyValuePair =>
+          val splitValues = keyValuePair.split("\\|", 2)
+          convertToCamelCase(splitValues.head) -> splitValues(1)
+        }.toMap[String, String]
 
-    Json.toJson(stringAsMap)
+      Right(Json.toJson(stringAsMap))
+    } catch {
+      case t: Throwable =>
+        logger.error("[SecureCommsMessageParser][parseMessage] Error performing generic parse", t)
+        Left(JsonParsingError)
+    }
   }
 
   def parseModel(model: SecureCommsMessageModel): Either[ErrorModel, MessageModel] = {

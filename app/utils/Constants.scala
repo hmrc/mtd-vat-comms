@@ -66,9 +66,9 @@ object Constants {
     val O_EMAIL_ADDRESS = "originalEmailAddress"
     val C_EMAIL = "customerEmail"
     val C_EMAIL_STATUS = "customerEmailStatus"
-    val N_PREFS = "notificationPreferences"
-    val C_PREFS = "channelPreferences"
-    val L_PREFS = "languagePreferences"
-    val F_PREFS = "formatPreferences"
+    val N_PREFS = "notificationPreference"
+    val C_PREFS = "channelPreference"
+    val L_PREFS = "languagePreference"
+    val F_PREFS = "formatPreference"
   }
 }

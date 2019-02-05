@@ -40,10 +40,10 @@ class PreferencesModelSpec extends BaseSpec {
     )
 
     val validJson: JsObject = Json.obj(
-      "notificationPreferences" -> np,
-      "channelPreferences" -> cp,
-      "languagePreferences" -> lp,
-      "formatPreferences" -> fp
+      "notificationPreference" -> np,
+      "channelPreference" -> cp,
+      "languagePreference" -> lp,
+      "formatPreference" -> fp
     )
 
     s"AddressDetails model with inputs: $np, $cp, $lp, $fp" should {

@@ -29,3 +29,12 @@ object ErrorModel {
 }
 
 object SpecificParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue parsing the generic MessageModel into a specific type")
+object GenericParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue creating the generic model.")
+object JsonParsingError extends ErrorModel("ERROR_PARSING", "Unable to parse SecureCommText string into Json.")
+
+object UnableToParseSecureCommsResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned response from SecureComms.")
+object UnableToParseSecureCommsErrorResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned error response from SecureComms.")
+object SecureCommsNotFoundError extends ErrorModel("NOT_FOUND", "The back end has indicated that there is no match found.")
+object SecureCommsIssuesWithDesError extends ErrorModel("SERVER_ERROR", "DES is currently experiencing problems that require live service intervention.")
+object SecureCommsServiceUnavailableError extends ErrorModel("SERVICE_UNAVAILABLE", "Dependent systems are currently not responding.")
+object SecureCommsUnHandledResponseError extends ErrorModel("UNHANDLED_ERROR", "Received an unexpected response from SecureComms.")

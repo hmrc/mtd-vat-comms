@@ -16,14 +16,39 @@
 
 package connectors
 
-import config.MicroserviceAppConfig
+import config.AppConfig
 import javax.inject.Inject
+import models._
+import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponseModel}
+import play.api.http.Status._
+import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 
+import scala.concurrent.{ExecutionContext, Future}
+
 class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
-                                          appConfig: MicroserviceAppConfig) {
-  def getSecureCommsMessage(service: String, regNumber: String, communicationId: String) = {
+                                          appConfig: AppConfig) {
+
+  //noinspection ScalaStyle
+  def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
+                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
     val url = appConfig.secureCommsUrl(service, regNumber, communicationId)
-    wsClient.url(url).get()
+    wsClient.url(url).get().map { response =>
+      response.status match {
+        case OK => Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
+          case Some(responseModel) => Right(responseModel)
+          case None => Left(UnableToParseSecureCommsResponseError)
+        }
+        case BAD_REQUEST => Json.parse(response.body).validate[SecureCommsErrorResponseModel].asOpt match {
+          case Some(error) => Left(ErrorModel(error.code, error.reason))
+          case None => Left(UnableToParseSecureCommsErrorResponseError)
+        }
+        case NOT_FOUND => Left(SecureCommsNotFoundError)
+        case INTERNAL_SERVER_ERROR => Left(SecureCommsIssuesWithDesError)
+        case SERVICE_UNAVAILABLE => Left(SecureCommsServiceUnavailableError)
+        case _ => Left(SecureCommsUnHandledResponseError)
+      }
+    }
   }
+
 }

@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.responseModels
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Json, Reads}
 
-case class PreferencesModel(
-                             notificationPreference: String,
-                             channelPreference: String,
-                             languagePreference: String,
-                             formatPreference: String
-                           )
+case class SecureCommsErrorResponseModel(code: String, reason: String)
 
-object PreferencesModel {
-  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
+object SecureCommsErrorResponseModel {
+  implicit val reads: Reads[SecureCommsErrorResponseModel] = Json.reads[SecureCommsErrorResponseModel]
 }
