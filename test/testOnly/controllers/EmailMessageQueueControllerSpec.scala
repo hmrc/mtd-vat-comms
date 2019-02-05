@@ -20,19 +20,19 @@ import base.BaseSpec
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Result
-import repositories.CommsEventQueueRepository
+import repositories.EmailMessageQueueRepository
 
 import scala.concurrent.Future
 
-class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar {
+class EmailMessageQueueControllerSpec extends BaseSpec with MockitoSugar {
 
-  val repository: CommsEventQueueRepository = mock[CommsEventQueueRepository]
-  val controller = new CommsEventQueueController(repository)
+  val repository: EmailMessageQueueRepository = mock[EmailMessageQueueRepository]
+  val controller = new EmailMessageQueueController(repository)
   val recordCount = 99
 
   "The count action" should {
 
-    "return the total number of records in the CommsEventQueue database" in {
+    "return the total number of records in the EmailMessageQueue database" in {
       when(repository.count(ec)) thenReturn Future.successful(recordCount)
       lazy val result: Future[Result] = controller.count(request)
 

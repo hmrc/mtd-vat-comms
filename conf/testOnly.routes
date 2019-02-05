@@ -12,5 +12,7 @@
 # Add all the application routes to the prod.routes file
 
 GET        /mtd-vat-comms/test-only/comms-event-queue/count      @testOnly.controllers.CommsEventQueueController.count
+GET        /mtd-vat-comms/test-only/email-message-queue/count    @testOnly.controllers.EmailMessageQueueController.count
+GET        /mtd-vat-comms/test-only/secure-message-queue/count   @testOnly.controllers.SecureMessageQueueController.count
 
 ->         /                                                     prod.Routes
