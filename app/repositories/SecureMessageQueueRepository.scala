@@ -18,25 +18,27 @@ package repositories
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import org.joda.time.DateTime
+import models.Placeholder
+import org.joda.time.{DateTime, Duration}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers._
-import models.VatChangeEvent
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem._
+import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemRepository}
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
-  extends WorkItemRepository[VatChangeEvent, BSONObjectID](
-    "CommsEventQueue",
+class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
+  extends WorkItemRepository[Placeholder, BSONObjectID](
+    "SecureMessageQueue",
     reactiveMongoComponent.mongoConnector.db,
-    WorkItem.workItemMongoFormat[VatChangeEvent]) {
+    WorkItem.workItemMongoFormat[Placeholder]
+  ) {
 
-  lazy override val inProgressRetryAfterProperty: String = appConfig.failureRetryAfterProperty
+  override val inProgressRetryAfterProperty: String = ""
 
   override def now: DateTime = DateTimeUtils.now
 
@@ -49,12 +51,10 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     val failureCount = "failureCount"
   }
 
-  override def pushNew(item: VatChangeEvent, receivedAt: DateTime)(implicit ec: ExecutionContext):
-  Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
+  override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
-  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangeEvent]]] = {
+  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[Placeholder]]] =
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
-  }
 
   def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
     val selector = JsObject(

@@ -20,15 +20,15 @@ import base.BaseSpec
 import org.joda.time.{DateTime, Duration}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.BeforeAndAfterEach
+import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
 import uk.gov.hmrc.time.DateTimeUtils
-import models.VatChangeEvent
-import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.workitem._
+import models.Placeholder
 
-class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
+class EmailMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
   with IntegrationPatience {
 
   val anInstant: DateTime = DateTimeUtils.now
@@ -37,47 +37,42 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
     override def mongoConnector: MongoConnector = mongoConnectorForTest
   }
 
-  def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository = new CommsEventQueueRepository(
+  def repoAtInstant(anInstant: DateTime): EmailMessageQueueRepository = new EmailMessageQueueRepository(
     mockAppConfig, reactiveMongoComponent) {
-      override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
-      override def now: DateTime                       = anInstant
+    override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
+    override def now: DateTime                       = anInstant
   }
 
-  lazy val repo: CommsEventQueueRepository = repoAtInstant(anInstant)
+  lazy val repo: EmailMessageQueueRepository = repoAtInstant(anInstant)
 
   override protected def beforeEach(): Unit = {
     await(repo.drop)
     await(repo.ensureIndexes)
   }
 
-  "CommsEventQueue Repository" should {
+  "EmailMessageQueue Repository" should {
 
-    val vatChangeEvent: VatChangeEvent = VatChangeEvent("Approved", "123", "PPOB Change")
-
-    "generate a Duration of 10000 milliseconds from config value" in {
-      val dur: Duration = Duration.millis(mockAppConfig.retryIntervalMillis)
-      dur.getMillis shouldBe 10000L
-    }
+    val placeholder: Placeholder = Placeholder("name")
 
     "ensure indexes are created" in {
       repo.collection.indexesManager.list().futureValue.size shouldBe 4
     }
 
-    "be able to save and reload a vat change request" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
+    "be able to save and reload an item" in {
+      val workItem = repo.pushNew(placeholder, anInstant).futureValue
 
       repo.findById(workItem.id).futureValue.get should have(
-        'item (vatChangeEvent),
+        'item (placeholder),
         'status (ToDo),
         'receivedAt (anInstant),
         'updatedAt (anInstant)
       )
     }
 
-    "be able to save the same requests twice" in {
-      val payloadDetails = vatChangeEvent
-      repo.pushNew(vatChangeEvent, anInstant).futureValue
-      repo.pushNew(vatChangeEvent, anInstant).futureValue
+    "be able to save the same item twice" in {
+      val payloadDetails = placeholder
+      repo.pushNew(placeholder, anInstant).futureValue
+      repo.pushNew(placeholder, anInstant).futureValue
 
       val requests = repo.findAll(ReadPreference.primaryPreferred).futureValue
       requests should have(size(2))
@@ -90,11 +85,11 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
       )
     }
 
-    "pull ToDo vat change requests" in {
-      val payloadDetails = vatChangeEvent
+    "pull ToDo items" in {
+      val payloadDetails = placeholder
       repo.pushNew(payloadDetails, anInstant).futureValue
 
-      val repoLater: CommsEventQueueRepository = repoAtInstant(anInstant.plusMillis(1))
+      val repoLater: EmailMessageQueueRepository = repoAtInstant(anInstant.plusMillis(1))
 
       repoLater.pullOutstanding.futureValue.get should have(
         'item (payloadDetails),
@@ -102,32 +97,33 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
       )
     }
 
-    "pull nothing if no vat change requests exist" in {
+    "pull nothing if no items exist" in {
       repo.pullOutstanding.futureValue should be(None)
     }
 
-    "not pull vat change requests failed after the failedBefore time" in {
-      val workItem: WorkItem[VatChangeEvent] = repo.pushNew(vatChangeEvent, anInstant).futureValue
+    "not pull items failed after the failedBefore time" in {
+      val workItem: WorkItem[Placeholder] = repo.pushNew(placeholder, anInstant).futureValue
       repo.markAs(workItem.id, Failed).futureValue should be(true)
 
       repo.pullOutstanding.futureValue should be(None)
     }
 
-    "complete and delete a vat change request if it is in progress" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
+    "complete and delete an item if it is in progress" in {
+      val workItem = repo.pushNew(placeholder, anInstant).futureValue
       repo.markAs(workItem.id, InProgress).futureValue should be(true)
       repo.complete(workItem.id).futureValue should be(true)
 
       repo.findById(workItem.id).futureValue shouldBe None
     }
 
-    "not complete a vat change request if it is not in progress" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
+    "not complete an item if it is not in progress" in {
+
+      val workItem = repo.pushNew(placeholder, anInstant).futureValue
       repo.complete(workItem.id).futureValue should be(false)
       repo.findById(workItem.id).futureValue shouldBe Some(workItem)
     }
 
-    "not complete a vat change request if it cannot be found" in {
+    "not complete an item if it cannot be found" in {
       repo.complete(BSONObjectID.generate).futureValue should be(false)
     }
   }
