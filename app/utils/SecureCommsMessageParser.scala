@@ -42,7 +42,7 @@ object SecureCommsMessageParser {
       Right(Json.toJson(stringAsMap))
     } catch {
       case t: Throwable =>
-        logError("[SecureCommsMessageParser][parseMessage] Error performing generic parse", t)
+        logError("[SecureCommsMessageParser][parseMessage] Error performing generic parse")
         Left(JsonParsingError)
     }
   }
