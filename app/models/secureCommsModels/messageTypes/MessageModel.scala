@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package config
 
-object ConfigKeys {
+package models.secureCommsModels.messageTypes
 
-  val failureRetryAfterProperty: String = "queue.retryAfter"
-  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
-  val secureCommsHost: String = "microservice.services.secureComms.host"
-  val secureCommsPort: String = "microservice.services.secureComms.port"
-}
+import models.secureCommsModels._
+
+class MessageModel(
+                    templateId: String,
+                    vrn: String,
+                    formBundleReference: String,
+                    businessName: String,
+                    transactorDetails: TransactorModel,
+                    customerDetails: CustomerModel,
+                    preferences: PreferencesModel
+                  )

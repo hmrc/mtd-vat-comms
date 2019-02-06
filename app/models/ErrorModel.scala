@@ -27,3 +27,10 @@ object ErrorModel {
     (__ \ "body").write[String]
   )(unlift(ErrorModel.unapply))
 }
+
+object SpecificParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue parsing the generic MessageModel into a specific type")
+object GenericParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue creating the generic model.")
+object JsonParsingError extends ErrorModel("ERROR_PARSING", "Unable to parse SecureCommText string into Json.")
+
+object UnableToParseSecureCommsResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned response from SecureComms.")
+object UnableToParseSecureCommsErrorResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned error response from SecureComms.")

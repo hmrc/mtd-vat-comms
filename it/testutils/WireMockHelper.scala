@@ -18,6 +18,7 @@ package testutils
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import org.scalatest.concurrent.{Eventually, IntegrationPatience}
@@ -46,4 +47,14 @@ trait WireMockHelper {
   def stopWireMock(): Unit = wireMockServer.stop()
 
   def resetWireMock(): Unit = WireMock.reset()
+
+  def stubGetRequest(url: String, returnStatus: Int, returnBody: String): Any = {
+    stubFor(get(url).willReturn(
+      aResponse()
+        .withStatus(returnStatus)
+        .withBody(
+          returnBody
+        )
+    ))
+  }
 }

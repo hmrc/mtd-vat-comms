@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package config
 
-object ConfigKeys {
+package models.responseModels
 
-  val failureRetryAfterProperty: String = "queue.retryAfter"
-  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
-  val secureCommsHost: String = "microservice.services.secureComms.host"
-  val secureCommsPort: String = "microservice.services.secureComms.port"
+import org.joda.time.DateTime
+import play.api.libs.json.{Json, Reads}
+
+case class SecureCommsResponseModel(processingDate: DateTime, secureCommText: String)
+
+object SecureCommsResponseModel {
+  implicit val reads: Reads[SecureCommsResponseModel] = Json.reads[SecureCommsResponseModel]
 }

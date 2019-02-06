@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package config
 
-object ConfigKeys {
+package models.secureCommsModels
 
-  val failureRetryAfterProperty: String = "queue.retryAfter"
-  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
-  val secureCommsHost: String = "microservice.services.secureComms.host"
-  val secureCommsPort: String = "microservice.services.secureComms.port"
+import play.api.libs.json.{Json, OFormat}
+
+case class PreferencesModel(
+                             notificationPreference: String,
+                             channelPreference: String,
+                             languagePreference: String,
+                             formatPreference: String
+                           )
+
+object PreferencesModel {
+  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
 }

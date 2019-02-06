@@ -13,12 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package config
 
-object ConfigKeys {
+package models.secureCommsModels
 
-  val failureRetryAfterProperty: String = "queue.retryAfter"
-  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
-  val secureCommsHost: String = "microservice.services.secureComms.host"
-  val secureCommsPort: String = "microservice.services.secureComms.port"
+import base.BaseSpec
+import play.api.libs.json.{JsObject, Json}
+
+class BankDetailsModelSpec extends BaseSpec {
+  val expectedModel: BankDetailsModel = BankDetailsModel(
+    "1029384756", "11-11-11"
+  )
+
+  val validJson: JsObject = Json.obj(
+    "bankAccountNumber" -> "1029384756",
+    "bankSortCode" -> "11-11-11"
+  )
+
+  "Bank Details model" should {
+    "parse from the correct json structure" in {
+      validJson.as[BankDetailsModel] shouldBe expectedModel
+    }
+  }
 }

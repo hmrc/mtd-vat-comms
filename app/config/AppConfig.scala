@@ -26,6 +26,10 @@ import config.{ConfigKeys => Keys}
 trait AppConfig extends ServicesConfig {
 
   val retryIntervalMillis: Long
+  val secureCommsProtocol: String
+  val secureCommsHost: String
+  val secureCommsPort: String
+  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String
 }
 
 @Singleton
@@ -38,4 +42,11 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
 
+  lazy val secureCommsProtocol: String = runModeConfiguration.getString(Keys.secureCommsProtocol).getOrElse("http")
+  lazy val secureCommsHost: String = runModeConfiguration.getString(Keys.secureCommsHost).getOrElse("localhost")
+  lazy val secureCommsPort: String = runModeConfiguration.getString(Keys.secureCommsPort).getOrElse("9068")
+
+  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
+    s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
+      s"service/$service/registration-number/$regNumber/communications/$communicationId"
 }
