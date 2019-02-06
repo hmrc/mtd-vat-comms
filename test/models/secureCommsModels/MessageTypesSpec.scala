@@ -23,7 +23,7 @@ import utils.SecureCommsMessageTestData.ResponseAsModel._
 
 class MessageTypesSpec extends BaseSpec {
 
-  val jsonModelMapping = Seq(
+  val jsonModelMapping: Seq[(String, MessageModel, MessageModel)] = Seq(
     ("DeRegistration", expectedResponseDeRegistration, validJsonForModelDeRegistration.as[DeRegistrationModel]),
     ("PPOB Change", expectedResponsePPOBChange, validJsonForModelPPOBChange.as[PPOBChangeModel]),
     ("Repayments Bank Account Change",

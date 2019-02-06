@@ -20,10 +20,9 @@ import models._
 import models.secureCommsModels.messageTypes._
 import play.api.Logger
 import play.api.libs.json.{JsValue, Json, OFormat}
+import utils.LoggerUtil._
 
 object SecureCommsMessageParser {
-  val logger: Logger = Logger(getClass.getSimpleName)
-
   private def convertToCamelCase(inputString: String): String = {
     val allLowerCase = inputString.toLowerCase
       .replace("-", " ")
@@ -43,7 +42,7 @@ object SecureCommsMessageParser {
       Right(Json.toJson(stringAsMap))
     } catch {
       case t: Throwable =>
-        logger.error("[SecureCommsMessageParser][parseMessage] Error performing generic parse", t)
+        logError("[SecureCommsMessageParser][parseMessage] Error performing generic parse", t)
         Left(JsonParsingError)
     }
   }
@@ -57,7 +56,7 @@ object SecureCommsMessageParser {
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, Some(_), _, _, _) => Right(toGivenModel[EmailAddressChangeModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, _, _, _) => Right(toGivenModel[BusinessNameChangeModel](x))
       case x: SecureCommsMessageModel =>
-        logger.error("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
+        logError("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
           "Populated optional fields:" + generateStringFromOptionalFields(x)
         )
         Left(SpecificParsingError)
@@ -65,10 +64,10 @@ object SecureCommsMessageParser {
   }
 
   private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String = {
-    ((if(input.effectiveDateOfDeRegistration.nonEmpty) "\n- Effective Date of DeRegistration" else "")
-    + (if(input.addressDetails.nonEmpty) "\n- Address Details" else "")
-    + (if(input.stagger.nonEmpty) "\n- Stagger" else "")
-    + (if(input.originalEmailAddress.nonEmpty) "\n- Original Email Address" else ""))
+    (input.effectiveDateOfDeRegistration.fold("")(_ => "\n- Effective Date of DeRegistration")
+    + input.addressDetails.fold("")(_ => "\n- Address Details")
+    + input.stagger.fold("")(_ => "\n- Stagger")
+    + input.originalEmailAddress.fold("")(_ => "\n- Original Email Address"))
   }
 
   private def toGivenModel[T <: MessageModel](model: SecureCommsMessageModel)(implicit ev: OFormat[T]): T = Json.toJson(model).as[T]

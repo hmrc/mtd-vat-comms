@@ -39,7 +39,7 @@ class CustomerModelSpec extends BaseSpec {
     "customerEmailStatus" -> UNVERIFIED
   )
 
-  "AddressDetails model" should {
+  "Customer model" should {
     s"parse from the correct json structure with $VERIFIED" in {
       validJson.as[CustomerModel] shouldBe expectedModel
     }

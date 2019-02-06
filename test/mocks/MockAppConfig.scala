@@ -22,4 +22,12 @@ import play.api.{Configuration, Mode}
 
 class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
   override val retryIntervalMillis: Long = 10000L
+  override val secureCommsProtocol: String = "http"
+  override val secureCommsHost: String = "localhost"
+  override val secureCommsPort: String = "11111"
+
+  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
+    s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
+      s"service/$service/registration-number/$regNumber/communications/$communicationId"
+
 }

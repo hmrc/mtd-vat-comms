@@ -24,10 +24,10 @@ import utils.Constants.FormatPreferences._
 import utils.Constants.LanguagePreferences._
 
 class PreferencesModelSpec extends BaseSpec {
-  val notificationPrefs = Seq(EMAIL, SMS)
-  val channelPrefs = Seq(DIGITAL, PAPER)
-  val languagePrefs = Seq(ENGLISH, WELSH)
-  val formatPrefs = Seq(TEXT, BRAILLE, LARGE_PRINT, AUDIO)
+  val notificationPrefs: Seq[String] = Seq(EMAIL, SMS)
+  val channelPrefs: Seq[String] = Seq(DIGITAL, PAPER)
+  val languagePrefs: Seq[String] = Seq(ENGLISH, WELSH)
+  val formatPrefs: Seq[String] = Seq(TEXT, BRAILLE, LARGE_PRINT, AUDIO)
 
   for {
     np <- notificationPrefs
@@ -46,7 +46,7 @@ class PreferencesModelSpec extends BaseSpec {
       "formatPreference" -> fp
     )
 
-    s"AddressDetails model with inputs: $np, $cp, $lp, $fp" should {
+    s"Preferences model with inputs: $np, $cp, $lp, $fp" should {
       "parse from the correct json structure" in {
         validJson.as[PreferencesModel] shouldBe expectedModel
       }

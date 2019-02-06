@@ -42,8 +42,6 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
     s"/secure-comms-alert/service/$service/registration-number/$regNum/communications/$communicationsId"
   }
 
-  startWireMock()
-
   "getSecureComms" should {
     "return a SecureCommsResponseModel" when {
       s"an $OK response is received from SecureComms, and the response can be parsed" in {
@@ -81,20 +79,6 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
-      s"a $NOT_FOUND is received from SecureComms" in {
-        val communicationId = "123456789013"
-
-        stubGetRequest(
-          generateUrl(communicationId),
-          NOT_FOUND,
-          secureCommsValidErrorResponse("NOT_FOUND", "The back end has indicated that there is no match found.")
-        )
-
-        val expectedResult = Left(SecureCommsNotFoundError)
-
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
-        result shouldBe expectedResult
-      }
       s"a $BAD_REQUEST response is received from SecureComms, and the response can be parsed" in {
         val communicationId = "123456789021"
 
@@ -123,50 +107,20 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
-      s"an $INTERNAL_SERVER_ERROR response is received from SecureComms" in {
-        val communicationId = "123456789014"
-
-        stubGetRequest(
-          generateUrl(communicationId),
-          INTERNAL_SERVER_ERROR,
-          secureCommsValidErrorResponse("INTERNAL_SERVER_ERROR", "This error message doesn't really matter.")
-        )
-
-        val expectedResult = Left(SecureCommsIssuesWithDesError)
-
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
-        result shouldBe expectedResult
-      }
-      s"a $SERVICE_UNAVAILABLE response is received from SecureComms" in {
-        val communicationId = "123456789015"
-
-        stubGetRequest(
-          generateUrl(communicationId),
-          SERVICE_UNAVAILABLE,
-          secureCommsValidErrorResponse("SERVICE_UNAVAILABLE", "This error message doesn't really matter.")
-        )
-
-        val expectedResult = Left(SecureCommsServiceUnavailableError)
-
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
-        result shouldBe expectedResult
-      }
       "an unexpected response is received from SecureComms" in {
         val communicationId = "123456789016"
 
         stubGetRequest(
           generateUrl(communicationId),
           REQUEST_TIMEOUT,
-          ""
+          "AN UNKNOWN ERROR WHUT"
         )
 
-        val expectedResult = Left(SecureCommsUnHandledResponseError)
+        val expectedResult = Left(ErrorModel(s"$REQUEST_TIMEOUT", "AN UNKNOWN ERROR WHUT"))
 
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
     }
   }
-
-  stopWireMock()
 }

@@ -29,7 +29,7 @@ class BankDetailsModelSpec extends BaseSpec {
     "bankSortCode" -> "11-11-11"
   )
 
-  "AddressDetails model" should {
+  "Bank Details model" should {
     "parse from the correct json structure" in {
       validJson.as[BankDetailsModel] shouldBe expectedModel
     }

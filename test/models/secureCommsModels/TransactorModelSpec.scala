@@ -29,7 +29,7 @@ class TransactorModelSpec extends BaseSpec {
     "transactorName" -> "Dovah Kin"
   )
 
-  "AddressDetails model" should {
+  "Transactor model" should {
     "parse from the correct json structure" in {
       validJson.as[TransactorModel] shouldBe expectedModel
     }

@@ -18,18 +18,15 @@ package utils
 
 import base.BaseSpec
 import models.secureCommsModels._
-import models.{SecureCommsMessageModel, SpecificParsingError}
 import models.secureCommsModels.messageTypes._
+import models.{SecureCommsMessageModel, SpecificParsingError}
 import play.api.libs.json.{JsObject, JsValue, Json}
-import utils.Constants.EmailStatus.VERIFIED
-import utils.Constants.NotificationPreference.EMAIL
 import utils.Constants.ChannelPreferences.PAPER
-import utils.Constants.LanguagePreferences.ENGLISH
+import utils.Constants.EmailStatus.VERIFIED
 import utils.Constants.FormatPreferences.TEXT
-import utils.SecureCommsMessageTestData.Responses
-import utils.SecureCommsMessageTestData.ResponseAsModel
-
-import scala.concurrent.Future
+import utils.Constants.LanguagePreferences.ENGLISH
+import utils.Constants.NotificationPreference.EMAIL
+import utils.SecureCommsMessageTestData.{ResponseAsModel, Responses}
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
@@ -65,7 +62,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     }
   }
 
-  val parsingTest = Seq(
+  val parsingTest: Seq[(String, SecureCommsMessageModel, MessageModel)] = Seq(
     ("DeRegistration", Responses.expectedResponseDeRegistration, ResponseAsModel.expectedResponseDeRegistration),
     ("PPOB Change", Responses.expectedResponsePPOBChange, ResponseAsModel.expectedResponsePPOBChange),
     ("Repayments Bank Account Change",

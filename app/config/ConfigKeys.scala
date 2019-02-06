@@ -18,5 +18,7 @@ package config
 object ConfigKeys {
 
   val failureRetryAfterProperty: String = "queue.retryAfter"
-
+  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
+  val secureCommsHost: String = "microservice.services.secureComms.host"
+  val secureCommsPort: String = "microservice.services.secureComms.port"
 }

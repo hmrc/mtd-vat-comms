@@ -43,10 +43,7 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
           case Some(error) => Left(ErrorModel(error.code, error.reason))
           case None => Left(UnableToParseSecureCommsErrorResponseError)
         }
-        case NOT_FOUND => Left(SecureCommsNotFoundError)
-        case INTERNAL_SERVER_ERROR => Left(SecureCommsIssuesWithDesError)
-        case SERVICE_UNAVAILABLE => Left(SecureCommsServiceUnavailableError)
-        case _ => Left(SecureCommsUnHandledResponseError)
+        case _: Int => Left(ErrorModel(s"${response.status}", response.body))
       }
     }
   }
