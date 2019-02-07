@@ -18,7 +18,7 @@ package repositories
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import org.joda.time.{DateTime, Duration}
+import org.joda.time.DateTime
 import play.api.libs.json.{Format, JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.bson.BSONObjectID
@@ -27,7 +27,6 @@ import models.VatChangeEvent
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 object MongoPayloadDetailsFormats {
@@ -41,27 +40,29 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     reactiveMongoComponent.mongoConnector.db,
     MongoPayloadDetailsFormats.formats) {
 
-    val inProgressRetryAfterProperty: String = ""
+  val inProgressRetryAfterProperty: String = appConfig.failureRetryAfterProperty
 
-    override def now: DateTime = DateTimeUtils.now
+  override def now: DateTime = DateTimeUtils.now
 
-    override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
-      val receivedAt   = "receivedAt"
-      val updatedAt    = "updatedAt"
-      val availableAt  = "receivedAt"
-      val status       = "status"
-      val id           = "_id"
-      val failureCount = "failureCount"
-    }
+  override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
+    val receivedAt = "receivedAt"
+    val updatedAt = "updatedAt"
+    val availableAt = "receivedAt"
+    val status = "status"
+    val id = "_id"
+    val failureCount = "failureCount"
+  }
 
-    override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
+  override def pushNew(item: VatChangeEvent, receivedAt: DateTime)(implicit ec: ExecutionContext):
+  Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
 
-    def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangeEvent]]] =
-      super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
+  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangeEvent]]] = {
+    super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
+  }
 
-    def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
-      val selector = JsObject(
-        Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
-      collection.remove(selector).map(_.n > 0)
-    }
+  def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
+    val selector = JsObject(
+      Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
+    collection.remove(selector).map(_.n > 0)
+  }
 }

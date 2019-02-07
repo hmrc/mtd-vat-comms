@@ -30,6 +30,10 @@ trait AppConfig extends ServicesConfig {
   val secureCommsHost: String
   val secureCommsPort: String
   def secureCommsUrl(service: String, regNumber: String, communicationId: String): String
+  val queuePollingWaitTime: Int
+  val initialWaitTime: Int
+  val pollingToggle: Boolean
+  val failureRetryAfterProperty: String
 }
 
 @Singleton
@@ -38,6 +42,11 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   override def mode: Mode.Mode = environment.mode
   val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
+  val queuePollingWaitTimeProperty: String = Keys.queuePollingInterval
+  val initialWaitProperty: String = Keys.queueInitialWait
+  val queueToggleProperty: String = Keys.queueToggleProperty
+
+  val defaultPollingWaitTime: Int = 30
 
   lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
@@ -49,4 +58,12 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
     s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
+
+  lazy val queuePollingWaitTime: Int = runModeConfiguration.getInt(queuePollingWaitTimeProperty)
+    .getOrElse(defaultPollingWaitTime)
+
+  lazy val initialWaitTime: Int = runModeConfiguration.getInt(initialWaitProperty).getOrElse(0)
+
+  lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
+
 }

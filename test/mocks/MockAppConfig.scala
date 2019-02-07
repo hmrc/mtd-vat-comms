@@ -20,8 +20,10 @@ import config.AppConfig
 import play.api.Mode.Mode
 import play.api.{Configuration, Mode}
 
-class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
-  override val retryIntervalMillis: Long = 10000L
+class MockAppConfig(val runModeConfiguration: Configuration,
+                    val mode: Mode = Mode.Test,
+                    override val pollingToggle: Boolean = false) extends AppConfig {
+
   override val secureCommsProtocol: String = "http"
   override val secureCommsHost: String = "localhost"
   override val secureCommsPort: String = "11111"
@@ -30,4 +32,8 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
     s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
 
+  override val retryIntervalMillis: Long = 10000L
+  override val queuePollingWaitTime: Int = 1
+  override val initialWaitTime: Int = 0
+  override val failureRetryAfterProperty: String = "1000"
 }

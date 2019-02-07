@@ -29,9 +29,10 @@ lazy val plugins: Seq[Plugins] = Seq.empty
 
 val compile = Seq(
   ws,
-  "uk.gov.hmrc"     %% "play-reactivemongo"    % "6.2.0",
-  "uk.gov.hmrc"     %% "work-item-repo"        % "5.2.0",
-  "uk.gov.hmrc"     %% "bootstrap-play-25"     % "4.8.0"
+  "uk.gov.hmrc" %% "play-reactivemongo" % "6.2.0",
+  "uk.gov.hmrc" %% "work-item-repo"     % "5.2.0",
+  "uk.gov.hmrc" %% "bootstrap-play-25"  % "4.8.0",
+  "uk.gov.hmrc" %% "play-scheduling"    % "4.1.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
@@ -45,6 +46,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
   "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope
+
+
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
