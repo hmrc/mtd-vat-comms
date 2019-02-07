@@ -26,7 +26,7 @@ import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
-import models.Placeholder
+import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
 class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
   with IntegrationPatience {
@@ -52,17 +52,15 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
 
   "SecureMessageQueue Repository" should {
 
-    val placeholder: Placeholder = Placeholder("name")
-
     "ensure indexes are created" in {
       repo.collection.indexesManager.list().futureValue.size shouldBe 4
     }
 
     "be able to save and reload an item" in {
-      val workItem = repo.pushNew(placeholder, anInstant).futureValue
+      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
 
       repo.findById(workItem.id).futureValue.get should have(
-        'item (placeholder),
+        'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
         'updatedAt (anInstant)
@@ -70,15 +68,14 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
     }
 
     "be able to save the same item twice" in {
-      val payloadDetails = placeholder
-      repo.pushNew(placeholder, anInstant).futureValue
-      repo.pushNew(placeholder, anInstant).futureValue
+      repo.pushNew(expectedResponseEverything, anInstant).futureValue
+      repo.pushNew(expectedResponseEverything, anInstant).futureValue
 
       val requests = repo.findAll(ReadPreference.primaryPreferred).futureValue
       requests should have(size(2))
 
       every(requests) should have(
-        'item (payloadDetails),
+        'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
         'updatedAt (anInstant)
@@ -86,7 +83,7 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
     }
 
     "pull ToDo items" in {
-      val payloadDetails = placeholder
+      val payloadDetails = expectedResponseEverything
       repo.pushNew(payloadDetails, anInstant).futureValue
 
       val repoLater: SecureMessageQueueRepository = repoAtInstant(anInstant.plusMillis(1))
@@ -102,14 +99,14 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
     }
 
     "not pull items failed after the failedBefore time" in {
-      val workItem: WorkItem[Placeholder] = repo.pushNew(placeholder, anInstant).futureValue
+      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
       repo.markAs(workItem.id, Failed).futureValue should be(true)
 
       repo.pullOutstanding.futureValue should be(None)
     }
 
     "complete and delete an item if it is in progress" in {
-      val workItem = repo.pushNew(placeholder, anInstant).futureValue
+      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
       repo.markAs(workItem.id, InProgress).futureValue should be(true)
       repo.complete(workItem.id).futureValue should be(true)
 
@@ -118,7 +115,7 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
 
     "not complete an item if it is not in progress" in {
 
-      val workItem = repo.pushNew(placeholder, anInstant).futureValue
+      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
       repo.complete(workItem.id).futureValue should be(false)
       repo.findById(workItem.id).futureValue shouldBe Some(workItem)
     }

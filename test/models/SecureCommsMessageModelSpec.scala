@@ -17,37 +17,73 @@
 package models
 
 import base.BaseSpec
+import play.api.libs.json.Json
 import utils.SecureCommsMessageTestData.JsonModels._
 import utils.SecureCommsMessageTestData.Responses._
 
 class SecureCommsMessageModelSpec extends BaseSpec {
-  "SecureCommsMessageModel" should {
-    "correctly parse every field" in {
-      validJsonEverything.as[SecureCommsMessageModel] shouldBe expectedResponseEverything
+  "SecureCommsMessageModel" when {
+
+    "parsing from JSON" should {
+
+      "correctly parse every field" in {
+        validJsonEverything.as[SecureCommsMessageModel] shouldBe expectedResponseEverything
+      }
+
+      "correctly parse when optional fields are missing - DeRegistration" in {
+        validJsonDeRegistration.as[SecureCommsMessageModel] shouldBe expectedResponseDeRegistration
+      }
+
+      "correctly parse when optional fields are missing - PPOB Change" in {
+        validJsonPPOBChange.as[SecureCommsMessageModel] shouldBe expectedResponsePPOBChange
+      }
+
+      "correctly parse when optional fields are missing - Repayment Bank Account Change" in {
+        validJsonRepaymentBankAccountChange.as[SecureCommsMessageModel] shouldBe expectedResponseBankRepaymentAccountChange
+      }
+
+      "correctly parse when optional fields are missing - Email Change" in {
+        validJsonEmailChange.as[SecureCommsMessageModel] shouldBe expectedResponseEmailChange
+      }
+
+      "correctly parse when optional fields are missing - Stagger Change" in {
+        validJsonVatStaggerChange.as[SecureCommsMessageModel] shouldBe expectedResponseStagger
+      }
+
+      "correctly parse when optional fields are missing - Business Name Change" in {
+        validJsonBusinessNameChange.as[SecureCommsMessageModel] shouldBe expectedResponseBusinessNameChange
+      }
     }
 
-    "correctly parse when optional fields are missing - DeRegistration" in {
-      validJsonDeRegistration.as[SecureCommsMessageModel] shouldBe expectedResponseDeRegistration
-    }
+    "serializing to JSON" should {
 
-    "correctly parse when optional fields are missing - PPOB Change" in {
-      validJsonPPOBChange.as[SecureCommsMessageModel] shouldBe expectedResponsePPOBChange
-    }
+      "correctly parse every field" in {
+        Json.toJson(expectedResponseEverything) shouldBe validJsonEverything
+      }
 
-    "correctly parse when optional fields are missing - Repayment Bank Account Change" in {
-      validJsonRepaymentBankAccountChange.as[SecureCommsMessageModel] shouldBe expectedResponseBankRepaymentAccountChange
-    }
+      "correctly parse when optional fields are missing - DeRegistration" in {
+        Json.toJson(expectedResponseDeRegistration) shouldBe validJsonDeRegistration
+      }
 
-    "correctly parse when optional fields are missing - Email Change" in {
-      validJsonEmailChange.as[SecureCommsMessageModel] shouldBe expectedResponseEmailChange
-    }
+      "correctly parse when optional fields are missing - PPOB Change" in {
+        Json.toJson(expectedResponsePPOBChange) shouldBe validJsonPPOBChange
+      }
 
-    "correctly parse when optional fields are missing - Stagger Change" in {
-      validJsonVatStaggerChange.as[SecureCommsMessageModel] shouldBe expectedResponseStagger
-    }
+      "correctly parse when optional fields are missing - Repayment Bank Account Change" in {
+        Json.toJson(expectedResponseBankRepaymentAccountChange) shouldBe validJsonRepaymentBankAccountChange
+      }
 
-    "correctly parse when optional fields are missing - Business Name Change" in {
-      validJsonBusinessNameChange.as[SecureCommsMessageModel] shouldBe expectedResponseBusinessNameChange
+      "correctly parse when optional fields are missing - Email Change" in {
+        Json.toJson(expectedResponseEmailChange) shouldBe validJsonEmailChange
+      }
+
+      "correctly parse when optional fields are missing - Stagger Change" in {
+        Json.toJson(expectedResponseStagger) shouldBe validJsonVatStaggerChange
+      }
+
+      "correctly parse when optional fields are missing - Business Name Change" in {
+        Json.toJson(expectedResponseBusinessNameChange) shouldBe validJsonBusinessNameChange
+      }
     }
   }
 }

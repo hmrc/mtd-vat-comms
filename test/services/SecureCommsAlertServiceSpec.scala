@@ -20,10 +20,10 @@ import base.BaseSpec
 import connectors.SecureCommsAlertConnector
 import models.{ErrorModel, GenericParsingError, JsonParsingError}
 import models.responseModels.SecureCommsResponseModel
-import models.secureCommsModels.messageTypes._
 import org.joda.time.DateTime
 import org.scalamock.scalatest.MockFactory
 import utils.SecureCommsMessageBodyStrings
+import utils.SecureCommsMessageTestData.Responses.expectedResponseDeRegistration
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,7 +40,7 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
 
   "getSecureCommsMessage" must {
     "return a successful response" when {
-      "the response can be correctly parsed into a DeRegistrationModel" in {
+      "the response can be correctly parsed into a SecureCommsMessageModel" in {
         (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
             .expects(serviceName, regNum, communicationsId, *)
             .returns(
@@ -51,72 +51,7 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
             )
 
         val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe DeRegistrationModel.getClass.getSimpleName
-      }
-      "the response can be correctly parsed into a PPOBChangeModel" in {
-        (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
-            .expects(serviceName, regNum, communicationsId, *)
-            .returns(
-              Right(SecureCommsResponseModel(
-                dateToUse,
-                SecureCommsMessageBodyStrings.validPPOBChangeString
-              ))
-            )
-
-        val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe PPOBChangeModel.getClass.getSimpleName
-      }
-      "the response can be correctly parsed into a RepaymentsBankAccountChangeModel" in {
-        (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
-            .expects(serviceName, regNum, communicationsId, *)
-            .returns(
-              Right(SecureCommsResponseModel(
-                dateToUse,
-                SecureCommsMessageBodyStrings.validBankAccountChangeString
-              ))
-            )
-
-        val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe RepaymentsBankAccountChangeModel.getClass.getSimpleName
-      }
-      "the response can be correctly parsed into a VATStaggerChangeModel" in {
-        (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
-            .expects(serviceName, regNum, communicationsId, *)
-            .returns(
-              Right(SecureCommsResponseModel(
-                dateToUse,
-                SecureCommsMessageBodyStrings.validStaggerChangeString
-              ))
-            )
-
-        val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe VATStaggerChangeModel.getClass.getSimpleName
-      }
-      "the response can be correctly parsed into a EmailAddressChangeModel" in {
-        (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
-            .expects(serviceName, regNum, communicationsId, *)
-            .returns(
-              Right(SecureCommsResponseModel(
-                dateToUse,
-                SecureCommsMessageBodyStrings.validEmailChangeString
-              ))
-            )
-
-        val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe EmailAddressChangeModel.getClass.getSimpleName
-      }
-      "the response can be correctly parsed into a BusinessNameChangeModel" in {
-        (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
-            .expects(serviceName, regNum, communicationsId, *)
-            .returns(
-              Right(SecureCommsResponseModel(
-                dateToUse,
-                SecureCommsMessageBodyStrings.validBusinessNameChangeString
-              ))
-            )
-
-        val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
-        result.right.get.getClass.getSimpleName + "$" shouldBe BusinessNameChangeModel.getClass.getSimpleName
+        result shouldBe Right(expectedResponseDeRegistration)
       }
     }
     "return an error" when {

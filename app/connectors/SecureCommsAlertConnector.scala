@@ -29,7 +29,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
                                           appConfig: AppConfig) {
 
-  //noinspection ScalaStyle
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
     val url = appConfig.secureCommsUrl(service, regNumber, communicationId)
@@ -47,5 +46,4 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
       }
     }
   }
-
 }

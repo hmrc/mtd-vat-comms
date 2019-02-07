@@ -52,29 +52,29 @@ object SecureCommsMessageModel {
       (JsPath \ FORM_BUNDLE_REFERENCE).read[String] and
       (JsPath \ BUSINESS_NAME).read[String] and
       (JsPath \ EFFECTIVE_DOD).readNullable[String] and
-      ((JsPath \ AL1).readNullable[String] and
-        (JsPath \ AL2).readNullable[String] and
-        (JsPath \ AL3).readNullable[String] and
-        (JsPath \ AL4).readNullable[String] and
-        (JsPath \ AL5).readNullable[String] and
-        (JsPath \ POST_CODE).readNullable[String] and
-        (JsPath \ COUNTRY_NAME).readNullable[String]
+      ((JsPath \\ AL1).readNullable[String] and
+        (JsPath \\ AL2).readNullable[String] and
+        (JsPath \\ AL3).readNullable[String] and
+        (JsPath \\ AL4).readNullable[String] and
+        (JsPath \\ AL5).readNullable[String] and
+        (JsPath \\ POST_CODE).readNullable[String] and
+        (JsPath \\ COUNTRY_NAME).readNullable[String]
         tupled) and
-      ((JsPath \ ACCOUNT_NUMBER).readNullable[String] and
-        (JsPath \ SORT_CODE).readNullable[String]
+      ((JsPath \\ ACCOUNT_NUMBER).readNullable[String] and
+        (JsPath \\ SORT_CODE).readNullable[String]
         tupled) and
       (JsPath \ STAGGER).readNullable[String] and
       (JsPath \ O_EMAIL_ADDRESS).readNullable[String] and
-      ((JsPath \ TRANSACTOR_EMAIL).read[String] and
-        (JsPath \ TRANSACTOR_NAME).read[String]
+      ((JsPath \\ TRANSACTOR_EMAIL).read[String] and
+        (JsPath \\ TRANSACTOR_NAME).read[String]
         tupled) and
-      ((JsPath \ C_EMAIL).read[String] and
-        (JsPath \ C_EMAIL_STATUS).read[String]
+      ((JsPath \\ C_EMAIL).read[String] and
+        (JsPath \\ C_EMAIL_STATUS).read[String]
         tupled) and
-      ((JsPath \ N_PREFS).read[String] and
-        (JsPath \ C_PREFS).read[String] and
-        (JsPath \ L_PREFS).read[String] and
-        (JsPath \ F_PREFS).read[String]
+      ((JsPath \\ N_PREFS).read[String] and
+        (JsPath \\ C_PREFS).read[String] and
+        (JsPath \\ L_PREFS).read[String] and
+        (JsPath \\ F_PREFS).read[String]
         tupled)
     ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, stagger, oEmail, tDet, cDet, prefDet) =>
 

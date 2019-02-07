@@ -17,8 +17,7 @@
 package services
 
 import connectors.SecureCommsAlertConnector
-import com.google.inject.Inject
-import models.secureCommsModels.messageTypes.MessageModel
+import javax.inject.Inject
 import models.{ErrorModel, GenericParsingError, SecureCommsMessageModel}
 import utils.SecureCommsMessageParser
 
@@ -27,11 +26,11 @@ import scala.concurrent.{ExecutionContext, Future}
 class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAlertConnector) {
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
-                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, MessageModel]] = {
+                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsMessageModel]] = {
     secureCommsAlertConnector.getSecureCommsMessage(service, regNumber, communicationId).map {
       case Right(response) => SecureCommsMessageParser.parseMessage(response.secureCommText) match {
         case Right(parsedJson) => parsedJson.validate[SecureCommsMessageModel].asOpt match {
-          case Some(parsedModel) => SecureCommsMessageParser.parseModel(parsedModel)
+          case Some(parsedModel) => Right(parsedModel)
           case None => Left(GenericParsingError)
         }
         case Left(error) => Left(error)
@@ -39,5 +38,4 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
       case Left(error) => Left(error)
     }
   }
-
 }

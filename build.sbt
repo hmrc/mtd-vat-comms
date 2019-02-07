@@ -24,8 +24,6 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 val appName = "mtd-vat-comms"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
-lazy val playSettings: Seq[Setting[_]] = Seq.empty
-lazy val plugins: Seq[Plugins] = Seq.empty
 
 val compile = Seq(
   ws,
@@ -41,8 +39,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "com.typesafe.play"      %% "play-test"                    % PlayVersion.current % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
   "org.scalatestplus.play" %% "scalatestplus-play"           % "2.0.1"             % scope,
-  "com.github.tomakehurst" %  "wiremock"                     % "2.20.0"            % scope,
-  "org.mockito"            %  "mockito-core"                 % "2.23.4"            % scope,
+  "com.github.tomakehurst" %  "wiremock"                     % "2.21.0"            % scope,
+  "org.mockito"            %  "mockito-core"                 % "2.24.0"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
   "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope
@@ -83,9 +81,8 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
 }
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins : _*)
+  .enablePlugins(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .settings(coverageSettings: _*)
-  .settings(playSettings : _*)
   .settings(scalaSettings: _*)
   .settings(publishingSettings: _*)
   .settings(majorVersion := 0)
@@ -106,8 +103,5 @@ lazy val microservice = Project(appName, file("."))
     resourceDirectory in IntegrationTest := baseDirectory.value / "it" / "resources",
     addTestReportOption(IntegrationTest, "int-test-reports"),
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
-    parallelExecution in IntegrationTest := false)
-  .settings(resolvers ++= Seq(
-    Resolver.bintrayRepo("hmrc", "releases"),
-    Resolver.jcenterRepo
-  ))
+    parallelExecution in IntegrationTest := false
+  )

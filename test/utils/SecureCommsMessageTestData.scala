@@ -36,25 +36,35 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
-      AL1 -> "4 Cloud District",
-      AL2 -> "Whiterun",
-      AL3 -> "",
-      AL4 -> "",
-      AL5 -> "",
-      POST_CODE -> "TA11RI",
-      COUNTRY_NAME -> "Skyrim",
-      ACCOUNT_NUMBER -> "12039831",
-      SORT_CODE -> "11-11-11",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      ADDRESS_DETAILS -> Json.obj(
+        AL1 -> "4 Cloud District",
+        AL2 -> "Whiterun",
+        AL3 -> "",
+        AL4 -> "",
+        AL5 -> "",
+        POST_CODE -> "TA11RI",
+        COUNTRY_NAME -> "Skyrim"
+      ),
+      BANK_DETAILS -> Json.obj(
+        ACCOUNT_NUMBER -> "12039831",
+        SORT_CODE -> "11-11-11"
+      ),
       STAGGER -> "12jje7uw",
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonDeRegistration: JsObject = Json.obj(
@@ -63,14 +73,20 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonPPOBChange: JsObject = Json.obj(
@@ -78,21 +94,29 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
-      AL1 -> "4 Cloud District",
-      AL2 -> "Whiterun",
-      AL3 -> "",
-      AL4 -> "",
-      AL5 -> "",
-      POST_CODE -> "TA11RI",
-      COUNTRY_NAME -> "Skyrim",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      ADDRESS_DETAILS -> Json.obj(
+        AL1 -> "4 Cloud District",
+        AL2 -> "Whiterun",
+        AL3 -> "",
+        AL4 -> "",
+        AL5 -> "",
+        POST_CODE -> "TA11RI",
+        COUNTRY_NAME -> "Skyrim"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonRepaymentBankAccountChange: JsObject = Json.obj(
@@ -100,16 +124,24 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
-      ACCOUNT_NUMBER -> "12039831",
-      SORT_CODE -> "11-11-11",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      BANK_DETAILS -> Json.obj(
+        ACCOUNT_NUMBER -> "12039831",
+        SORT_CODE -> "11-11-11"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonVatStaggerChange: JsObject = Json.obj(
@@ -117,15 +149,21 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
       STAGGER -> "12jje7uw",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonEmailChange: JsObject = Json.obj(
@@ -133,15 +171,21 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
       O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
 
     val validJsonBusinessNameChange: JsObject = Json.obj(
@@ -149,14 +193,20 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "Companions Guild",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "dovahkin@riften.tam",
-      C_EMAIL_STATUS -> VERIFIED,
-      N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
-      L_PREFS -> ENGLISH,
-      F_PREFS -> TEXT
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "dovahkin@riften.tam",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
     )
   }
 

@@ -18,14 +18,18 @@ package base
 
 import akka.stream.Materializer
 import mocks.MockAppConfig
+import modules.SchedulerModule
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.inject.Injector
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
 trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
+  implicit override lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
   val injector: Injector = app.injector
   val mockAppConfig = new MockAppConfig(app.configuration)
   val request = FakeRequest()

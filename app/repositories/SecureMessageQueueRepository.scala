@@ -18,7 +18,7 @@ package repositories
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import models.Placeholder
+import models.SecureCommsMessageModel
 import org.joda.time.{DateTime, Duration}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
@@ -32,10 +32,10 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
-  extends WorkItemRepository[Placeholder, BSONObjectID](
+  extends WorkItemRepository[SecureCommsMessageModel, BSONObjectID](
     "SecureMessageQueue",
     reactiveMongoComponent.mongoConnector.db,
-    WorkItem.workItemMongoFormat[Placeholder]
+    WorkItem.workItemMongoFormat[SecureCommsMessageModel]
   ) {
 
   override val inProgressRetryAfterProperty: String = ""
@@ -53,7 +53,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
 
   override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
-  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[Placeholder]]] =
+  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[SecureCommsMessageModel]]] =
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
 
   def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
