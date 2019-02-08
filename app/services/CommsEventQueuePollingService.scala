@@ -18,7 +18,7 @@ package services
 
 import akka.actor.ActorSystem
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
+import com.google.inject.{Inject, Singleton}
 import uk.gov.hmrc.play.scheduling.ExclusiveScheduledJob
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._

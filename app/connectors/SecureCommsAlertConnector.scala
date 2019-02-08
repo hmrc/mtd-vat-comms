@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import javax.inject.Inject
+import com.google.inject.Inject
 import models._
 import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponseModel}
 import play.api.http.Status._

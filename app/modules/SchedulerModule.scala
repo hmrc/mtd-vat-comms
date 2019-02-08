@@ -16,12 +16,10 @@
 
 package modules
 
-import play.api.inject.{Binding, Module}
-import play.api.{Configuration, Environment}
 import services.CommsEventQueuePollingService
+import com.google.inject.AbstractModule
 
-class SchedulerModule extends Module {
-  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
-    bind[CommsEventQueuePollingService].toSelf.eagerly
-  )
+class SchedulerModule() extends AbstractModule {
+  override def configure(): Unit =
+    bind(classOf[CommsEventQueuePollingService]).asEagerSingleton()
 }
