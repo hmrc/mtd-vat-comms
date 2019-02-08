@@ -60,7 +60,8 @@ object SecureCommsMessageModel {
         (JsPath \\ POST_CODE).readNullable[String] and
         (JsPath \\ COUNTRY_NAME).readNullable[String]
         tupled) and
-      ((JsPath \\ ACCOUNT_NUMBER).readNullable[String] and
+      ((JsPath \\ ACCOUNT_NAME).readNullable[String] and
+        (JsPath \\ ACCOUNT_NUMBER).readNullable[String] and
         (JsPath \\ SORT_CODE).readNullable[String]
         tupled) and
       (JsPath \ STAGGER).readNullable[String] and
@@ -93,7 +94,8 @@ object SecureCommsMessageModel {
     val bankAccountDetails: Option[BankDetailsModel] = if(checkTupleForNone(bankDet)) {
       Some(BankDetailsModel(
         bankDet._1.getOrElse(""),
-        bankDet._2.getOrElse("")
+        bankDet._2.getOrElse(""),
+        bankDet._3.getOrElse("")
       ))
     } else { None }
 

@@ -85,7 +85,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       val allInvalidCombinations = (for {
         effectiveDODR <- Seq(Some("20180121"), None)
         addressDetails <- Seq(Some(AddressDetailsModel("4 NotReal Way", "A Place", "", "", "", "SW42NR", "Fantasy Land")), None)
-        bankDetails <- Seq(Some(BankDetailsModel("8493483729273", "32-12-22")), None)
+        bankDetails <- Seq(Some(BankDetailsModel("Bank of Tamriel", "8493483729273", "32-12-22")), None)
         stagger <- Seq(Some("EE02"), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
       } yield {

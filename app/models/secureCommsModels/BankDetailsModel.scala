@@ -19,6 +19,7 @@ package models.secureCommsModels
 import play.api.libs.json.{Json, OFormat}
 
 case class BankDetailsModel(
+                             bankAccountName: String,
                              bankAccountNumber: String,
                              bankSortCode: String
                            )

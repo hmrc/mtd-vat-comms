@@ -21,10 +21,11 @@ import play.api.libs.json.{JsObject, Json}
 
 class BankDetailsModelSpec extends BaseSpec {
   val expectedModel: BankDetailsModel = BankDetailsModel(
-    "1029384756", "11-11-11"
+    "Bank of Tamriel", "1029384756", "11-11-11"
   )
 
   val validJson: JsObject = Json.obj(
+    "bankAccountName" -> "Bank of Tamriel",
     "bankAccountNumber" -> "1029384756",
     "bankSortCode" -> "11-11-11"
   )
