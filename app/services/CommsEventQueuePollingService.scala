@@ -44,7 +44,7 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds
 
-  def executor: Unit = {
+  def executor(): Unit = {
     execute.onComplete({
       case Success(Result(_)) =>
         logInfo(_)

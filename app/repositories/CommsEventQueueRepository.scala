@@ -40,7 +40,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     reactiveMongoComponent.mongoConnector.db,
     MongoPayloadDetailsFormats.formats) {
 
-  val inProgressRetryAfterProperty: String = appConfig.failureRetryAfterProperty
+  lazy override val inProgressRetryAfterProperty: String = appConfig.failureRetryAfterProperty
 
   override def now: DateTime = DateTimeUtils.now
 
