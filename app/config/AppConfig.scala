@@ -32,7 +32,7 @@ trait AppConfig extends ServicesConfig {
   def secureCommsUrl(service: String, regNumber: String, communicationId: String): String
   val queuePollingWaitTime: Int
   val initialWaitTime: Int
-  val pollingToggle: Boolean
+  def pollingToggle: Boolean
   val failureRetryAfterProperty: String
 }
 
@@ -41,14 +41,14 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   extends AppConfig {
 
   override def mode: Mode.Mode = environment.mode
-  lazy val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
+  override lazy val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
   lazy val queuePollingWaitTimeProperty: String = Keys.queuePollingInterval
   lazy val initialWaitProperty: String = Keys.queueInitialWait
   lazy val queueToggleProperty: String = Keys.queueToggleProperty
 
   lazy val defaultPollingWaitTime: Int = 30
 
-  lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
+  override lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
 
   lazy val secureCommsProtocol: String = runModeConfiguration.getString(Keys.secureCommsProtocol).getOrElse("http")
@@ -59,11 +59,11 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
     s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
 
-  lazy val queuePollingWaitTime: Int = runModeConfiguration.getInt(queuePollingWaitTimeProperty)
+  override lazy val queuePollingWaitTime: Int = runModeConfiguration.getInt(queuePollingWaitTimeProperty)
     .getOrElse(defaultPollingWaitTime)
 
-  lazy val initialWaitTime: Int = runModeConfiguration.getInt(initialWaitProperty).getOrElse(0)
+  override lazy val initialWaitTime: Int = runModeConfiguration.getInt(initialWaitProperty).getOrElse(30)
 
-  lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
+  override lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
 
 }

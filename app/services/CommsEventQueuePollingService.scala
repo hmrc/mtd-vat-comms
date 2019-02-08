@@ -18,7 +18,7 @@ package services
 
 import akka.actor.ActorSystem
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
+import com.google.inject.{Inject, Singleton}
 import uk.gov.hmrc.play.scheduling.ExclusiveScheduledJob
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
@@ -37,12 +37,12 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
     repositoryAccessService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} comms events"))
   }
 
-  logInfo(s"Starting comms event queue scheduler." +
-    s"\nInitial delay: ${appConfig.initialWaitTime}" +
-    s"\nPolling interval: ${appConfig.queuePollingWaitTime}")
-
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds
+
+  logInfo(s"Starting comms event queue scheduler." +
+    s"\nInitial delay: $initialDelay" +
+    s"\nPolling interval: $interval")
 
   def executor(): Unit = {
     execute.onComplete({
@@ -55,7 +55,7 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
 
   actorSystem.scheduler.schedule(initialDelay, interval) {
     if (appConfig.pollingToggle) {
-      executor
+      executor()
     } else {
       logInfo("Polling is toggled off")
     }

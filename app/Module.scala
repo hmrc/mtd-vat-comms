@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package modules
-
-import org.scalamock.scalatest.MockFactory
-import play.api.{Configuration, Environment}
+import com.google.inject.AbstractModule
 import services.CommsEventQueuePollingService
-import uk.gov.hmrc.play.test.UnitSpec
 
-class SchedulerModuleSpec extends UnitSpec with MockFactory {
-
-  val configuration: Configuration = mock[Configuration]
-  val environment: Environment = mock[Environment]
-
-  "Schedule Module" should {
-
-    "bind the QueuePollingService eagerly" in {
-      val bindings = new SchedulerModule().bindings(environment, configuration)
-
-      bindings.filter(p => p.key.clazz == classOf[CommsEventQueuePollingService]).head.eager shouldBe true
-    }
-  }
+class Module() extends AbstractModule {
+  override def configure(): Unit =
+    bind(classOf[CommsEventQueuePollingService]).asEagerSingleton()
 }
