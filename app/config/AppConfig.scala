@@ -41,12 +41,12 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   extends AppConfig {
 
   override def mode: Mode.Mode = environment.mode
-  val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
-  val queuePollingWaitTimeProperty: String = Keys.queuePollingInterval
-  val initialWaitProperty: String = Keys.queueInitialWait
-  val queueToggleProperty: String = Keys.queueToggleProperty
+  lazy val failureRetryAfterProperty: String = Keys.failureRetryAfterProperty
+  lazy val queuePollingWaitTimeProperty: String = Keys.queuePollingInterval
+  lazy val initialWaitProperty: String = Keys.queueInitialWait
+  lazy val queueToggleProperty: String = Keys.queueToggleProperty
 
-  val defaultPollingWaitTime: Int = 30
+  lazy val defaultPollingWaitTime: Int = 30
 
   lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
