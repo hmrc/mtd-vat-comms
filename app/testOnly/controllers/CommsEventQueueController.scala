@@ -17,7 +17,7 @@
 package testOnly.controllers
 
 import controllers.MicroserviceBaseController
-import javax.inject.Inject
+import com.google.inject.Inject
 import play.api.mvc.{Action, AnyContent}
 import repositories.CommsEventQueueRepository
 

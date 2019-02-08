@@ -17,7 +17,7 @@
 package services
 
 import connectors.SecureCommsAlertConnector
-import javax.inject.Inject
+import com.google.inject.Inject
 import models.secureCommsModels.messageTypes.MessageModel
 import models.{ErrorModel, GenericParsingError, SecureCommsMessageModel}
 import utils.SecureCommsMessageParser

@@ -35,5 +35,5 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val retryIntervalMillis: Long = 10000L
   override val queuePollingWaitTime: Int = 1
   override val initialWaitTime: Int = 0
-  override val failureRetryAfterProperty: String = "1000"
+  override val failureRetryAfterProperty: String = "queue.retryAfter"
 }

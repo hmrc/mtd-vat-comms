@@ -62,7 +62,7 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val queuePollingWaitTime: Int = runModeConfiguration.getInt(queuePollingWaitTimeProperty)
     .getOrElse(defaultPollingWaitTime)
 
-  lazy val initialWaitTime: Int = runModeConfiguration.getInt(initialWaitProperty).getOrElse(0)
+  lazy val initialWaitTime: Int = runModeConfiguration.getInt(initialWaitProperty).getOrElse(30)
 
   lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
 
