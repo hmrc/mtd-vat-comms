@@ -19,20 +19,43 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import play.api.http.Status.{BAD_REQUEST, NO_CONTENT}
+import mocks.MockRepositoryAccessService
+import models.VatChangeEvent
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.libs.json.JsObject
 import play.api.mvc.Result
 
-class DeregistrationControllerSpec extends BaseSpec {
+import scala.concurrent.Future
 
-  val controller = new DeregistrationController
+class DeregistrationControllerSpec extends BaseSpec with MockRepositoryAccessService {
+
+  val controller = new DeregistrationController(mockRepoAccessService)
+
+  val testRequestJson: JsObject        = validDesRequestJson("De-registration")
+  val testRequestModel: VatChangeEvent = validDesRequestModel("De-registration")
 
   "The handleEvent action" when {
 
     "valid JSON is received" should {
 
-      "return 200" in {
-        val result: Result = controller.handleEvent(request.withJsonBody(validDesRequestJson("De-registration")))
-        status(result) shouldBe NO_CONTENT
+      "the vat change event was successfully added to the queue" should {
+
+        "return 200" in {
+          mockQueueRequest(testRequestModel)(Future.successful(true))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe OK
+        }
+      }
+
+      "the vat change event was unsuccessfully added to the queue" should {
+
+        "return 500" in {
+          mockQueueRequest(testRequestModel)(Future.successful(false))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+        }
       }
     }
 

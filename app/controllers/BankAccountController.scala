@@ -16,22 +16,31 @@
 
 package controllers
 
+import javax.inject.Inject
 import models.VatChangeEvent
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
+import services.RepositoryAccessService
+import utils.LoggerUtil
 
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class BankAccountController extends MicroserviceBaseController {
+class BankAccountController @Inject()(repoAccess: RepositoryAccessService)(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
 
-  def handleEvent: Action[AnyContent] = Action { implicit request =>
+  def handleEvent: Action[AnyContent] = Action.async { implicit request =>
 
     parseJsonBody[VatChangeEvent] match {
-      case Right(_) =>
-        NoContent
+      case Right(workItem) =>
+        repoAccess.queueRequest(workItem) map {
+          case true  => Ok
+          case false =>
+            LoggerUtil.logWarn(s"[BankAccountController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
+            InternalServerError
+        }
 
       case Left(error) =>
-        BadRequest(Json.toJson(error))
+        Future.successful(BadRequest(Json.toJson(error)))
     }
   }
 }

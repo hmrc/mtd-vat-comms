@@ -19,20 +19,43 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import play.api.http.Status.{BAD_REQUEST, NO_CONTENT}
+import mocks.MockRepositoryAccessService
+import models.VatChangeEvent
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.libs.json.JsObject
 import play.api.mvc.Result
 
-class EmailControllerSpec extends BaseSpec {
+import scala.concurrent.Future
 
-  val controller = new EmailController
+class EmailControllerSpec extends BaseSpec with MockRepositoryAccessService {
+
+  val controller = new EmailController(mockRepoAccessService)
+
+  val testRequestJson: JsObject        = validDesRequestJson("Email Address Change")
+  val testRequestModel: VatChangeEvent = validDesRequestModel("Email Address Change")
 
   "The handleEvent action" when {
 
     "valid JSON is received" should {
 
-      "return 200" in {
-        val result: Result = controller.handleEvent(request.withJsonBody(validDesRequestJson("Email Address Change")))
-        status(result) shouldBe NO_CONTENT
+      "the vat change event was successfully added to the queue" should {
+
+        "return 200" in {
+          mockQueueRequest(testRequestModel)(Future.successful(true))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe OK
+        }
+      }
+
+      "the vat change event was unsuccessfully added to the queue" should {
+
+        "return 500" in {
+          mockQueueRequest(testRequestModel)(Future.successful(false))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+        }
       }
     }
 

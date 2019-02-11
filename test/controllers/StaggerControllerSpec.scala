@@ -19,20 +19,43 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import play.api.http.Status.{BAD_REQUEST, NO_CONTENT}
+import mocks.MockRepositoryAccessService
+import models.VatChangeEvent
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.libs.json.JsObject
 import play.api.mvc.Result
 
-class StaggerControllerSpec extends BaseSpec {
+import scala.concurrent.Future
 
-  val controller = new StaggerController
+class StaggerControllerSpec extends BaseSpec with MockRepositoryAccessService {
+
+  val controller = new StaggerController(mockRepoAccessService)
+
+  val testRequestJson: JsObject        = validDesRequestJson("VAT Stagger Change")
+  val testRequestModel: VatChangeEvent = validDesRequestModel("VAT Stagger Change")
 
   "The handleEvent action" when {
 
-    "valid JSON is received" should {
+    "valid JSON is received" when {
 
-      "return 200" in {
-        val result: Result = controller.handleEvent(request.withJsonBody(validDesRequestJson("VAT Stagger Change")))
-        status(result) shouldBe NO_CONTENT
+      "the vat change event was successfully added to the queue" should {
+
+        "return 200" in {
+          mockQueueRequest(testRequestModel)(Future.successful(true))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe OK
+        }
+      }
+
+      "the vat change event was unsuccessfully added to the queue" should {
+
+        "return 500" in {
+          mockQueueRequest(testRequestModel)(Future.successful(false))
+          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+        }
       }
     }
 

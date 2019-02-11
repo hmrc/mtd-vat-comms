@@ -18,7 +18,7 @@ package controllers
 
 import common.ApiConstants._
 import helpers.IntegrationBaseSpec
-import play.api.http.Status.NO_CONTENT
+import play.api.http.Status.OK
 import play.api.libs.ws.WSRequest
 
 class PPOBControllerISpec extends IntegrationBaseSpec {
@@ -34,7 +34,7 @@ class PPOBControllerISpec extends IntegrationBaseSpec {
 
         val response = await(request.post(validDesRequestJson("PPOB Change")))
 
-        response.status shouldBe NO_CONTENT
+        response.status shouldBe OK
       }
     }
   }

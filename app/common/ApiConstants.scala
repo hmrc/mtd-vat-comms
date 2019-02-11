@@ -16,20 +16,26 @@
 
 package common
 
+import models.VatChangeEvent
 import play.api.libs.json.{JsObject, Json}
 
 object ApiConstants {
 
   def validDesRequestJson(changeType: String): JsObject = Json.obj(
-    "status" -> "Approved",
+    "status"          -> "Approved",
     "BPContactNumber" -> "123456789012",
-    "BPContactType" -> changeType
+    "BPContactType"   -> changeType
+  )
+
+  def validDesRequestModel(changeType: String): VatChangeEvent = VatChangeEvent(
+    status          = "Approved",
+    BPContactNumber = "123456789012",
+    BPContactType   = changeType
   )
 
   def validCommsEventQueueRequestJson(changeType: String): JsObject = Json.obj(
-    "status" -> "Approved",
-    "refNumber" -> "123456789012",
+    "status"     -> "Approved",
+    "refNumber"  -> "123456789012",
     "changeType" -> changeType
   )
-
 }
