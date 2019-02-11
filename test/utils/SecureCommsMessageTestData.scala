@@ -103,6 +103,7 @@ object SecureCommsMessageTestData {
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
       TRANSACTOR_NAME -> "Pack Mule",
+      ACCOUNT_NAME -> "Bank of Tamriel",
       ACCOUNT_NUMBER -> "12039831",
       SORT_CODE -> "11-11-11",
       C_EMAIL -> "dovahkin@riften.tam",

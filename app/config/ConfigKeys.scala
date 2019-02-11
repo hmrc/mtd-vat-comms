@@ -18,6 +18,7 @@ package config
 object ConfigKeys {
 
   val failureRetryAfterProperty: String = "queue.retryAfter"
+
   val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
   val secureCommsHost: String = "microservice.services.secureComms.host"
   val secureCommsPort: String = "microservice.services.secureComms.port"
@@ -25,4 +26,8 @@ object ConfigKeys {
   val queueInitialWait: String = "queue.initialWait"
   val queueToggleProperty: String = "queue.toggle"
 
+
+  val emailRendererProtocol: String = "microservice.services.emailRenderer.protocol"
+  val emailRendererHost: String = "microservice.services.emailRenderer.host"
+  val emailRendererPort: String = "microservice.services.emailRenderer.port"
 }

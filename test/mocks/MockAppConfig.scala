@@ -36,4 +36,8 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val queuePollingWaitTime: Int = 1
   override val initialWaitTime: Int = 0
   override val failureRetryAfterProperty: String = "queue.retryAfter"
+  override val emailRendererProtocol: String = "http"
+  override val emailRendererHost: String = "localhost"
+  override val emailRendererPort: String = "11111"
+  override val emailRendererUrl: String = s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/hmrc/email"
 }

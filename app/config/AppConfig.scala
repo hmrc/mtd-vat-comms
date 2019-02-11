@@ -26,6 +26,7 @@ import config.{ConfigKeys => Keys}
 trait AppConfig extends ServicesConfig {
 
   val retryIntervalMillis: Long
+
   val secureCommsProtocol: String
   val secureCommsHost: String
   val secureCommsPort: String
@@ -34,6 +35,11 @@ trait AppConfig extends ServicesConfig {
   val initialWaitTime: Int
   val pollingToggle: Boolean
   val failureRetryAfterProperty: String
+
+  val emailRendererProtocol: String
+  val emailRendererHost: String
+  val emailRendererPort: String
+  val emailRendererUrl: String
 }
 
 @Singleton
@@ -54,7 +60,6 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val secureCommsProtocol: String = runModeConfiguration.getString(Keys.secureCommsProtocol).getOrElse("http")
   lazy val secureCommsHost: String = runModeConfiguration.getString(Keys.secureCommsHost).getOrElse("localhost")
   lazy val secureCommsPort: String = runModeConfiguration.getString(Keys.secureCommsPort).getOrElse("9068")
-
   def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
     s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
@@ -66,4 +71,9 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
 
+
+  lazy val emailRendererProtocol: String = runModeConfiguration.getString(Keys.emailRendererProtocol).getOrElse("http")
+  lazy val emailRendererHost: String = runModeConfiguration.getString(Keys.emailRendererHost).getOrElse("localhost")
+  lazy val emailRendererPort: String = runModeConfiguration.getString(Keys.emailRendererPort).getOrElse("8300")
+  lazy val emailRendererUrl: String = s"$emailRendererProtocol://$emailRendererHost:$emailRendererPort/hmrc/email"
 }
