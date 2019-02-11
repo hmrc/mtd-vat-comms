@@ -32,7 +32,7 @@ class PPOBControllerISpec extends IntegrationBaseSpec {
       "request body json is approved PPOB address change" in {
         val request: WSRequest = buildRequest("/events/ppob")
 
-        val response = await(request.post(validDesRequestJson("PPOB Change")))
+        val response = await(request.post(vatChangeEventJson("PPOB Change")))
 
         response.status shouldBe OK
       }

@@ -17,8 +17,8 @@
 package repositories
 
 import base.BaseSpec
+import common.ApiConstants.vatChangeEventModel
 import org.joda.time.{DateTime, Duration}
-import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.BeforeAndAfterEach
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
@@ -28,8 +28,7 @@ import models.VatChangeEvent
 import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.workitem._
 
-class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
-  with IntegrationPatience {
+class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach {
 
   val anInstant: DateTime = DateTimeUtils.now
 
@@ -52,7 +51,7 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
 
   "CommsEventQueue Repository" should {
 
-    val vatChangeEvent: VatChangeEvent = VatChangeEvent("Approved", "123", "PPOB Change")
+    val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
     "generate a Duration of 10000 milliseconds from config value" in {
       val dur: Duration = Duration.millis(mockAppConfig.retryIntervalMillis)
@@ -60,13 +59,13 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
     }
 
     "ensure indexes are created" in {
-      repo.collection.indexesManager.list().futureValue.size shouldBe 4
+      await(repo.collection.indexesManager.list()).size shouldBe 4
     }
 
     "be able to save and reload a vat change request" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
+      val workItem = await(repo.pushNew(vatChangeEvent, anInstant))
 
-      repo.findById(workItem.id).futureValue.get should have(
+      await(repo.findById(workItem.id)).get should have(
         'item (vatChangeEvent),
         'status (ToDo),
         'receivedAt (anInstant),
@@ -76,10 +75,10 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
 
     "be able to save the same requests twice" in {
       val payloadDetails = vatChangeEvent
-      repo.pushNew(vatChangeEvent, anInstant).futureValue
-      repo.pushNew(vatChangeEvent, anInstant).futureValue
+      await(repo.pushNew(vatChangeEvent, anInstant))
+      await(repo.pushNew(vatChangeEvent, anInstant))
 
-      val requests = repo.findAll(ReadPreference.primaryPreferred).futureValue
+      val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
       every(requests) should have(
@@ -92,43 +91,43 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
 
     "pull ToDo vat change requests" in {
       val payloadDetails = vatChangeEvent
-      repo.pushNew(payloadDetails, anInstant).futureValue
+      await(repo.pushNew(payloadDetails, anInstant))
 
       val repoLater: CommsEventQueueRepository = repoAtInstant(anInstant.plusMillis(1))
 
-      repoLater.pullOutstanding.futureValue.get should have(
+      await(repoLater.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )
     }
 
     "pull nothing if no vat change requests exist" in {
-      repo.pullOutstanding.futureValue should be(None)
+      await(repo.pullOutstanding) should be(None)
     }
 
     "not pull vat change requests failed after the failedBefore time" in {
-      val workItem: WorkItem[VatChangeEvent] = repo.pushNew(vatChangeEvent, anInstant).futureValue
-      repo.markAs(workItem.id, Failed).futureValue should be(true)
+      val workItem: WorkItem[VatChangeEvent] = await(repo.pushNew(vatChangeEvent, anInstant))
+      await(repo.markAs(workItem.id, Failed)) shouldBe true
 
-      repo.pullOutstanding.futureValue should be(None)
+      await(repo.pullOutstanding) shouldBe None
     }
 
     "complete and delete a vat change request if it is in progress" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
-      repo.markAs(workItem.id, InProgress).futureValue should be(true)
-      repo.complete(workItem.id).futureValue should be(true)
+      val workItem = await(repo.pushNew(vatChangeEvent, anInstant))
+      await(repo.markAs(workItem.id, InProgress)) shouldBe true
+      await(repo.complete(workItem.id)) shouldBe true
 
-      repo.findById(workItem.id).futureValue shouldBe None
+      await(repo.findById(workItem.id)) shouldBe None
     }
 
     "not complete a vat change request if it is not in progress" in {
-      val workItem = repo.pushNew(vatChangeEvent, anInstant).futureValue
-      repo.complete(workItem.id).futureValue should be(false)
-      repo.findById(workItem.id).futureValue shouldBe Some(workItem)
+      val workItem = await(repo.pushNew(vatChangeEvent, anInstant))
+      await(repo.complete(workItem.id)) shouldBe false
+      await(repo.findById(workItem.id)) shouldBe Some(workItem)
     }
 
     "not complete a vat change request if it cannot be found" in {
-      repo.complete(BSONObjectID.generate).futureValue should be(false)
+      await(repo.complete(BSONObjectID.generate)) shouldBe false
     }
   }
 }

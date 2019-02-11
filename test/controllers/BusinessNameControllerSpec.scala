@@ -31,8 +31,8 @@ class BusinessNameControllerSpec extends BaseSpec with MockRepositoryAccessServi
 
   val controller = new BusinessNameController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("Business Name Change")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("Business Name Change")
+  val testRequestJson: JsObject        = vatChangeEventJson("Business Name Change")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("Business Name Change")
 
   "The handleEvent action" when {
 

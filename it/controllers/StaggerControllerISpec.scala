@@ -32,7 +32,7 @@ class StaggerControllerISpec extends IntegrationBaseSpec {
       "request body json is approved vat stagger change" in {
         val request: WSRequest = buildRequest("/events/vat/stagger")
 
-        val response = await(request.post(validDesRequestJson("VAT Stagger Change")))
+        val response = await(request.post(vatChangeEventJson("VAT Stagger Change")))
 
         response.status shouldBe OK
       }

@@ -31,7 +31,7 @@ class BankAccountControllerISpec extends IntegrationBaseSpec {
 
         val request: WSRequest = buildRequest("/events/repyt-bank-account")
 
-        val response = await(request.post(validDesRequestJson("Repayment Bank Account Change")))
+        val response = await(request.post(vatChangeEventJson("Repayment Bank Account Change")))
 
         response.status shouldBe OK
       }

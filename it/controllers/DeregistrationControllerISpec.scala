@@ -32,7 +32,7 @@ class DeregistrationControllerISpec extends IntegrationBaseSpec {
       "request body json is approved vat deregistration" in {
         val request: WSRequest = buildRequest("/events/subscription")
 
-        val response = await(request.post(validDesRequestJson("De-registration")))
+        val response = await(request.post(vatChangeEventJson("De-registration")))
 
         response.status shouldBe OK
       }

@@ -21,21 +21,19 @@ import play.api.libs.json.{JsObject, Json}
 
 object ApiConstants {
 
-  def validDesRequestJson(changeType: String): JsObject = Json.obj(
-    "status"          -> "Approved",
+  def vatChangeEventJson(changeType: String): JsObject = Json.obj(
+    "status" -> "Approved",
     "BPContactNumber" -> "123456789012",
-    "BPContactType"   -> changeType
+    "BPContactType" -> changeType,
+    "vrn" -> "123456789"
   )
 
-  def validDesRequestModel(changeType: String): VatChangeEvent = VatChangeEvent(
-    status          = "Approved",
-    BPContactNumber = "123456789012",
-    BPContactType   = changeType
+  def vatChangeEventModel(changeType: String): VatChangeEvent = VatChangeEvent(
+    "Approved",
+    "123456789012",
+    changeType,
+    "123456789"
   )
 
-  def validCommsEventQueueRequestJson(changeType: String): JsObject = Json.obj(
-    "status"     -> "Approved",
-    "refNumber"  -> "123456789012",
-    "changeType" -> changeType
-  )
+  val serviceName = "value-added-tax"
 }

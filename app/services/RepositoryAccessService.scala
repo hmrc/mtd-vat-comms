@@ -19,16 +19,16 @@ package services
 import javax.inject.{Inject, Singleton}
 import models.VatChangeEvent
 import play.api.libs.iteratee.{Enumerator, Iteratee}
-import play.api.Configuration
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.WorkItem
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RepositoryAccessService @Inject()(configuration: Configuration,
-                                commsEventQueueRepository: CommsEventQueueRepository)(implicit ec: ExecutionContext) {
+class RepositoryAccessService @Inject()(commsEventQueueRepository: CommsEventQueueRepository)(
+                                        implicit ec: ExecutionContext) {
 
   def queueRequest(p: VatChangeEvent)(implicit hc: HeaderCarrier): Future[Boolean] =
     commsEventQueueRepository.pushNew(p, DateTimeUtils.now).map(_ => true)
