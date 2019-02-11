@@ -93,14 +93,15 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    routesGenerator := InjectedRoutesGenerator
+    routesGenerator := InjectedRoutesGenerator,
+    resourceDirectory in Test := baseDirectory.value / "test" / "resources"
   )
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
   .settings(
     Keys.fork in IntegrationTest := false,
     unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest)(base => Seq(base / "it")).value,
-    resourceDirectory in IntegrationTest := baseDirectory.value / "it" / "resources",
+    resourceDirectory in IntegrationTest := baseDirectory.value / "test" / "resources",
     addTestReportOption(IntegrationTest, "int-test-reports"),
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
     parallelExecution in IntegrationTest := false
