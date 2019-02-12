@@ -33,7 +33,7 @@ class EmailController @Inject()(repoAccess: RepositoryAccessService)(implicit va
     parseJsonBody[VatChangeEvent] match {
       case Right(workItem) =>
         repoAccess.queueRequest(workItem) map {
-          case true  => Ok
+          case true  => NoContent
           case false =>
             LoggerUtil.logWarn(s"[EmailController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError

@@ -21,7 +21,7 @@ import common.ApiConstants._
 import common.VatChangeEventConstants._
 import mocks.MockRepositoryAccessService
 import models.VatChangeEvent
-import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT}
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
 
@@ -40,11 +40,11 @@ class DeregistrationControllerSpec extends BaseSpec with MockRepositoryAccessSer
 
       "the vat change event was successfully added to the queue" should {
 
-        "return 200" in {
+        "return 204" in {
           mockQueueRequest(testRequestModel)(Future.successful(true))
           val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
 
-          status(result) shouldBe OK
+          status(result) shouldBe NO_CONTENT
         }
       }
 

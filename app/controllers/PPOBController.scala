@@ -33,7 +33,7 @@ class PPOBController @Inject()(repoAccess: RepositoryAccessService)(implicit val
     parseJsonBody[VatChangeEvent] match {
       case Right(workItem) =>
         repoAccess.queueRequest(workItem) map {
-          case true  => Ok
+          case true  => NoContent
           case false =>
             LoggerUtil.logWarn(s"[PPOBController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError

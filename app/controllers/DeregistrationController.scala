@@ -33,7 +33,7 @@ class DeregistrationController @Inject()(repoAccess: RepositoryAccessService)(im
     parseJsonBody[VatChangeEvent] match {
       case Right(workItem) =>
         repoAccess.queueRequest(workItem) map {
-          case true  => Ok
+          case true  => NoContent
           case false =>
             LoggerUtil.logWarn(s"[DeregistrationController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError
