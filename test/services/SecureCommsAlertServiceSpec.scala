@@ -36,7 +36,7 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
   val serviceName = "doesn't matter"
   val regNum = "someTypeOfNumberAndLetters"
   val communicationsId = "129480912840912380912"
-  val dateToUse: DateTime = DateTime.now()
+  val dateToUse: String = "2019-01-01T09:00:00Z"
 
   "getSecureCommsMessage" must {
     "return a successful response" when {

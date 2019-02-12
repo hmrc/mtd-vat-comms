@@ -16,10 +16,9 @@
 
 package models.responseModels
 
-import org.joda.time.DateTime
 import play.api.libs.json.{Json, Reads}
 
-case class SecureCommsResponseModel(processingDate: DateTime, secureCommText: String)
+case class SecureCommsResponseModel(processingDate: String, secureCommText: String)
 
 object SecureCommsResponseModel {
   implicit val reads: Reads[SecureCommsResponseModel] = Json.reads[SecureCommsResponseModel]

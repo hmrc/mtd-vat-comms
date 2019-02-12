@@ -16,11 +16,10 @@
 
 package connectors
 
-import config.{AppConfig, MicroserviceAppConfig}
+import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
 import models.responseModels.SecureCommsResponseModel
-import org.joda.time.DateTime
 import play.api.http.Status._
 import play.api.libs.ws.WSClient
 import testutils.WireMockHelper
@@ -37,6 +36,7 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
   val service: String = "value-added-tax"
   val regNum: String = "DD000000000"
+  val dateTimeToUser: String = "2019-01-01T09:00:00Z"
 
   def generateUrl(communicationsId: String): String = {
     s"/secure-comms-alert/service/$service/registration-number/$regNum/communications/$communicationsId"
@@ -45,7 +45,6 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
   "getSecureComms" should {
     "return a SecureCommsResponseModel" when {
       s"an $OK response is received from SecureComms, and the response can be parsed" in {
-        val dateTimeToUser = DateTime.now()
         val communicationId = "123456789011"
 
         stubGetRequest(
@@ -65,7 +64,6 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
     }
     "return an ErrorModel" when {
       s"an $OK response is received from SecureComms, but the response cannot be parsed" in {
-        val dateTimeToUser = DateTime.now()
         val communicationId = "123456789012"
 
         stubGetRequest(

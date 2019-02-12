@@ -16,7 +16,6 @@
 
 package testutils
 
-import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 object WireMockStubRequestBodies {
@@ -27,7 +26,7 @@ object WireMockStubRequestBodies {
     "<p>CUSTOMER EMAIL STATUS|VERIFIED</p><p>NOTIFICATION PREFERENCE|EMAIL</p><p>CHANNEL PREFERENCE|PAPER</p><p>LANGUAGE PREFERENCE|ENGLISH</p>" +
     "<p>FORMAT PREFERENCE|TEXT</p>"
 
-  val secureCommsValidResponseEDOD: DateTime => String = { processingDate =>
+  val secureCommsValidResponseEDOD: String => String = { processingDate =>
     val responseAsJsonObj = Json.obj(
       "processingDate" -> processingDate,
       "secureCommText" -> validEDODString
@@ -35,7 +34,7 @@ object WireMockStubRequestBodies {
     Json.prettyPrint(responseAsJsonObj)
   }
 
-  val secureCommsInvalidResponseEDOD: DateTime => String = { processingDate =>
+  val secureCommsInvalidResponseEDOD: String => String = { processingDate =>
     val responseAsJsonObj = Json.obj(
       "processingDate" -> processingDate
     )
