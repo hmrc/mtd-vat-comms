@@ -31,7 +31,7 @@ class BusinessNameControllerISpec extends IntegrationBaseSpec {
 
         val request: WSRequest = buildRequest("/events/business-name")
 
-        val response = await(request.post(validDesRequestJson("Business Name Change")))
+        val response = await(request.post(vatChangeEventJson("Business Name Change")))
 
         response.status shouldBe NO_CONTENT
       }

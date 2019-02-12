@@ -31,8 +31,8 @@ class StaggerControllerSpec extends BaseSpec with MockRepositoryAccessService {
 
   val controller = new StaggerController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("VAT Stagger Change")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("VAT Stagger Change")
+  val testRequestJson: JsObject        = vatChangeEventJson("VAT Stagger Change")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("VAT Stagger Change")
 
   "The handleEvent action" when {
 

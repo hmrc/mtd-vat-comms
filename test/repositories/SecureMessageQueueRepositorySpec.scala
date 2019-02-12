@@ -18,7 +18,6 @@ package repositories
 
 import base.BaseSpec
 import org.joda.time.{DateTime, Duration}
-import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.BeforeAndAfterEach
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
@@ -28,8 +27,7 @@ import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach with ScalaFutures
-  with IntegrationPatience {
+class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach {
 
   val anInstant: DateTime = DateTimeUtils.now
 
@@ -53,13 +51,13 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
   "SecureMessageQueue Repository" should {
 
     "ensure indexes are created" in {
-      repo.collection.indexesManager.list().futureValue.size shouldBe 4
+      await(repo.collection.indexesManager.list()).size shouldBe 4
     }
 
     "be able to save and reload an item" in {
-      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
+      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
 
-      repo.findById(workItem.id).futureValue.get should have(
+      await(repo.findById(workItem.id)).get should have(
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
@@ -68,10 +66,10 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
     }
 
     "be able to save the same item twice" in {
-      repo.pushNew(expectedResponseEverything, anInstant).futureValue
-      repo.pushNew(expectedResponseEverything, anInstant).futureValue
+      await(repo.pushNew(expectedResponseEverything, anInstant))
+      await(repo.pushNew(expectedResponseEverything, anInstant))
 
-      val requests = repo.findAll(ReadPreference.primaryPreferred).futureValue
+      val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
       every(requests) should have(
@@ -84,44 +82,44 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
 
     "pull ToDo items" in {
       val payloadDetails = expectedResponseEverything
-      repo.pushNew(payloadDetails, anInstant).futureValue
+      await(repo.pushNew(payloadDetails, anInstant))
 
       val repoLater: SecureMessageQueueRepository = repoAtInstant(anInstant.plusMillis(1))
 
-      repoLater.pullOutstanding.futureValue.get should have(
+      await(repoLater.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )
     }
 
     "pull nothing if no items exist" in {
-      repo.pullOutstanding.futureValue should be(None)
+      await(repo.pullOutstanding) should be(None)
     }
 
     "not pull items failed after the failedBefore time" in {
-      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
-      repo.markAs(workItem.id, Failed).futureValue should be(true)
+      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      await(repo.markAs(workItem.id, Failed)) shouldBe true
 
-      repo.pullOutstanding.futureValue should be(None)
+      await(repo.pullOutstanding) should be(None)
     }
 
     "complete and delete an item if it is in progress" in {
-      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
-      repo.markAs(workItem.id, InProgress).futureValue should be(true)
-      repo.complete(workItem.id).futureValue should be(true)
+      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      await(repo.markAs(workItem.id, InProgress)) shouldBe true
+      await(repo.complete(workItem.id)) shouldBe true
 
-      repo.findById(workItem.id).futureValue shouldBe None
+      await(repo.findById(workItem.id)) shouldBe None
     }
 
     "not complete an item if it is not in progress" in {
 
-      val workItem = repo.pushNew(expectedResponseEverything, anInstant).futureValue
-      repo.complete(workItem.id).futureValue should be(false)
-      repo.findById(workItem.id).futureValue shouldBe Some(workItem)
+      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      await(repo.complete(workItem.id)) shouldBe false
+      await(repo.findById(workItem.id)) shouldBe Some(workItem)
     }
 
     "not complete an item if it cannot be found" in {
-      repo.complete(BSONObjectID.generate).futureValue should be(false)
+      await(repo.complete(BSONObjectID.generate)) shouldBe false
     }
   }
 }

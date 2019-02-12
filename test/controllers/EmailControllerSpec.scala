@@ -31,8 +31,8 @@ class EmailControllerSpec extends BaseSpec with MockRepositoryAccessService {
 
   val controller = new EmailController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("Email Address Change")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("Email Address Change")
+  val testRequestJson: JsObject        = vatChangeEventJson("Email Address Change")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("Email Address Change")
 
   "The handleEvent action" when {
 

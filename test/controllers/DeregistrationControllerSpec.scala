@@ -31,8 +31,8 @@ class DeregistrationControllerSpec extends BaseSpec with MockRepositoryAccessSer
 
   val controller = new DeregistrationController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("De-registration")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("De-registration")
+  val testRequestJson: JsObject        = vatChangeEventJson("De-registration")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("De-registration")
 
   "The handleEvent action" when {
 

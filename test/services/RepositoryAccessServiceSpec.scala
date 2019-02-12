@@ -17,66 +17,47 @@
 package services
 
 import base.BaseSpec
-import config.AppConfig
+import common.ApiConstants.vatChangeEventModel
 import models.VatChangeEvent
 import org.joda.time.{DateTime, DateTimeZone}
-import org.mockito.ArgumentMatchers
 import repositories.CommsEventQueueRepository
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
-import play.api.Configuration
-import play.api.mvc.Results
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.mongo.MongoSpecSupport
 import uk.gov.hmrc.workitem.{InProgress, WorkItem}
+
 import scala.concurrent.Future
 
-class RepositoryAccessServiceSpec
-    extends WordSpec
-    with Matchers
-    with ScalaFutures
-    with MockitoSugar
-    with Results
-    with MongoSpecSupport
-    with IntegrationPatience
-    with BaseSpec {
+class RepositoryAccessServiceSpec extends BaseSpec with MockitoSugar {
 
   "The service" should {
 
     "queue a request when calling queueRequest" in new TestSetup {
-      repositoryAccessService.queueRequest(exampleVatChangeEvent).futureValue shouldBe true
+      await(repositoryAccessService.queueRequest(exampleVatChangeEvent)) shouldBe true
     }
 
     "process a work item from the queue" in new TestSetup {
-      repositoryAccessService.processWorkItem(Seq(exampleVatChangeEvent), exampleWorkItem).futureValue shouldBe
+      await(repositoryAccessService.processWorkItem(Seq(exampleVatChangeEvent), exampleWorkItem)) shouldBe
         Seq(exampleVatChangeEvent)
     }
   }
 
   trait TestSetup {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
     val now: DateTime = new DateTime(0, DateTimeZone.UTC)
-    val exampleVatChangeEvent: VatChangeEvent = VatChangeEvent("Approved", "34567542", "Email Address Change")
+    val exampleVatChangeEvent: VatChangeEvent = vatChangeEventModel("Email Address Change")
     val exampleWorkItem: WorkItem[VatChangeEvent] =
-      WorkItem[VatChangeEvent](BSONObjectID.generate,
-        now, now, now, InProgress, 0, exampleVatChangeEvent)
+      WorkItem[VatChangeEvent](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
 
-    val mockAppConfig: AppConfig = mock[AppConfig]
     val queue: CommsEventQueueRepository = mock[CommsEventQueueRepository]
-    val configuration: Configuration = Configuration()
 
-    when(queue.pullOutstanding(ArgumentMatchers.any(),
-      ArgumentMatchers.any())(ArgumentMatchers.any())).thenReturn(Future(Some(exampleWorkItem)))
+    when(queue.pullOutstanding(any(), any())(any())).thenReturn(Future(Some(exampleWorkItem)))
 
-    when(queue.pushNew(ArgumentMatchers.any(), ArgumentMatchers.any())(ArgumentMatchers.any())).thenReturn(Future(exampleWorkItem))
+    when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
 
-    when(queue.complete(ArgumentMatchers.any())(ArgumentMatchers.any())).thenReturn(Future(true))
+    when(queue.complete(any())(any())).thenReturn(Future(true))
 
-    lazy val repositoryAccessService = new RepositoryAccessService(configuration, queue)
+    lazy val repositoryAccessService = new RepositoryAccessService(queue)
   }
-
 }

@@ -24,6 +24,7 @@ import play.api.Application
 import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
@@ -35,6 +36,7 @@ trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   val request = FakeRequest()
 
   implicit val materializer: Materializer = app.materializer
+  implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
 }

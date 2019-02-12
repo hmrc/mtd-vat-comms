@@ -31,8 +31,8 @@ class PPOBControllerSpec extends BaseSpec with MockRepositoryAccessService {
 
   val controller = new PPOBController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("PPOB Change")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("PPOB Change")
+  val testRequestJson: JsObject        = vatChangeEventJson("PPOB Change")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
   "The handleEvent action" when {
 

@@ -18,17 +18,17 @@ package services
 
 import akka.actor.ActorSystem
 import base.BaseSpec
+import common.ApiConstants.vatChangeEventModel
 import mocks.MockAppConfig
 import models.VatChangeEvent
 import org.mockito.Mockito
 import org.mockito.Mockito.{timeout, verify, when}
 import org.scalatest.mockito.MockitoSugar
 import play.api.Configuration
-import utils.MongoComponents
 
 import scala.concurrent.Future
 
-class CommsEventQueuePollingServiceSpec extends BaseSpec with MockitoSugar with MongoComponents {
+class CommsEventQueuePollingServiceSpec extends BaseSpec with MockitoSugar {
 
   val timeoutForTest: Int = 4000
 
@@ -63,7 +63,7 @@ class CommsEventQueuePollingServiceSpec extends BaseSpec with MockitoSugar with 
 
   trait TestSetup {
     val actorSystem: ActorSystem = app.injector.instanceOf[ActorSystem]
-    val exampleVatChangeEvent: VatChangeEvent = VatChangeEvent("Approved", "34567542", "Email Address Change")
+    val exampleVatChangeEvent: VatChangeEvent = vatChangeEventModel("Email Address Change")
     val mockRepositoryAccessService: RepositoryAccessService = mock[RepositoryAccessService]
   }
 

@@ -31,8 +31,8 @@ class BankAccountControllerSpec extends BaseSpec with MockRepositoryAccessServic
 
   val controller = new BankAccountController(mockRepoAccessService)
 
-  val testRequestJson: JsObject        = validDesRequestJson("Repayment Bank Account Change")
-  val testRequestModel: VatChangeEvent = validDesRequestModel("Repayment Bank Account Change")
+  val testRequestJson: JsObject        = vatChangeEventJson("Repayment Bank Account Change")
+  val testRequestModel: VatChangeEvent = vatChangeEventModel("Repayment Bank Account Change")
 
   "The handleEvent action" when {
 

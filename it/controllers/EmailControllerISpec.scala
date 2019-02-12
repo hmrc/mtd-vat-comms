@@ -32,7 +32,7 @@ class EmailControllerISpec extends IntegrationBaseSpec {
       "request body json is approved email address change" in {
         val request: WSRequest = buildRequest("/events/comm-email")
 
-        val response = await(request.post(validDesRequestJson("Email Address Change")))
+        val response = await(request.post(vatChangeEventJson("Email Address Change")))
 
         response.status shouldBe NO_CONTENT
       }
