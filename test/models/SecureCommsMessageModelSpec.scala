@@ -19,6 +19,7 @@ package models
 import base.BaseSpec
 import play.api.libs.json.Json
 import utils.SecureCommsMessageTestData.JsonModels._
+import utils.SecureCommsMessageTestData.JsonModelForModels._
 import utils.SecureCommsMessageTestData.Responses._
 
 class SecureCommsMessageModelSpec extends BaseSpec {
@@ -58,31 +59,31 @@ class SecureCommsMessageModelSpec extends BaseSpec {
     "serializing to JSON" should {
 
       "correctly parse every field" in {
-        Json.toJson(expectedResponseEverything) shouldBe validJsonEverything
+        Json.toJson(expectedResponseEverything) shouldBe validJsonForModelEverything
       }
 
       "correctly parse when optional fields are missing - DeRegistration" in {
-        Json.toJson(expectedResponseDeRegistration) shouldBe validJsonDeRegistration
+        Json.toJson(expectedResponseDeRegistration) shouldBe validJsonForModelDeRegistration
       }
 
       "correctly parse when optional fields are missing - PPOB Change" in {
-        Json.toJson(expectedResponsePPOBChange) shouldBe validJsonPPOBChange
+        Json.toJson(expectedResponsePPOBChange) shouldBe validJsonForModelPPOBChange
       }
 
       "correctly parse when optional fields are missing - Repayment Bank Account Change" in {
-        Json.toJson(expectedResponseBankRepaymentAccountChange) shouldBe validJsonRepaymentBankAccountChange
+        Json.toJson(expectedResponseBankRepaymentAccountChange) shouldBe validJsonForModelRepaymentsBankAccountChangeModel
       }
 
       "correctly parse when optional fields are missing - Email Change" in {
-        Json.toJson(expectedResponseEmailChange) shouldBe validJsonEmailChange
+        Json.toJson(expectedResponseEmailChange) shouldBe validJsonForModelEmailAddressChange
       }
 
       "correctly parse when optional fields are missing - Stagger Change" in {
-        Json.toJson(expectedResponseStagger) shouldBe validJsonVatStaggerChange
+        Json.toJson(expectedResponseStagger) shouldBe validJsonForModelVATStaggerChange
       }
 
       "correctly parse when optional fields are missing - Business Name Change" in {
-        Json.toJson(expectedResponseBusinessNameChange) shouldBe validJsonBusinessNameChange
+        Json.toJson(expectedResponseBusinessNameChange) shouldBe validJsonForModelBusinessNameChange
       }
     }
   }

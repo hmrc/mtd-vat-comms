@@ -36,7 +36,7 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       AL1 -> "4 Cloud District",
       AL2 -> "Whiterun",
@@ -50,7 +50,7 @@ object SecureCommsMessageTestData {
       SORT_CODE -> "11-11-11",
       STAGGER -> "12jje7uw",
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -64,9 +64,9 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -79,7 +79,7 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       AL1 -> "4 Cloud District",
       AL2 -> "Whiterun",
@@ -88,7 +88,7 @@ object SecureCommsMessageTestData {
       AL5 -> "",
       POST_CODE -> "TA11RI",
       COUNTRY_NAME -> "Skyrim",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -101,12 +101,12 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       ACCOUNT_NAME -> "Bank of Tamriel",
       ACCOUNT_NUMBER -> "12039831",
       SORT_CODE -> "11-11-11",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -119,10 +119,10 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       STAGGER -> "12jje7uw",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -135,10 +135,10 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -151,9 +151,9 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "Companions Guild",
-      TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "dovahkin@riften.tam",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -173,8 +173,8 @@ object SecureCommsMessageTestData {
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
       Some("12jje7uw"),
       Some("sofia@whiterunstables.co.tam"),
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -188,8 +188,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -203,8 +203,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -218,8 +218,8 @@ object SecureCommsMessageTestData {
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
       None,
       None,
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -233,8 +233,8 @@ object SecureCommsMessageTestData {
       None,
       Some("12jje7uw"),
       None,
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -248,8 +248,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("dragonborn@winterhold.tam"),
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -263,28 +263,66 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
   }
 
   object JsonModelForModels {
+    val validJsonForModelEverything: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT41A_SM1A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      EFFECTIVE_DOD -> "20181227",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      ADDRESS_DETAILS -> Json.obj(
+        AL1 -> "4 Cloud District",
+        AL2 -> "Whiterun",
+        AL3 -> "",
+        AL4 -> "",
+        AL5 -> "",
+        POST_CODE -> "TA11RI",
+        COUNTRY_NAME -> "Skyrim"
+      ),
+      BANK_DETAILS -> Json.obj(
+        ACCOUNT_NAME -> "Bank of Tamriel",
+        ACCOUNT_NUMBER -> "12039831",
+        SORT_CODE -> "11-11-11"
+      ),
+      STAGGER -> "12jje7uw",
+      O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
     val validJsonForModelDeRegistration: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -297,7 +335,7 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      "addressDetails" -> Json.obj(
+      ADDRESS_DETAILS -> Json.obj(
         AL1 -> "4 Cloud District",
         AL2 -> "Whiterun",
         AL3 -> "",
@@ -306,15 +344,15 @@ object SecureCommsMessageTestData {
         POST_CODE -> "TA11RI",
         COUNTRY_NAME -> "Skyrim"
       ),
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -327,20 +365,20 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      "bankAccountDetails" -> Json.obj(
+      BANK_DETAILS -> Json.obj(
         ACCOUNT_NAME -> "Bank of Tamriel",
         ACCOUNT_NUMBER -> "12039831",
         SORT_CODE -> "11-11-11"
       ),
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -354,15 +392,15 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       STAGGER -> "12jje7uw",
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -376,15 +414,15 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -397,15 +435,15 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "Companions Guild",
-      "transactorDetails" -> Json.obj(
-        TRANSACTOR_EMAIL -> "lydia@carryburdens.tam",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
       ),
-      "customerDetails" -> Json.obj(
-        C_EMAIL -> "dovahkin@riften.tam",
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      "preferences" -> Json.obj(
+      PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
         L_PREFS -> ENGLISH,
@@ -420,8 +458,8 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       "20181227"
     )
@@ -431,8 +469,8 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")
     )
@@ -442,8 +480,8 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")
     )
@@ -453,8 +491,8 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       "12jje7uw"
     )
@@ -464,10 +502,10 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
-     "dragonborn@winterhold.tam"
+      "dragonborn@winterhold.tam"
     )
 
     val expectedResponseBusinessNameChange = BusinessNameChangeModel(
@@ -475,9 +513,10 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "Companions Guild",
-      TransactorModel("lydia@carryburdens.tam", "Pack Mule"),
-      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
   }
+
 }

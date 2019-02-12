@@ -63,6 +63,7 @@ object Constants {
     val POST_CODE = "postCode"
     val COUNTRY_NAME = "countryName"
     val BANK_DETAILS = "bankAccountDetails"
+    val ACCOUNT_NAME = "bankAccountName"
     val ACCOUNT_NUMBER = "bankAccountNumber"
     val SORT_CODE = "bankSortCode"
     val STAGGER = "stagger"
@@ -75,5 +76,12 @@ object Constants {
     val C_PREFS = "channelPreference"
     val L_PREFS = "languagePreference"
     val F_PREFS = "formatPreference"
+  }
+
+  object TemplateIdReadableNames {
+    val CLIENT_NOTIFICATION_SELF_CHANGE = "newMessageAlert_VRT1214A"
+    val CLIENT_NOTIFICATION_AGENT_CHANGE = "newMessageAlert_VRT1214C"
+    val AGENT_NOTIFICATION_CHANGE_ACCEPTED = "newMessageAlert_VRT12B"
+    val AGENT_NOTIFICATION_CHANGE_REJECTED = "newMessageAlert_VRT14B"
   }
 }

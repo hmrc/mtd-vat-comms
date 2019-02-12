@@ -26,4 +26,12 @@ class MessageModel(
                     transactorDetails: TransactorModel,
                     customerDetails: CustomerModel,
                     preferences: PreferencesModel
-                  )
+                  ) {
+  val getTemplateId: String = templateId
+  val getVrn: String = vrn
+  val getFormBundleReference: String = formBundleReference
+  val getBusinessName: String = businessName
+  val getTransactorDetails: TransactorModel = transactorDetails
+  val getCustomerDetails: CustomerModel = customerDetails
+  val getPreferences: PreferencesModel = preferences
+}
