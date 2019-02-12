@@ -36,6 +36,6 @@ object VatChangeEventConstants {
 
   val invalidFormatResponse: JsObject = Json.obj(
     "code" -> "INVALID_FORMAT",
-    "body" -> s"Body of request was not JSON, ${invalidRequestBody.toString}"
+    "body" -> s"Request body was not JSON. Request body received: '${invalidRequestBody.toString}'"
   )
 }
