@@ -16,7 +16,7 @@
 
 package controllers
 
-import play.api.http.Status.OK
+import play.api.http.Status.NO_CONTENT
 import common.ApiConstants._
 import helpers.IntegrationBaseSpec
 import play.api.libs.ws.WSRequest
@@ -34,7 +34,7 @@ class DeregistrationControllerISpec extends IntegrationBaseSpec {
 
         val response = await(request.post(validDesRequestJson("De-registration")))
 
-        response.status shouldBe OK
+        response.status shouldBe NO_CONTENT
       }
     }
   }

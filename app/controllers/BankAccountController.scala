@@ -33,7 +33,7 @@ class BankAccountController @Inject()(repoAccess: RepositoryAccessService)(impli
     parseJsonBody[VatChangeEvent] match {
       case Right(workItem) =>
         repoAccess.queueRequest(workItem) map {
-          case true  => Ok
+          case true  => NoContent
           case false =>
             LoggerUtil.logWarn(s"[BankAccountController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError

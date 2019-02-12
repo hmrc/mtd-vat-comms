@@ -33,7 +33,7 @@ class StaggerController @Inject()(repoAccess: RepositoryAccessService)(implicit 
     parseJsonBody[VatChangeEvent] match {
       case Right(workItem) =>
         repoAccess.queueRequest(workItem) map {
-          case true  => Ok
+          case true  => NoContent
           case false =>
             LoggerUtil.logWarn(s"[StaggerController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError
