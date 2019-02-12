@@ -20,30 +20,30 @@ import base.BaseSpec
 import models.VatChangeEvent
 import org.scalamock.handlers.{CallHandler1, CallHandler2}
 import org.scalamock.scalatest.MockFactory
-import services.RepositoryAccessService
+import services.CommsEventService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.workitem.WorkItem
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockRepositoryAccessService extends BaseSpec with MockFactory {
+trait MockCommsEventService extends BaseSpec with MockFactory {
 
-  lazy val mockRepoAccessService: RepositoryAccessService = mock[RepositoryAccessService]
+  lazy val mockCommsEventService: CommsEventService = mock[CommsEventService]
 
   def mockQueueRequest(data: VatChangeEvent)
-                      (response: Future[Boolean]): CallHandler2[VatChangeEvent, HeaderCarrier, Future[Boolean]] =
-    (mockRepoAccessService.queueRequest(_: VatChangeEvent)(_: HeaderCarrier))
-      .expects(data, *)
+                      (response: Future[Boolean]): CallHandler1[VatChangeEvent, Future[Boolean]] =
+    (mockCommsEventService.queueRequest(_: VatChangeEvent))
+      .expects(data)
       .returning(response)
 
   def mockRetrieveWorkItems(response: Future[Seq[VatChangeEvent]]): CallHandler1[ExecutionContext, Future[Seq[VatChangeEvent]]] =
-    (mockRepoAccessService.retrieveWorkItems(_: ExecutionContext))
+    (mockCommsEventService.retrieveWorkItems(_: ExecutionContext))
       .expects(*)
       .returning(response)
 
   def mockProcessWorkItems(accData: Seq[VatChangeEvent], itemData: WorkItem[VatChangeEvent])
                           (response: Future[Seq[VatChangeEvent]]): CallHandler2[Seq[VatChangeEvent], WorkItem[VatChangeEvent], Future[Seq[VatChangeEvent]]] =
-    (mockRepoAccessService.processWorkItem(_: Seq[VatChangeEvent], _: WorkItem[VatChangeEvent]))
+    (mockCommsEventService.processWorkItem(_: Seq[VatChangeEvent], _: WorkItem[VatChangeEvent]))
       .expects(accData, itemData)
       .returning(response)
 }

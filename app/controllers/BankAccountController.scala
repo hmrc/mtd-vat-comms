@@ -20,13 +20,13 @@ import javax.inject.Inject
 import models.VatChangeEvent
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
-import services.RepositoryAccessService
+import services.CommsEventService
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class BankAccountController @Inject()(repoAccess: RepositoryAccessService)(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
+class BankAccountController @Inject()(repoAccess: CommsEventService)(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
 
   def handleEvent: Action[AnyContent] = Action.async { implicit request =>
 

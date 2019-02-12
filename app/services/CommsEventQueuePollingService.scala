@@ -20,21 +20,23 @@ import akka.actor.ActorSystem
 import config.AppConfig
 import com.google.inject.{Inject, Singleton}
 import uk.gov.hmrc.play.scheduling.ExclusiveScheduledJob
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
 import utils.LoggerUtil._
+
 import scala.util.{Failure, Success}
 
 @Singleton
 class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
-                                    appConfig: AppConfig,
-                                    repositoryAccessService: RepositoryAccessService)
-                                    (implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
+                                              appConfig: AppConfig,
+                                              commsEventService: CommsEventService)(
+                                              implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
 
   override def name: String = "CommsEventQueuePollingService"
 
   override def executeInMutex(implicit ec: ExecutionContext): Future[Result] = {
-    repositoryAccessService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} comms events"))
+    commsEventService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} comms events"))
   }
 
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds

@@ -267,6 +267,21 @@ object SecureCommsMessageTestData {
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
+
+    val expectedResponseNoTransactor = SecureCommsMessageModel(
+      "VRT41A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("dovahkin@riften.tam", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
   }
 
   object JsonModelForModels {

@@ -18,7 +18,6 @@ package utils
 
 import models._
 import models.secureCommsModels.messageTypes._
-import play.api.Logger
 import play.api.libs.json.{JsValue, Json, OFormat}
 import utils.LoggerUtil._
 
@@ -41,7 +40,7 @@ object SecureCommsMessageParser {
 
       Right(Json.toJson(stringAsMap))
     } catch {
-      case t: Throwable =>
+      case _: Throwable =>
         logError("[SecureCommsMessageParser][parseMessage] Error performing generic parse")
         Left(JsonParsingError)
     }
@@ -63,12 +62,12 @@ object SecureCommsMessageParser {
     }
   }
 
-  private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String = {
-    (input.effectiveDateOfDeRegistration.fold("")(_ => "\n- Effective Date of DeRegistration")
-    + input.addressDetails.fold("")(_ => "\n- Address Details")
-    + input.stagger.fold("")(_ => "\n- Stagger")
-    + input.originalEmailAddress.fold("")(_ => "\n- Original Email Address"))
-  }
+  private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String =
+    input.effectiveDateOfDeRegistration.fold("")(_ => "\n- Effective Date of DeRegistration") +
+    input.addressDetails.fold("")(_ => "\n- Address Details") +
+    input.stagger.fold("")(_ => "\n- Stagger") +
+    input.originalEmailAddress.fold("")(_ => "\n- Original Email Address")
+
 
   private def toGivenModel[T <: MessageModel](model: SecureCommsMessageModel)(implicit ev: OFormat[T]): T = Json.toJson(model).as[T]
 
