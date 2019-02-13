@@ -23,7 +23,7 @@ import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponse
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
-import utils.LoggerUtil.logWarn
+import utils.LoggerUtil._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,18 +40,19 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
           case None =>
             logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
               "Failed to validate response to SecureCommsResponseModel")
+            logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
             Left(UnableToParseSecureCommsResponseError)
         }
         case BAD_REQUEST => Json.parse(response.body).validate[SecureCommsErrorResponseModel].asOpt match {
           case Some(error) => Left(ErrorModel(error.code, error.reason))
           case None =>
             logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-              "Failed to validate error response to SecureCommsErrorResponseModel")
+              s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${response.body}'")
             Left(UnableToParseSecureCommsErrorResponseError)
         }
         case status: Int =>
           logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-            s"Unexpected error encountered. Status: $status")
+            s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
           Left(ErrorModel(s"${response.status}", response.body))
       }
     }
