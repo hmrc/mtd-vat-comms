@@ -17,49 +17,37 @@
 package services
 
 import base.BaseSpec
-import common.ApiConstants.vatChangeEventModel
-import metrics.QueueMetrics
-import models.VatChangeEvent
+import models.SecureCommsMessageModel
 import org.joda.time.{DateTime, DateTimeZone}
-import repositories.CommsEventQueueRepository
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
+import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.workitem.{InProgress, WorkItem}
+import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
 import scala.concurrent.Future
 
-class RepositoryAccessServiceSpec extends BaseSpec with MockitoSugar {
+class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
-  "The service" should {
+  "EmailMessageService" should {
 
     "queue a request when calling queueRequest" in new TestSetup {
-      await(repositoryAccessService.queueRequest(exampleVatChangeEvent)) shouldBe true
-    }
-
-    "process a work item from the queue" in new TestSetup {
-      await(repositoryAccessService.processWorkItem(Seq(exampleVatChangeEvent), exampleWorkItem)) shouldBe
-        Seq(exampleVatChangeEvent)
+      await(secureMessageService.queueRequest(exampleSecureCommsModel)) shouldBe true
     }
   }
 
   trait TestSetup {
 
     val now: DateTime = new DateTime(0, DateTimeZone.UTC)
-    val exampleVatChangeEvent: VatChangeEvent = vatChangeEventModel("Email Address Change")
-    val exampleWorkItem: WorkItem[VatChangeEvent] =
-      WorkItem[VatChangeEvent](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
-
-    val queue: CommsEventQueueRepository = mock[CommsEventQueueRepository]
-    val metrics: QueueMetrics = mock[QueueMetrics]
-
-    when(queue.pullOutstanding(any(), any())(any())).thenReturn(Future(Some(exampleWorkItem)))
+    val exampleSecureCommsModel: SecureCommsMessageModel = expectedResponseEverything
+    val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
+      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleSecureCommsModel)
+    val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
 
     when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
 
-    when(queue.complete(any())(any())).thenReturn(Future(true))
-
-    lazy val repositoryAccessService = new RepositoryAccessService(queue, metrics)
+    lazy val secureMessageService = new SecureMessageService(queue)
   }
 }

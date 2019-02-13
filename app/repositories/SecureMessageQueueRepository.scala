@@ -51,6 +51,10 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
     val failureCount = "failureCount"
   }
 
+  override def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
+                      (implicit ec: ExecutionContext): Future[WorkItem[SecureCommsMessageModel]] =
+    super.pushNew(item, receivedAt)
+
   override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
   def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[SecureCommsMessageModel]]] =

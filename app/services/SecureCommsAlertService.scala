@@ -18,7 +18,7 @@ package services
 
 import connectors.SecureCommsAlertConnector
 import javax.inject.Inject
-import models.{ErrorModel, GenericParsingError, SecureCommsMessageModel}
+import models.{ErrorModel, GenericParsingError, JsonParsingError, SecureCommsMessageModel}
 import utils.SecureCommsMessageParser
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,7 +33,7 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
           case Some(parsedModel) => Right(parsedModel)
           case None => Left(GenericParsingError)
         }
-        case Left(error) => Left(error)
+        case Left(JsonParsingError) => Left(JsonParsingError)
       }
       case Left(error) => Left(error)
     }

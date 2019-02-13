@@ -19,7 +19,7 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import mocks.MockRepositoryAccessService
+import mocks.MockCommsEventService
 import models.VatChangeEvent
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT}
 import play.api.libs.json.JsObject
@@ -27,9 +27,9 @@ import play.api.mvc.Result
 
 import scala.concurrent.Future
 
-class BankAccountControllerSpec extends BaseSpec with MockRepositoryAccessService {
+class BankAccountControllerSpec extends BaseSpec with MockCommsEventService {
 
-  val controller = new BankAccountController(mockRepoAccessService)
+  val controller = new BankAccountController(mockCommsEventService)
 
   val testRequestJson: JsObject        = vatChangeEventJson("Repayment Bank Account Change")
   val testRequestModel: VatChangeEvent = vatChangeEventModel("Repayment Bank Account Change")

@@ -19,7 +19,7 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import mocks.MockRepositoryAccessService
+import mocks.MockCommsEventService
 import models.VatChangeEvent
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT}
 import play.api.libs.json.JsObject
@@ -27,9 +27,9 @@ import play.api.mvc.Result
 
 import scala.concurrent.Future
 
-class PPOBControllerSpec extends BaseSpec with MockRepositoryAccessService {
+class PPOBControllerSpec extends BaseSpec with MockCommsEventService {
 
-  val controller = new PPOBController(mockRepoAccessService)
+  val controller = new PPOBController(mockCommsEventService)
 
   val testRequestJson: JsObject        = vatChangeEventJson("PPOB Change")
   val testRequestModel: VatChangeEvent = vatChangeEventModel("PPOB Change")

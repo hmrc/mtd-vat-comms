@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package models.responseModels
+package services
 
-import play.api.libs.json.{Json, Reads}
+import javax.inject.Inject
+import models.SecureCommsMessageModel
+import repositories.EmailMessageQueueRepository
+import uk.gov.hmrc.time.DateTimeUtils
 
-case class SecureCommsResponseModel(processingDate: String, secureCommText: String)
+import scala.concurrent.{ExecutionContext, Future}
 
-object SecureCommsResponseModel {
-  implicit val reads: Reads[SecureCommsResponseModel] = Json.reads[SecureCommsResponseModel]
+class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository)(
+                                    implicit ec: ExecutionContext) {
+
+  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] =
+    emailMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
 }

@@ -37,34 +37,34 @@ class CommsEventQueuePollingServiceSpec extends BaseSpec with MockitoSugar {
     "be named correctly" in new TestSetup {
 
       val queuePollingService: CommsEventQueuePollingService = new CommsEventQueuePollingService(
-        actorSystem, mockAppConfig, mockRepositoryAccessService)
+        actorSystem, mockAppConfig, mockCommsEventService)
 
       queuePollingService.name shouldBe "CommsEventQueuePollingService"
     }
 
     "poll the queue twice in the given test time period when the toggle is on" in new TestSetup {
 
-      when(mockRepositoryAccessService.retrieveWorkItems).thenReturn(Future.successful(Seq(exampleVatChangeEvent)))
+      when(mockCommsEventService.retrieveWorkItems).thenReturn(Future.successful(Seq(exampleVatChangeEvent)))
 
       new CommsEventQueuePollingService(
-        actorSystem, new MockAppConfig(Configuration(), pollingToggle = true), mockRepositoryAccessService)
+        actorSystem, new MockAppConfig(Configuration(), pollingToggle = true), mockCommsEventService)
 
-      verify(mockRepositoryAccessService, timeout(timeoutForTest).times(2)).retrieveWorkItems
+      verify(mockCommsEventService, timeout(timeoutForTest).times(2)).retrieveWorkItems
     }
 
     "not poll the queue when the toggle is off" in new TestSetup {
 
       new CommsEventQueuePollingService(
-        actorSystem, mockAppConfig, mockRepositoryAccessService)
+        actorSystem, mockAppConfig, mockCommsEventService)
 
-      verify(mockRepositoryAccessService, Mockito.after(timeoutForTest).never()).retrieveWorkItems
+      verify(mockCommsEventService, Mockito.after(timeoutForTest).never()).retrieveWorkItems
     }
   }
 
   trait TestSetup {
     val actorSystem: ActorSystem = app.injector.instanceOf[ActorSystem]
     val exampleVatChangeEvent: VatChangeEvent = vatChangeEventModel("Email Address Change")
-    val mockRepositoryAccessService: RepositoryAccessService = mock[RepositoryAccessService]
+    val mockCommsEventService: CommsEventService = mock[CommsEventService]
   }
 
 }
