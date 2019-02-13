@@ -20,20 +20,20 @@ import models.ErrorModel
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.mvc.{AnyContentAsJson, Request}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
-import utils.LoggerUtil
+import utils.LoggerUtil.logWarn
 
 trait MicroserviceBaseController extends BaseController {
 
   def parseJsonBody[T](implicit request: Request[_], rds: Reads[T]): Either[ErrorModel, T] = request.body match {
     case body: AnyContentAsJson => body.json.validate[T] match {
       case e: JsError =>
-        LoggerUtil.logWarn(s"[MicroserviceBaseController][parseJsonBody] Json received, but did not validate. Errors: $e")
-        Left(ErrorModel("INVALID_JSON", s"Json received, but did not validate"))
+        logWarn(s"[MicroserviceBaseController][parseJsonBody] Json received, but did not validate. Errors: $e")
+        Left(ErrorModel("INVALID_JSON", "Json received, but did not validate"))
       case s: JsSuccess[T] =>
         Right(s.value)
     }
     case _ =>
-      LoggerUtil.logWarn("[MicroserviceBaseController][parseJsonBody] Body of request was not JSON")
-      Left(ErrorModel("INVALID_FORMAT", s"Body of request was not JSON, ${request.body}"))
+      logWarn("[MicroserviceBaseController][parseJsonBody] Body of request was not JSON")
+      Left(ErrorModel("INVALID_FORMAT", s"Request body was not JSON. Request body received: '${request.body}'"))
   }
 }
