@@ -17,6 +17,7 @@
 package services
 
 import javax.inject.{Inject, Singleton}
+import metrics.QueueMetrics
 import models.VatChangeEvent
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
@@ -27,11 +28,14 @@ import uk.gov.hmrc.workitem.WorkItem
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RepositoryAccessService @Inject()(commsEventQueueRepository: CommsEventQueueRepository)(
+class RepositoryAccessService @Inject()(commsEventQueueRepository: CommsEventQueueRepository,
+                                        metrics: QueueMetrics)(
                                         implicit ec: ExecutionContext) {
 
-  def queueRequest(p: VatChangeEvent)(implicit hc: HeaderCarrier): Future[Boolean] =
+  def queueRequest(p: VatChangeEvent)(implicit hc: HeaderCarrier): Future[Boolean] = {
+    metrics.commsEventEnqueued()
     commsEventQueueRepository.pushNew(p, DateTimeUtils.now).map(_ => true)
+  }
 
   def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[VatChangeEvent]] = {
     val pullWorkItems: Enumerator[WorkItem[VatChangeEvent]] =

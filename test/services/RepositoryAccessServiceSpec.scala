@@ -18,6 +18,7 @@ package services
 
 import base.BaseSpec
 import common.ApiConstants.vatChangeEventModel
+import metrics.QueueMetrics
 import models.VatChangeEvent
 import org.joda.time.{DateTime, DateTimeZone}
 import repositories.CommsEventQueueRepository
@@ -51,6 +52,7 @@ class RepositoryAccessServiceSpec extends BaseSpec with MockitoSugar {
       WorkItem[VatChangeEvent](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
 
     val queue: CommsEventQueueRepository = mock[CommsEventQueueRepository]
+    val metrics: QueueMetrics = mock[QueueMetrics]
 
     when(queue.pullOutstanding(any(), any())(any())).thenReturn(Future(Some(exampleWorkItem)))
 
@@ -58,6 +60,6 @@ class RepositoryAccessServiceSpec extends BaseSpec with MockitoSugar {
 
     when(queue.complete(any())(any())).thenReturn(Future(true))
 
-    lazy val repositoryAccessService = new RepositoryAccessService(queue)
+    lazy val repositoryAccessService = new RepositoryAccessService(queue, metrics)
   }
 }
