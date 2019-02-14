@@ -84,4 +84,8 @@ object Constants {
     val AGENT_NOTIFICATION_CHANGE_ACCEPTED = "newMessageAlert_VRT12B"
     val AGENT_NOTIFICATION_CHANGE_REJECTED = "newMessageAlert_VRT14B"
   }
+
+  object SecureCommsServiceFieldValues {
+    val MTDP = "mtdp"
+  }
 }

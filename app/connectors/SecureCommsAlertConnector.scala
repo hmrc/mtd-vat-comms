@@ -32,7 +32,7 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
-    val url = appConfig.secureCommsUrl(service, regNumber, communicationId)
+    val url = appConfig.desUrl(service, regNumber, communicationId)
     wsClient.url(url).get().map { response =>
       response.status match {
         case OK => Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {

@@ -19,9 +19,9 @@ object ConfigKeys {
 
   val failureRetryAfterProperty: String = "queue.retryAfter"
 
-  val secureCommsProtocol: String = "microservice.services.secureComms.protocol"
-  val secureCommsHost: String = "microservice.services.secureComms.host"
-  val secureCommsPort: String = "microservice.services.secureComms.port"
+  val desProtocol: String = "microservice.services.secureComms.protocol"
+  val desHost: String = "microservice.services.secureComms.host"
+  val desPort: String = "microservice.services.secureComms.port"
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
   val queueToggleProperty: String = "queue.toggle"
@@ -30,4 +30,8 @@ object ConfigKeys {
   val emailRendererProtocol: String = "microservice.services.emailRenderer.protocol"
   val emailRendererHost: String = "microservice.services.emailRenderer.host"
   val emailRendererPort: String = "microservice.services.emailRenderer.port"
+
+  val secureCommsServiceProtocol: String = "microservice.services.secureCommsService.protocol"
+  val secureCommsServiceHost: String = "microservice.services.secureCommsService.host"
+  val secureCommsServicePort: String = "microservice.services.secureCommsService.port"
 }
