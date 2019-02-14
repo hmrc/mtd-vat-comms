@@ -61,15 +61,18 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
           emailMessageService.queueRequest(model).flatMap {
             case true =>
               secureMessageService.queueRequest(model)
+              metrics.commsEventDequeued()
               commsEventQueueRepository.complete(workItem.id).map(_ => acc)
             case false =>
               commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
           }
         } else {
           secureMessageService.queueRequest(model)
+          metrics.commsEventDequeued()
           commsEventQueueRepository.complete(workItem.id).map(_ => acc)
         }
       case Left(GenericParsingError) | Left(JsonParsingError) =>
+        metrics.commsEventDequeued()
         commsEventQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(_) =>
         commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
