@@ -40,7 +40,7 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
 
   "sendEmailRequest" should {
     "return an EmailRendererResponseModel when successful" in {
-      val messageModel: MessageModel = new MessageModel("VRT12B", "123123123", "AID_32I1", "FUS ROH DAH",
+      val messageModel: MessageModel = new MessageModel("VRT12C_SM1C", "123123123", "AID_32I1", "FUS ROH DAH",
         TransactorModel("some@thing.ha.ha", "SomeThing"), CustomerModel("cus@tom.e.r", VERIFIED), PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT))
 
       val expectedAgentRequest = EmailRendererRequestModel(
@@ -78,15 +78,25 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
   "mapTemplateId" should {
     "map incoming template IDs to the correct outgoing ID(s)" when {
       Map(
-        "VRT12B" -> Seq("VRT1214C", "VRT12B"),
-        "VRT14B" -> Seq("VRT1214C", "VRT14B"),
-        "VRT15B" -> Seq("VRT1214C", "VRT14B"),
-        "VRT23B" -> Seq("VRT1214C", "VRT12B"),
-        "VRT12A" -> Seq("VRT1214A"),
-        "VRT14A" -> Seq("VRT1214A"),
-        "VRT15A" -> Seq("VRT1214A"),
-        "VRT23A" -> Seq("VRT1214A")
-      ).mapValues(_.map(value => "newMessageAlert_" + value)).foreach { mapping =>
+        "VRT12C_SM1C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
+        "VRT12C_SM3C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
+        "VRT12C_SM5C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
+        "VRT23C_SM7C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
+        "VRT14C_SM2C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
+        "VRT14C_SM4C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
+        "VRT14C_SM6C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
+        "VRT15C_SM8C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
+        "VRT12A_SM1A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT14A_SM2A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT12A_SM3A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT14A_SM4A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT12A_SM5A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT14A_SM6A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT23A_SM7A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT15A_SM8A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT12A_SM9A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
+        "VRT14A_SM10A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE)
+      ).foreach { mapping =>
         s"incoming id is ${mapping._1}" in {
           service.mapTemplateId(mapping._1) shouldBe mapping._2
         }
