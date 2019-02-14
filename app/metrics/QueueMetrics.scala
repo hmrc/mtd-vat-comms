@@ -32,11 +32,11 @@ class QueueMetrics @Inject()(metrics: Metrics) {
   val secureMessageDequeuedCounter: Counter = metrics.defaultRegistry.counter("secureMessage.dequeued")
 
   def commsEventEnqueued(): Unit = commsEventEnqueuedCounter.inc()
-  def commsEventDequeued(): Unit = commsEventEnqueuedCounter.inc()
+  def commsEventDequeued(): Unit = commsEventDequeuedCounter.inc()
 
   def emailMessageEnqueued(): Unit = emailMessageEnqueuedCounter.inc()
-  def emailMessageDequeued(): Unit = emailMessageEnqueuedCounter.inc()
+  def emailMessageDequeued(): Unit = emailMessageDequeuedCounter.inc()
 
   def secureMessageEnqueued(): Unit = secureMessageEnqueuedCounter.inc()
-  def secureMessageDequeued(): Unit = secureMessageEnqueuedCounter.inc()
+  def secureMessageDequeued(): Unit = secureMessageDequeuedCounter.inc()
 }
