@@ -18,7 +18,7 @@ package models.secureCommsServiceModels
 
 import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}
-import utils.Constants.SecureCommsServiceFieldValues._
+import common.Constants.SecureCommsServiceFieldValues._
 
 class SecureCommsServiceRequestModelSpec extends BaseSpec {
 

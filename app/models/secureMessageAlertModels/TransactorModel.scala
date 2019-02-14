@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PreferencesModel(
-                             notificationPreference: String,
-                             channelPreference: String,
-                             languagePreference: String,
-                             formatPreference: String
-                           )
+case class TransactorModel(
+                            transactorEmail: String,
+                            transactorName: String
+                          )
 
-object PreferencesModel {
-  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
+object TransactorModel {
+  implicit val formats: OFormat[TransactorModel] = Json.format[TransactorModel]
 }

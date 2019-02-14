@@ -17,33 +17,33 @@
 package services
 
 import base.BaseSpec
-import connectors.EmailRendererConnector
+import connectors.EmailConnector
 import models.ErrorModel
-import models.emailRendererModels.EmailRendererRequestModel
+import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
-import models.secureCommsModels.messageTypes.MessageModel
-import models.secureCommsModels.{CustomerModel, PreferencesModel, TransactorModel}
+import models.secureMessageAlertModels.messageTypes.MessageModel
+import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.ACCEPTED
-import utils.Constants.ChannelPreferences.PAPER
-import utils.Constants.EmailStatus.VERIFIED
-import utils.Constants.FormatPreferences.TEXT
-import utils.Constants.LanguagePreferences.ENGLISH
-import utils.Constants.NotificationPreference.EMAIL
-import utils.Constants.TemplateIdReadableNames._
+import common.Constants.ChannelPreferences.PAPER
+import common.Constants.EmailStatus.VERIFIED
+import common.Constants.FormatPreferences.TEXT
+import common.Constants.LanguagePreferences.ENGLISH
+import common.Constants.NotificationPreference.EMAIL
+import common.Constants.TemplateIdReadableNames._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailRendererServiceSpec extends BaseSpec with MockFactory {
-  val mockConnector: EmailRendererConnector = mock[EmailRendererConnector]
-  val service: EmailRendererService = new EmailRendererService(mockConnector)
+class EmailServiceSpec extends BaseSpec with MockFactory {
+  val mockConnector: EmailConnector = mock[EmailConnector]
+  val service: EmailService = new EmailService(mockConnector)
 
   "sendEmailRequest" should {
     "return an EmailRendererResponseModel when successful" in {
       val messageModel: MessageModel = new MessageModel("VRT12C_SM1C", "123123123", "AID_32I1", "FUS ROH DAH",
         TransactorModel("some@thing.ha.ha", "SomeThing"), CustomerModel("cus@tom.e.r", VERIFIED), PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT))
 
-      val expectedAgentRequest = EmailRendererRequestModel(
+      val expectedAgentRequest = EmailRequestModel(
         Seq(messageModel.getTransactorDetails.transactorEmail),
         "newMessageAlert_VRT12B",
         Map(
@@ -53,7 +53,7 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
         )
       )
 
-      val expectedClientRequest = EmailRendererRequestModel(
+      val expectedClientRequest = EmailRequestModel(
         Seq(messageModel.getCustomerDetails.customerEmail),
         "newMessageAlert_VRT1214C",
         Map(
@@ -61,11 +61,11 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
         )
       )
 
-      (mockConnector.sendEmailRequest(_: EmailRendererRequestModel)(_: ExecutionContext))
+      (mockConnector.sendEmailRequest(_: EmailRequestModel)(_: ExecutionContext))
         .expects(expectedClientRequest, *)
         .returning(Future.successful(Right(EmailRendererResponseModel(ACCEPTED))))
 
-      (mockConnector.sendEmailRequest(_: EmailRendererRequestModel)(_: ExecutionContext))
+      (mockConnector.sendEmailRequest(_: EmailRequestModel)(_: ExecutionContext))
         .expects(expectedAgentRequest, *)
         .returning(Future.successful(Right(EmailRendererResponseModel(ACCEPTED))))
 
@@ -105,7 +105,7 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
   }
 
   "toRequest" should {
-    "return an EmailRendererRequestModel" when {
+    "return an EmailRequestModel" when {
       "a valid client template id is used" in {
         val templateId = CLIENT_NOTIFICATION_SELF_CHANGE
         val modelTemplateId = "VRT12A"
@@ -115,7 +115,7 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
           "recipientName_line1" -> mModel.getBusinessName
         )
 
-        service.toRequest(templateId, mModel) shouldBe Right(EmailRendererRequestModel(Seq("some@email.co.uk"), templateId, params))
+        service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("some@email.co.uk"), templateId, params))
       }
       "a valid agent template id is used" in {
         val templateId = AGENT_NOTIFICATION_CHANGE_ACCEPTED
@@ -128,7 +128,7 @@ class EmailRendererServiceSpec extends BaseSpec with MockFactory {
           "clientVrn" -> mModel.getVrn
         )
 
-        service.toRequest(templateId, mModel) shouldBe Right(EmailRendererRequestModel(Seq("agent@email.me.no"), templateId, params))
+        service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("agent@email.me.no"), templateId, params))
       }
     }
     "return an ErrorModel" when {

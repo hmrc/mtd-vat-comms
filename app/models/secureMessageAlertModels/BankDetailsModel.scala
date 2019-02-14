@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import play.api.libs.json.{Json, OFormat}
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}

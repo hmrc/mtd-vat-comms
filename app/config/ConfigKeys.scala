@@ -19,17 +19,18 @@ object ConfigKeys {
 
   val failureRetryAfterProperty: String = "queue.retryAfter"
 
-  val desProtocol: String = "microservice.services.secureComms.protocol"
-  val desHost: String = "microservice.services.secureComms.host"
-  val desPort: String = "microservice.services.secureComms.port"
+  val secureMessageAlertProtocol: String = "microservice.services.des.protocol"
+  val secureMessageAlertHost: String = "microservice.services.des.host"
+  val secureMessageAlertPort: String = "microservice.services.des.port"
+
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
   val queueToggleProperty: String = "queue.toggle"
 
 
-  val emailRendererProtocol: String = "microservice.services.emailRenderer.protocol"
-  val emailRendererHost: String = "microservice.services.emailRenderer.host"
-  val emailRendererPort: String = "microservice.services.emailRenderer.port"
+  val emailServiceProtocol: String = "microservice.services.emailService.protocol"
+  val emailServiceHost: String = "microservice.services.emailService.host"
+  val emailServicePort: String = "microservice.services.emailService.port"
 
   val secureCommsServiceProtocol: String = "microservice.services.secureCommsService.protocol"
   val secureCommsServiceHost: String = "microservice.services.secureCommsService.host"

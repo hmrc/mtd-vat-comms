@@ -19,7 +19,7 @@ package connectors
 import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
-import models.emailRendererModels.EmailRendererRequestModel
+import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
@@ -28,19 +28,19 @@ import testutils.WireMockHelper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class EmailRendererConnectorIT extends IntegrationBaseSpec with WireMockHelper {
+class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
   val wsClient: WSClient = app.injector.instanceOf(classOf[WSClient])
   val appConfig: AppConfig = app.injector.instanceOf(classOf[AppConfig])
 
-  val connector: EmailRendererConnector = new EmailRendererConnector(wsClient, appConfig)
+  val connector: EmailConnector = new EmailConnector(wsClient, appConfig)
 
   val postUrl: String = "/hmrc/email"
 
   "sendEmailRequest" should {
     "return a EmailRendererResponseModel" when {
       s"an $ACCEPTED response is received from EmailRenderer" in {
-        val postBody = EmailRendererRequestModel(
+        val postBody = EmailRequestModel(
           Seq("fusrohdah@whiterun.tam"),
           "thisIsDefoAnId",
           Map(
@@ -59,7 +59,7 @@ class EmailRendererConnectorIT extends IntegrationBaseSpec with WireMockHelper {
         val expectedResult = Right(EmailRendererResponseModel(ACCEPTED))
 
         val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRendererRequestModel(
+          EmailRequestModel(
             Seq("fusrohdah@whiterun.tam"),
             "thisIsDefoAnId",
             Map(
@@ -73,7 +73,7 @@ class EmailRendererConnectorIT extends IntegrationBaseSpec with WireMockHelper {
     }
     "return an ErrorModel" when {
       s"a $BAD_REQUEST response is received from SecureComms, and the response can be parsed" in {
-        val postBody = EmailRendererRequestModel(
+        val postBody = EmailRequestModel(
           Seq("fusrohdah@whiterun.tam"),
           "thisIsDefoAnId",
           Map(
@@ -94,7 +94,7 @@ class EmailRendererConnectorIT extends IntegrationBaseSpec with WireMockHelper {
         val expectedResult = Left(ErrorModel(BAD_REQUEST.toString, Json.stringify(apiResponse)))
 
         val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRendererRequestModel(
+          EmailRequestModel(
             Seq("fusrohdah@whiterun.tam"),
             "thisIsDefoAnId",
             Map(

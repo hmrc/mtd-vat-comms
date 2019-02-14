@@ -19,20 +19,25 @@ package connectors
 import config.AppConfig
 import javax.inject.Inject
 import models.ErrorModel
-import models.emailRendererModels.EmailRendererRequestModel
+import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import play.api.libs.json.Json
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.http.Status._
+import utils.LoggerUtil.logWarnEitherError
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailRendererConnector @Inject()(wsClient: WSClient, appConfig: AppConfig) {
+class EmailConnector @Inject()(wsClient: WSClient, appConfig: AppConfig) {
 
-  def sendEmailRequest(input: EmailRendererRequestModel)(implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
-    wsClient.url(appConfig.emailRendererUrl)
+  def sendEmailRequest(input: EmailRequestModel)(implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
+    wsClient.url(appConfig.emailServiceUrl)
       .post(Json.toJson(input))
   }.map { response =>
+    logWarnEitherError(handleResponse(response))
+  }
+
+  def handleResponse(response: WSResponse): Either[ErrorModel, EmailRendererResponseModel] = {
     response.status match {
       case ACCEPTED => Right(EmailRendererResponseModel(ACCEPTED))
       case _ => Left(ErrorModel(response.status.toString, response.body))

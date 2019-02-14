@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
-import base.BaseSpec
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{Json, OFormat}
 
-class TransactorModelSpec extends BaseSpec {
-  val expectedModel: TransactorModel = TransactorModel(
-    "dovah@whiterun.co.uk", "Dovah Kin"
-  )
+case class AddressDetailsModel(
+                           addressLine1: String,
+                           addressLine2: String,
+                           addressLine3: String,
+                           addressLine4: String,
+                           addressLine5: String,
+                           postCode: String,
+                           countryName: String
+                         )
 
-  val validJson: JsObject = Json.obj(
-    "transactorEmail" -> "dovah@whiterun.co.uk",
-    "transactorName" -> "Dovah Kin"
-  )
-
-  "Transactor model" should {
-    "parse from the correct json structure" in {
-      validJson.as[TransactorModel] shouldBe expectedModel
-    }
-  }
+object AddressDetailsModel {
+  implicit val formats: OFormat[AddressDetailsModel] = Json.format[AddressDetailsModel]
 }

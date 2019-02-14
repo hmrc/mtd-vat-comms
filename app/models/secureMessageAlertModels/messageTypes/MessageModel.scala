@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels.messageTypes
+package models.secureMessageAlertModels.messageTypes
 
-import models.secureCommsModels._
+import models.secureMessageAlertModels._
 
 class MessageModel(
                     templateId: String,

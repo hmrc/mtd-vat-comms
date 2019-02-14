@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import base.BaseSpec
-import models.secureCommsModels.messageTypes._
+import models.secureMessageAlertModels.messageTypes._
 import utils.SecureCommsMessageTestData.JsonModelForModels._
 import utils.SecureCommsMessageTestData.ResponseAsModel._
 

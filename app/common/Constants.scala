@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils
+package common
 
 object Constants {
 

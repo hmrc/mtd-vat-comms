@@ -16,18 +16,18 @@
 
 package services
 
-import connectors.EmailRendererConnector
+import connectors.EmailConnector
 import javax.inject.Inject
 import models.ErrorModel
-import models.emailRendererModels.EmailRendererRequestModel
+import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
-import models.secureCommsModels.messageTypes.MessageModel
+import models.secureMessageAlertModels.messageTypes.MessageModel
 import play.api.http.Status.ACCEPTED
-import utils.Constants.TemplateIdReadableNames._
+import common.Constants.TemplateIdReadableNames._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailRendererService @Inject()(emailRendererConnector: EmailRendererConnector) {
+class EmailService @Inject()(emailRendererConnector: EmailConnector) {
 
   def sendEmailRequest(message: MessageModel)(implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
     Future.sequence(mapTemplateId(message.getTemplateId).map { templateId =>
@@ -75,7 +75,7 @@ class EmailRendererService @Inject()(emailRendererConnector: EmailRendererConnec
     allTemplateIds(input)
   }
 
-  def toRequest(templateId: String, messageModel: MessageModel): Either[ErrorModel, EmailRendererRequestModel] = {
+  def toRequest(templateId: String, messageModel: MessageModel): Either[ErrorModel, EmailRequestModel] = {
     try {
 
       val notificationDependentDetails: (String, Map[String, String]) = templateId match {
@@ -95,7 +95,7 @@ class EmailRendererService @Inject()(emailRendererConnector: EmailRendererConnec
           )
       }
 
-      Right(EmailRendererRequestModel(Seq(notificationDependentDetails._1), templateId, notificationDependentDetails._2))
+      Right(EmailRequestModel(Seq(notificationDependentDetails._1), templateId, notificationDependentDetails._2))
     } catch {
       case error: Throwable => Left(ErrorModel("ERROR_CREATING_REQUEST", error.getMessage))
     }

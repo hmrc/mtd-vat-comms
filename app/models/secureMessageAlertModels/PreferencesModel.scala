@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CustomerModel(
-                          customerEmail: String,
-                          customerEmailStatus: String
-                        )
+case class PreferencesModel(
+                             notificationPreference: String,
+                             channelPreference: String,
+                             languagePreference: String,
+                             formatPreference: String
+                           )
 
-object CustomerModel {
-  implicit val formats: OFormat[CustomerModel] = Json.format[CustomerModel]
+object PreferencesModel {
+  implicit val formats: OFormat[PreferencesModel] = Json.format[PreferencesModel]
 }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}
-import utils.Constants.EmailStatus._
+import common.Constants.EmailStatus._
 
 class CustomerModelSpec extends BaseSpec {
   val expectedModel: CustomerModel = CustomerModel(

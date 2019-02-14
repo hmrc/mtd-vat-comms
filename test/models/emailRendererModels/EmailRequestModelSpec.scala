@@ -19,7 +19,7 @@ package models.emailRendererModels
 import base.BaseSpec
 import play.api.libs.json.Json
 
-class EmailRendererRequestModelSpec extends BaseSpec{
+class EmailRequestModelSpec extends BaseSpec{
 
   val emailToUse = Seq("thisAnEmailYo@sup.sweet.dude")
   val templateId = "thisBeAnIdMaMan"
@@ -28,7 +28,7 @@ class EmailRendererRequestModelSpec extends BaseSpec{
     "num2" -> "ello"
   )
 
-  "EmailRendererRequestModel" should {
+  "EmailRequestModel" should {
     "correctly render as Json" in {
       val validJson1 = Json.toJson(Json.obj(
         "to" -> emailToUse,
@@ -43,10 +43,10 @@ class EmailRendererRequestModelSpec extends BaseSpec{
         "force" -> true
       ))
 
-      val result1 = Json.toJson(EmailRendererRequestModel(
+      val result1 = Json.toJson(EmailRequestModel(
         emailToUse, templateId, params
       ))
-      val result2 = Json.toJson(EmailRendererRequestModel(
+      val result2 = Json.toJson(EmailRequestModel(
         emailToUse, templateId, params, force = true
       ))
 
@@ -68,13 +68,13 @@ class EmailRendererRequestModelSpec extends BaseSpec{
         "force" -> true
       ))
 
-      val result1 = validJson1.validate[EmailRendererRequestModel]
-      val result2 = validJson2.validate[EmailRendererRequestModel]
+      val result1 = validJson1.validate[EmailRequestModel]
+      val result2 = validJson2.validate[EmailRequestModel]
 
-      result1.get shouldBe EmailRendererRequestModel(
+      result1.get shouldBe EmailRequestModel(
         emailToUse, templateId, params
       )
-      result2.get shouldBe EmailRendererRequestModel(
+      result2.get shouldBe EmailRequestModel(
         emailToUse, templateId, params, force = true
       )
     }

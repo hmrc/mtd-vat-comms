@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels.messageTypes
+package models.secureMessageAlertModels.messageTypes
 
-import models.secureCommsModels.{BankDetailsModel, CustomerModel, PreferencesModel, TransactorModel}
+import models.secureMessageAlertModels.{BankDetailsModel, CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
 case class RepaymentsBankAccountChangeModel(

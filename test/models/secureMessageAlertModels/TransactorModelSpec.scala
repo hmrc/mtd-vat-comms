@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels
+package models.secureMessageAlertModels
 
 import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}
 
-class BankDetailsModelSpec extends BaseSpec {
-  val expectedModel: BankDetailsModel = BankDetailsModel(
-    "Bank of Tamriel", "1029384756", "11-11-11"
+class TransactorModelSpec extends BaseSpec {
+  val expectedModel: TransactorModel = TransactorModel(
+    "dovah@whiterun.co.uk", "Dovah Kin"
   )
 
   val validJson: JsObject = Json.obj(
-    "bankAccountName" -> "Bank of Tamriel",
-    "bankAccountNumber" -> "1029384756",
-    "bankSortCode" -> "11-11-11"
+    "transactorEmail" -> "dovah@whiterun.co.uk",
+    "transactorName" -> "Dovah Kin"
   )
 
-  "Bank Details model" should {
+  "Transactor model" should {
     "parse from the correct json structure" in {
-      validJson.as[BankDetailsModel] shouldBe expectedModel
+      validJson.as[TransactorModel] shouldBe expectedModel
     }
   }
 }

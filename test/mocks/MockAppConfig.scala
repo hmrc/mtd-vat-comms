@@ -28,7 +28,7 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val desHost: String = "localhost"
   override val desPort: String = "11111"
 
-  def desUrl(service: String, regNumber: String, communicationId: String): String =
+  def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
     s"$desProtocol://$desHost:$desPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
 
@@ -36,10 +36,10 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val queuePollingWaitTime: Int = 1
   override val initialWaitTime: Int = 0
   override val failureRetryAfterProperty: String = "queue.retryAfter"
-  override val emailRendererProtocol: String = "http"
-  override val emailRendererHost: String = "localhost"
-  override val emailRendererPort: String = "11111"
-  override val emailRendererUrl: String = s"$desProtocol://$desHost:$desPort/hmrc/email"
+  override val emailServiceProtocol: String = "http"
+  override val emailServiceHost: String = "localhost"
+  override val emailServicePort: String = "11111"
+  override val emailServiceUrl: String = s"$desProtocol://$desHost:$desPort/hmrc/email"
 
   override val secureCommsServiceProtocol: String = "http"
   override val secureCommsServiceHost: String = "localhost"

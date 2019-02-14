@@ -18,12 +18,12 @@ package models.emailRendererModels
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EmailRendererRequestModel(
+case class EmailRequestModel(
                                       to: Seq[String],
                                       templateId: String,
                                       parameters: Map[String, String],
                                       force: Boolean = false)
 
-object EmailRendererRequestModel {
-  implicit val formats: OFormat[EmailRendererRequestModel] = Json.format[EmailRendererRequestModel]
+object EmailRequestModel {
+  implicit val formats: OFormat[EmailRequestModel] = Json.format[EmailRequestModel]
 }

@@ -16,6 +16,7 @@
 
 package utils
 
+import models.ErrorModel
 import play.api.Logger
 
 // $COVERAGE-OFF$
@@ -27,6 +28,15 @@ object LoggerUtil {
   def logWarn(content: String): Unit = Logger.warn(content)
   def logError(content: String): Unit = Logger.error(content)
   def logError(content: String, throwable: Throwable): Unit = Logger.error(content, throwable)
+
+  def logWarnEitherError[T](content: Either[ErrorModel, T]): Either[ErrorModel, T] = {
+    if(content.isLeft) {
+      val leftValue = content.left.get
+      logWarn(s"${leftValue.code} => ${leftValue.body}")
+    }
+    content
+  }
+
 }
 
 // $COVERAGE-ON$

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.secureCommsModels.messageTypes
+package models.secureMessageAlertModels.messageTypes
 
-import models.secureCommsModels.{CustomerModel, PreferencesModel, TransactorModel}
+import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
 case class VATStaggerChangeModel(
