@@ -19,43 +19,25 @@ package controllers
 import base.BaseSpec
 import common.ApiConstants._
 import common.VatChangeEventConstants._
-import mocks.MockCommsEventService
 import models.VatChangeEvent
-import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT}
+import play.api.http.Status.{BAD_REQUEST, NO_CONTENT}
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
 
-import scala.concurrent.Future
+class BusinessNameControllerSpec extends BaseSpec {
 
-class BusinessNameControllerSpec extends BaseSpec with MockCommsEventService {
-
-  val controller = new BusinessNameController(mockCommsEventService)
+  val controller = new BusinessNameController()
 
   val testRequestJson: JsObject        = vatChangeEventJson("Business Name Change")
   val testRequestModel: VatChangeEvent = vatChangeEventModel("Business Name Change")
 
   "The handleEvent action" when {
 
-    "valid JSON is received" when {
+    "valid JSON is received" should {
 
-      "the vat change event was successfully added to the queue" should {
-
-        "return 204" in {
-          mockQueueRequest(testRequestModel)(Future.successful(true))
-          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
-
-          status(result) shouldBe NO_CONTENT
-        }
-      }
-
-      "the vat change event was unsuccessfully added to the queue" should {
-
-        "return 500" in {
-          mockQueueRequest(testRequestModel)(Future.successful(false))
-          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
-
-          status(result) shouldBe INTERNAL_SERVER_ERROR
-        }
+      "return 204" in {
+        val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+        status(result) shouldBe NO_CONTENT
       }
     }
 

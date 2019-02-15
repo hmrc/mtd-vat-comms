@@ -26,21 +26,12 @@ import utils.LoggerUtil
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class BusinessNameController @Inject()(repoAccess: CommsEventService)(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
+class BusinessNameController @Inject()()(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
 
-  def handleEvent: Action[AnyContent] = Action.async { implicit request =>
-
+  def handleEvent: Action[AnyContent] = Action { implicit request =>
     parseJsonBody[VatChangeEvent] match {
-      case Right(workItem) =>
-        repoAccess.queueRequest(workItem) map {
-          case true  => NoContent
-          case false =>
-            LoggerUtil.logWarn(s"[BusinessNameController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
-            InternalServerError
-        }
-
-      case Left(error) =>
-        Future.successful(BadRequest(Json.toJson(error)))
+      case Right(_) => NoContent
+      case Left(error) => BadRequest(Json.toJson(error))
     }
   }
 }
