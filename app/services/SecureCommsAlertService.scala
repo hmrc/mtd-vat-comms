@@ -33,7 +33,7 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
           case Some(parsedModel) => Right(parsedModel)
           case None => Left(GenericParsingError)
         }
-        case Left(JsonParsingError) => Left(JsonParsingError)
+        case Left(_) => Left(JsonParsingError)
       }
       case Left(error) => Left(error)
     }
