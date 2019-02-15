@@ -57,7 +57,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
       secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
     secureCommsModel.flatMap {
       case Right(model) =>
-        if(model.transactorDetails.transactorEmail.nonEmpty) {
+        if(model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
           emailMessageService.queueRequest(model).flatMap {
             case true =>
               secureMessageService.queueRequest(model)
@@ -79,4 +79,3 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
     }
   }
 }
-

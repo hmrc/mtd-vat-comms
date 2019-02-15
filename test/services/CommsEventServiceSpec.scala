@@ -51,29 +51,44 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         "the email queue repository is successfully populated" should {
 
           "also populate the secure message repository" in new TestSetup {
-            secureCommsAlertMock(Right(expectedResponseEverything))
-            when(emailMessageService.queueRequest(expectedResponseEverything)).thenReturn(Future(true))
-            when(secureMessageService.queueRequest(expectedResponseEverything)).thenReturn(Future(true))
+            secureCommsAlertMock(Right(expectedResponseStagger))
+            when(emailMessageService.queueRequest(expectedResponseStagger)).thenReturn(Future(true))
+            when(secureMessageService.queueRequest(expectedResponseStagger)).thenReturn(Future(true))
             completeItemMock(true)
 
             await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(emailMessageService, times(1)).queueRequest(expectedResponseEverything)
-            verify(secureMessageService, times(1)).queueRequest(expectedResponseEverything)
+            verify(emailMessageService, times(1)).queueRequest(expectedResponseStagger)
+            verify(secureMessageService, times(1)).queueRequest(expectedResponseStagger)
           }
         }
 
         "the email queue repository is not able to be populated" should {
 
           "mark the item as failed and not attempt to populate the secure message repository" in new TestSetup {
-            secureCommsAlertMock(Right(expectedResponseEverything))
-            when(emailMessageService.queueRequest(expectedResponseEverything)).thenReturn(Future(false))
+            secureCommsAlertMock(Right(expectedResponseStagger))
+            when(emailMessageService.queueRequest(expectedResponseStagger)).thenReturn(Future(false))
             markItemAsFailedMock
 
             await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
             verify(secureMessageService, never()).queueRequest(any())
           }
+        }
+      }
+
+      "there is an original client email in the model indicating a change of email" should {
+
+        "populate both the email repository and secure message repository" in new TestSetup {
+          secureCommsAlertMock(Right(expectedResponseEmailChange))
+          when(emailMessageService.queueRequest(expectedResponseEmailChange)).thenReturn(Future(true))
+          when(secureMessageService.queueRequest(expectedResponseEmailChange)).thenReturn(Future(true))
+          completeItemMock(true)
+
+          await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+          verify(emailMessageService, times(1)).queueRequest(expectedResponseEmailChange)
+          verify(secureMessageService, times(1)).queueRequest(expectedResponseEmailChange)
         }
       }
 

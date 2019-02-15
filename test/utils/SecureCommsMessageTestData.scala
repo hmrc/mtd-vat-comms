@@ -135,8 +135,8 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
+      TRANSACTOR_EMAIL -> "",
+      TRANSACTOR_NAME -> "",
       O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
       C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
@@ -248,7 +248,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("dragonborn@winterhold.tam"),
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -430,8 +430,8 @@ object SecureCommsMessageTestData {
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "",
+        TRANSACTOR_NAME -> ""
       ),
       CUSTOMER_DETAILS -> Json.obj(
         C_EMAIL -> "info@CoCHoldings.co.uk",
@@ -517,7 +517,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       "dragonborn@winterhold.tam"
