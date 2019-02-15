@@ -43,7 +43,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.mockito"            %  "mockito-core"                 % "2.24.0"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope
+  "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope,
+  "org.jsoup"              %  "jsoup"                        % "1.10.3"            % scope
 
 
 )
@@ -63,7 +64,8 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "config.*",
     "testOnly.*",
     ".*feedback*.*",
-    "partials.*"
+    "partials.*",
+    "views.html.templates.*"
   )
 
   Seq(

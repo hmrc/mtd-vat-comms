@@ -46,6 +46,14 @@ trait AppConfig extends ServicesConfig {
   val secureCommsServiceHost: String
   val secureCommsServicePort: String
   val secureCommsServiceUrl: String
+
+  val tribunalUrl: String
+
+  val manageVatSubscriptionFrontendProtocol: String
+  val manageVatSubscriptionFrontendHost: String
+  val manageVatSubscriptionFrontendPort: String
+  val manageVatSubscriptionFrontendUri: String
+  def changeBusinessDetailsUrl: String
 }
 
 @Singleton
@@ -77,7 +85,6 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
 
-
   lazy val emailServiceProtocol: String = runModeConfiguration.getString(Keys.emailServiceProtocol).getOrElse("http")
   lazy val emailServiceHost: String = runModeConfiguration.getString(Keys.emailServiceHost).getOrElse("localhost")
   lazy val emailServicePort: String = runModeConfiguration.getString(Keys.emailServicePort).getOrElse("8300")
@@ -87,4 +94,20 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   override val secureCommsServiceHost: String = runModeConfiguration.getString(Keys.secureCommsServiceHost).getOrElse("localhost")
   override val secureCommsServicePort: String = runModeConfiguration.getString(Keys.secureCommsServicePort).getOrElse("9175")
   override val secureCommsServiceUrl: String = s"$secureCommsServiceProtocol://$secureCommsServiceHost:$secureCommsServicePort/messages"
+
+  lazy val tribunalUrl: String = runModeConfiguration.getString(Keys.tribunalUrl).getOrElse(
+    "https://www.gov.uk/tax-tribunal/appeal-to-tribunal")
+
+  lazy val manageVatSubscriptionFrontendProtocol: String = runModeConfiguration
+    .getString(Keys.manageVatSubscriptionProtocol).getOrElse("http")
+
+  lazy val manageVatSubscriptionFrontendHost: String = runModeConfiguration
+    .getString(Keys.manageVatSubscriptionHost).getOrElse("localhost")
+  lazy val manageVatSubscriptionFrontendPort: String = runModeConfiguration
+    .getString(Keys.manageVatSubscriptionPort).getOrElse("9150")
+  lazy val manageVatSubscriptionFrontendUri: String = runModeConfiguration
+    .getString(Keys.manageVatSubscriptionUri).getOrElse("/vat-through-software/account/change-business-details")
+
+  def changeBusinessDetailsUrl: String = s"$manageVatSubscriptionFrontendProtocol://" +
+    s"$manageVatSubscriptionFrontendHost:$manageVatSubscriptionFrontendPort$manageVatSubscriptionFrontendUri"
 }

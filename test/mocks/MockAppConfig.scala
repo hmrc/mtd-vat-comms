@@ -45,4 +45,12 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val secureCommsServiceHost: String = "localhost"
   override val secureCommsServicePort: String = "11111"
   override val secureCommsServiceUrl: String = s"$secureCommsServiceProtocol://$secureCommsServiceHost:$secureCommsServicePort/messages"
+
+  override val tribunalUrl: String = "https://www.gov.uk/tax-tribunal/appeal-to-tribunal"
+  override val manageVatSubscriptionFrontendProtocol: String = "http"
+  override val manageVatSubscriptionFrontendHost: String = "localhost"
+  override val manageVatSubscriptionFrontendPort: String = "11111"
+  override val manageVatSubscriptionFrontendUri: String = "/vat-through-software/account/change-business-details"
+  override val changeBusinessDetailsUrl: String =
+    "http://localhost:9150/vat-through-software/account/change-business-details"
 }
