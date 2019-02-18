@@ -1,0 +1,33 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@()(implicit request: Request[_], messages: Messages)
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <h2 class="heading-large">@messages("staggerRejected.title")</h2>
+        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
+        <p>@messages("staggerRejected.p1")</p>
+        <p>@messages("common.standardReject")</p>
+        <p>
+            @messages("common.hmrcAddressLine1")<br>
+            @messages("common.hmrcAddressLine2")<br>
+            @messages("common.hmrcAddressLine3")<br>
+            @messages("common.hmrcAddressLine4")<br>
+            @messages("common.hmrcAddressPostcode")
+        </p>
+    </div>
+</div>

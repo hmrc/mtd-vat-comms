@@ -27,9 +27,9 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
 val compile = Seq(
   ws,
-  "uk.gov.hmrc" %% "play-reactivemongo" % "6.2.0",
+  "uk.gov.hmrc" %% "play-reactivemongo" % "6.4.0",
   "uk.gov.hmrc" %% "work-item-repo"     % "5.2.0",
-  "uk.gov.hmrc" %% "bootstrap-play-25"  % "4.8.0",
+  "uk.gov.hmrc" %% "bootstrap-play-25"  % "4.9.0",
   "uk.gov.hmrc" %% "play-scheduling"    % "4.1.0"
 )
 
@@ -43,7 +43,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.mockito"            %  "mockito-core"                 % "2.24.0"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope
+  "uk.gov.hmrc"            %% "reactivemongo-test"           % "3.1.0"             % scope,
+  "org.jsoup"              %  "jsoup"                        % "1.11.3"            % scope
 
 
 )
