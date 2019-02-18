@@ -27,19 +27,25 @@ trait AppConfig extends ServicesConfig {
 
   val retryIntervalMillis: Long
 
-  val secureCommsProtocol: String
-  val secureCommsHost: String
-  val secureCommsPort: String
-  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String
+  val desProtocol: String
+  val desHost: String
+  val desPort: String
+  def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String
+
   val queuePollingWaitTime: Int
   val initialWaitTime: Int
   val pollingToggle: Boolean
   val failureRetryAfterProperty: String
 
-  val emailRendererProtocol: String
-  val emailRendererHost: String
-  val emailRendererPort: String
-  val emailRendererUrl: String
+  val emailServiceProtocol: String
+  val emailServiceHost: String
+  val emailServicePort: String
+  val emailServiceUrl: String
+
+  val secureCommsServiceProtocol: String
+  val secureCommsServiceHost: String
+  val secureCommsServicePort: String
+  val secureCommsServiceUrl: String
 }
 
 @Singleton
@@ -57,11 +63,11 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(failureRetryAfterProperty)
     .getOrElse(throw new RuntimeException(s"$failureRetryAfterProperty not specified"))
 
-  lazy val secureCommsProtocol: String = runModeConfiguration.getString(Keys.secureCommsProtocol).getOrElse("http")
-  lazy val secureCommsHost: String = runModeConfiguration.getString(Keys.secureCommsHost).getOrElse("localhost")
-  lazy val secureCommsPort: String = runModeConfiguration.getString(Keys.secureCommsPort).getOrElse("9068")
-  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
-    s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
+  lazy val desProtocol: String = runModeConfiguration.getString(Keys.secureMessageAlertProtocol).getOrElse("http")
+  lazy val desHost: String = runModeConfiguration.getString(Keys.secureMessageAlertHost).getOrElse("localhost")
+  lazy val desPort: String = runModeConfiguration.getString(Keys.secureMessageAlertPort).getOrElse("9175")
+  def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
+    s"$desProtocol://$desHost:$desPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
 
   lazy val queuePollingWaitTime: Int = runModeConfiguration.getInt(queuePollingWaitTimeProperty)
@@ -72,8 +78,13 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   lazy val pollingToggle: Boolean = runModeConfiguration.getBoolean(queueToggleProperty).getOrElse(true)
 
 
-  lazy val emailRendererProtocol: String = runModeConfiguration.getString(Keys.emailRendererProtocol).getOrElse("http")
-  lazy val emailRendererHost: String = runModeConfiguration.getString(Keys.emailRendererHost).getOrElse("localhost")
-  lazy val emailRendererPort: String = runModeConfiguration.getString(Keys.emailRendererPort).getOrElse("8300")
-  lazy val emailRendererUrl: String = s"$emailRendererProtocol://$emailRendererHost:$emailRendererPort/hmrc/email"
+  lazy val emailServiceProtocol: String = runModeConfiguration.getString(Keys.emailServiceProtocol).getOrElse("http")
+  lazy val emailServiceHost: String = runModeConfiguration.getString(Keys.emailServiceHost).getOrElse("localhost")
+  lazy val emailServicePort: String = runModeConfiguration.getString(Keys.emailServicePort).getOrElse("8300")
+  lazy val emailServiceUrl: String = s"$emailServiceProtocol://$emailServiceHost:$emailServicePort/hmrc/email"
+
+  override val secureCommsServiceProtocol: String = runModeConfiguration.getString(Keys.secureCommsServiceProtocol).getOrElse("http")
+  override val secureCommsServiceHost: String = runModeConfiguration.getString(Keys.secureCommsServiceHost).getOrElse("localhost")
+  override val secureCommsServicePort: String = runModeConfiguration.getString(Keys.secureCommsServicePort).getOrElse("9175")
+  override val secureCommsServiceUrl: String = s"$secureCommsServiceProtocol://$secureCommsServiceHost:$secureCommsServicePort/messages"
 }

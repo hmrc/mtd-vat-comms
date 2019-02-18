@@ -24,20 +24,25 @@ class MockAppConfig(val runModeConfiguration: Configuration,
                     val mode: Mode = Mode.Test,
                     override val pollingToggle: Boolean = false) extends AppConfig {
 
-  override val secureCommsProtocol: String = "http"
-  override val secureCommsHost: String = "localhost"
-  override val secureCommsPort: String = "11111"
+  override val desProtocol: String = "http"
+  override val desHost: String = "localhost"
+  override val desPort: String = "11111"
 
-  def secureCommsUrl(service: String, regNumber: String, communicationId: String): String =
-    s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/secure-comms-alert/" +
+  def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
+    s"$desProtocol://$desHost:$desPort/secure-comms-alert/" +
       s"service/$service/registration-number/$regNumber/communications/$communicationId"
 
   override val retryIntervalMillis: Long = 10000L
   override val queuePollingWaitTime: Int = 1
   override val initialWaitTime: Int = 0
   override val failureRetryAfterProperty: String = "queue.retryAfter"
-  override val emailRendererProtocol: String = "http"
-  override val emailRendererHost: String = "localhost"
-  override val emailRendererPort: String = "11111"
-  override val emailRendererUrl: String = s"$secureCommsProtocol://$secureCommsHost:$secureCommsPort/hmrc/email"
+  override val emailServiceProtocol: String = "http"
+  override val emailServiceHost: String = "localhost"
+  override val emailServicePort: String = "11111"
+  override val emailServiceUrl: String = s"$desProtocol://$desHost:$desPort/hmrc/email"
+
+  override val secureCommsServiceProtocol: String = "http"
+  override val secureCommsServiceHost: String = "localhost"
+  override val secureCommsServicePort: String = "11111"
+  override val secureCommsServiceUrl: String = s"$secureCommsServiceProtocol://$secureCommsServiceHost:$secureCommsServicePort/messages"
 }

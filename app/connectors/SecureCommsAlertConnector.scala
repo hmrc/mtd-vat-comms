@@ -22,7 +22,7 @@ import models._
 import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponseModel}
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{WSClient, WSResponse}
 import utils.LoggerUtil._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,29 +32,33 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
-    val url = appConfig.secureCommsUrl(service, regNumber, communicationId)
+    val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
     wsClient.url(url).get().map { response =>
-      response.status match {
-        case OK => Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
-          case Some(responseModel) => Right(responseModel)
-          case None =>
+      logWarnEitherError(handleResponse(response))
+    }
+  }
+
+  def handleResponse(response: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
+    response.status match {
+      case OK => Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
+        case Some(responseModel) => Right(responseModel)
+        case None =>
             logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
               "Failed to validate response to SecureCommsResponseModel")
             logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
             Left(UnableToParseSecureCommsResponseError)
-        }
-        case BAD_REQUEST => Json.parse(response.body).validate[SecureCommsErrorResponseModel].asOpt match {
-          case Some(error) => Left(ErrorModel(error.code, error.reason))
-          case None =>
+      }
+      case BAD_REQUEST => Json.parse(response.body).validate[SecureCommsErrorResponseModel].asOpt match {
+        case Some(error) => Left(ErrorModel(error.code, error.reason))
+        case None =>
             logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
               s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${response.body}'")
             Left(UnableToParseSecureCommsErrorResponseError)
-        }
-        case status: Int =>
+      }
+      case status: Int =>
           logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
             s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
           Left(ErrorModel(s"${response.status}", response.body))
-      }
     }
   }
 }

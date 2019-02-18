@@ -34,3 +34,10 @@ object JsonParsingError extends ErrorModel("ERROR_PARSING", "Unable to parse Sec
 
 object UnableToParseSecureCommsResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned response from SecureComms.")
 object UnableToParseSecureCommsErrorResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned error response from SecureComms.")
+
+object BadRequestUnknownTaxIdentifier extends ErrorModel("BAD_REQUEST", "Unknown tax identifier name XYZ")
+object NotFoundUnknownReason extends ErrorModel("NOT_FOUND", "Unknown reason for status. Check logs.")
+object NotFoundMissingTaxpayer extends ErrorModel("NOT_FOUND", "Taxpayer not found")
+object NotFoundUnverifiedEmail extends ErrorModel("NOT_FOUND", "Email not verified")
+object ConflictDuplicateMessage extends ErrorModel("CONFLICT", "Duplicate Message")
+object UnableToParseSecureCommsServiceResponse extends ErrorModel("ERROR_PARSING", "Unable to parse response received from the Secure Comms service")
