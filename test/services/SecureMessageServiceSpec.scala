@@ -17,6 +17,7 @@
 package services
 
 import base.BaseSpec
+import metrics.QueueMetrics
 import models.SecureCommsMessageModel
 import org.joda.time.{DateTime, DateTimeZone}
 import org.mockito.ArgumentMatchers.any
@@ -25,29 +26,31 @@ import org.scalatest.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.workitem.{InProgress, WorkItem}
-import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
+import utils.SecureCommsMessageTestData.Responses.expectedResponsePPOBChange
 
 import scala.concurrent.Future
 
 class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
-  "EmailMessageService" should {
+  "SecureMessageService" should {
 
     "queue a request when calling queueRequest" in new TestSetup {
-      await(secureMessageService.queueRequest(exampleSecureCommsModel)) shouldBe true
+      await(secureMessageService.queueRequest(exampleSecureMessagesModel)) shouldBe true
     }
   }
 
   trait TestSetup {
 
     val now: DateTime = new DateTime(0, DateTimeZone.UTC)
-    val exampleSecureCommsModel: SecureCommsMessageModel = expectedResponseEverything
+    val exampleSecureMessagesModel: SecureCommsMessageModel = expectedResponsePPOBChange
     val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
-      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleSecureCommsModel)
+      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleSecureMessagesModel)
     val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
+    val metrics: QueueMetrics = mock[QueueMetrics]
+    val secureCommsService: SecureCommsService = mock[SecureCommsService]
 
     when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
 
-    lazy val secureMessageService = new SecureMessageService(queue)
+    lazy val secureMessageService = new SecureMessageService(queue, secureCommsService, metrics)
   }
 }
