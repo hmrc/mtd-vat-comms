@@ -54,7 +54,7 @@ class VatPPOBRejectedViewSpec extends ViewBaseSpec {
 
     "have a link to change business details in manage vat subscription frontend" in {
       elementAttributes("div.grid-row > div > p:nth-child(5) > a")(document)("href") shouldBe
-        "http://localhost:9150/vat-through-software/account/change-business-details"
+        "/vat-through-software/account/change-business-details"
     }
 
     "have the correct fourth paragraph" in {

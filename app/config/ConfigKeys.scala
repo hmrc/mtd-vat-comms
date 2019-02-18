@@ -19,26 +19,18 @@ object ConfigKeys {
 
   val failureRetryAfterProperty: String = "queue.retryAfter"
 
-  val secureMessageAlertProtocol: String = "microservice.services.des.protocol"
-  val secureMessageAlertHost: String = "microservice.services.des.host"
-  val secureMessageAlertPort: String = "microservice.services.des.port"
+  val desBase: String = "des"
 
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
   val queueToggleProperty: String = "queue.toggle"
 
-  val emailServiceProtocol: String = "microservice.services.emailService.protocol"
-  val emailServiceHost: String = "microservice.services.emailService.host"
-  val emailServicePort: String = "microservice.services.emailService.port"
+  val emailServiceBase = "emailService"
 
-  val secureCommsServiceProtocol: String = "microservice.services.secureCommsService.protocol"
-  val secureCommsServiceHost: String = "microservice.services.secureCommsService.host"
-  val secureCommsServicePort: String = "microservice.services.secureCommsService.port"
+  val secureCommsServiceBase = "secureCommsService"
 
   val tribunalUrl: String = "govuk.tribunalUrl"
 
-  val manageVatSubscriptionProtocol: String = "microservice.services.manageVatSubscriptionFrontend.protocol"
-  val manageVatSubscriptionHost: String = "microservice.services.manageVatSubscriptionFrontend.host"
-  val manageVatSubscriptionPort: String = "microservice.services.manageVatSubscriptionFrontend.port"
-  val manageVatSubscriptionUri: String = "microservice.services.manageVatSubscriptionFrontend.uri"
+  val manageVatSubscriptionBase = "manageVatSubscriptionFrontend"
+  val manageVatSubscriptionUri: String = "microservice.services.manageVatSubscriptionFrontend.changeBusinessDetailsUri"
 }
