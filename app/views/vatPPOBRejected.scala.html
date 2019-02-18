@@ -14,7 +14,9 @@
  * limitations under the License.
  *@
 
-@(changePPOBLink: String)(implicit request: Request[_], messages: Messages)
+@import config.AppConfig
+
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-two-thirds">
@@ -25,15 +27,17 @@
             <li>@messages("ppobRejected.bullet2")</li>
             <li>@messages("ppobRejected.bullet3")</li>
         </ul>
-        <h2 class="heading-medium">@messages("whatHappensNext")</h2>
-        <p><a href=@changePPOBLink></a>@messages("ppobRejected.link") @messages("ppobRejected.p2")</p>
-        <p>@messages("standardReject")</p>
+        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
         <p>
-            @messages("hmrcAddressLine1")<br>
-            @messages("hmrcAddressLine2")<br>
-            @messages("hmrcAddressLine3")<br>
-            @messages("hmrcAddressLine4")<br>
-            @messages("hmrcAddressPostcode")
+          <a href=@appConfig.changeBusinessDetailsUrl>@messages("ppobRejected.link")</a> @messages("ppobRejected.p2")
+        </p>
+        <p>@messages("common.standardReject")</p>
+        <p>
+            @messages("common.hmrcAddressLine1")<br>
+            @messages("common.hmrcAddressLine2")<br>
+            @messages("common.hmrcAddressLine3")<br>
+            @messages("common.hmrcAddressLine4")<br>
+            @messages("common.hmrcAddressPostcode")
         </p>
     </div>
 </div>

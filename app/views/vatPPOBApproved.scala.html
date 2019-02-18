@@ -23,22 +23,23 @@
     <div class="column-two-thirds">
         <h2 class="heading-medium">@messages("ppobApproved.title")</h2>
         <p>@messages("ppobApproved.p1")</p>
-        <p>@model.addressLine1
-        <br>@model.addressLine2
-            @if(model.addressLine3.isDefined){
-                <br>@model.addressLine3.get
+        <p>
+          @model.addressLine1<br>
+          @model.addressLine2
+            @model.addressLine3.map { line =>
+              <br>@line
             }
-            @if(model.addressLine4.isDefined){
-            <br>@model.addressLine4.get
+            @model.addressLine4.map { line =>
+              <br>@line
             }
-            @if(model.addressLine5.isDefined){
-            <br>@model.addressLine5.get
+            @model.addressLine5.map { line =>
+              <br>@line
             }
-            @if(model.postcode.isDefined){
-            <br>@model.postcode.get
+            @model.postcode.map { line =>
+              <br>@line
             }
-            @if(model.country.isDefined){
-            <br>@model.country.get
+            @model.country.map { line =>
+              <br>@line
             }
         </p>
     </div>

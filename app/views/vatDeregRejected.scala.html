@@ -14,27 +14,26 @@
  * limitations under the License.
  *@
 
-@(tribunalUrl: String)(implicit request: Request[_], messages: Messages)
+@import config.AppConfig
+
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-two-thirds">
         <h2 class="heading-medium">@messages("deregRejected.title")</h2>
         <p>@messages("deregRejected.p1")</p>
-        <h2 class="heading-medium">@messages("whatHappensNext")</h2>
+        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
+        <p>@messages("deregRejected.p2")</p>
+        <p>@messages("common.standardReject")</p>
         <p>
-            @messages("deregRejected.p2a")<br>
-            @messages("deregRejected.p2b")
-        </p>
-        <p>@messages("standardReject")</p>
-        <p>
-            @messages("hmrcAddressLine1")<br>
-            @messages("hmrcAddressLine2")<br>
-            @messages("hmrcAddressLine3")<br>
-            @messages("hmrcAddressLine4")<br>
-            @messages("hmrcAddressPostcode")
+            @messages("common.hmrcAddressLine1")<br>
+            @messages("common.hmrcAddressLine2")<br>
+            @messages("common.hmrcAddressLine3")<br>
+            @messages("common.hmrcAddressLine4")<br>
+            @messages("common.hmrcAddressPostcode")
         </p>
         <p>
-            @messages("deregRejected.p3a") <a href="@tribunalUrl">@messages("deregRejected.p3b")</a>
+            @messages("deregRejected.p3a") <a href="@appConfig.tribunalUrl">@messages("deregRejected.p3b")</a>
             @messages("deregRejected.p3c")
         </p>
     </div>

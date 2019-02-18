@@ -14,16 +14,16 @@
  * limitations under the License.
  *@
 
-@import models.viewModels.VatBankDetailsViewModel
-
-@(model: VatBankDetailsViewModel)(implicit request: Request[_], messages: Messages)
+@(accountName: String, sortCode: String, accountNumber: String)(implicit request: Request[_], messages: Messages)
 
 <div class="grid-row">
     <div class="column-two-thirds">
         <h2 class="heading-medium">@messages("bankDetailsApproved.title")</h2>
         <p>@messages("bankDetailsApproved.p1")</p>
-        <p><strong>@messages("bankDetailsApproved.p2")</strong> @model.accountName</p>
-        <p><strong>@messages("bankDetailsApproved.p3")</strong> @model.sortCode</p>
-        <p><strong>@messages("bankDetailsApproved.p4")</strong> @model.accountNumber</p>
+        <p>
+          <strong>@messages("bankDetailsApproved.p2")</strong> @accountName<br>
+          <strong>@messages("bankDetailsApproved.p3")</strong> @sortCode<br>
+          <strong>@messages("bankDetailsApproved.p4")</strong> @accountNumber
+        </p>
     </div>
 </div>

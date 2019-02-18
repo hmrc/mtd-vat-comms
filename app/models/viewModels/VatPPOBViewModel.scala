@@ -22,5 +22,4 @@ case class VatPPOBViewModel(addressLine1: String,
                             addressLine4: Option[String],
                             addressLine5: Option[String],
                             postcode: Option[String],
-                            country: Option[String]
-                            )
+                            country: Option[String])

@@ -16,7 +16,6 @@
 
 package views
 
-import models.viewModels.VatBankDetailsViewModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -24,9 +23,7 @@ class VatBankDetailsRejectedViewSpec extends ViewBaseSpec {
 
   "Rendering the VatBankDetailsRejected secure message content" should {
 
-    val viewModel = VatBankDetailsViewModel("Mickey Flanagan", None, None, Some("Acme Dynamite Solutions"))
-
-    lazy val view = views.html.vatBankDetailsRejected(viewModel)
+    lazy val view = views.html.vatBankDetailsRejected("Mickey Flanagan", "Acme Dynamite Solutions")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -34,35 +31,35 @@ class VatBankDetailsRejectedViewSpec extends ViewBaseSpec {
     }
 
     "have the correct first paragraph" in {
-      elementText("p:nth-child(2)") shouldBe "This is because the bank account name is different from the business name on your VAT certificate."
+      elementText("p:nth-child(2)") shouldBe
+        "This is because the bank account name is different from the business name on your VAT certificate."
     }
 
-    "have the correct account name" in {
-      elementText("p:nth-child(3)") shouldBe "Bank account name: Mickey Flanagan"
-    }
-
-    "have the correct business name" in {
-      elementText("p:nth-child(4)") shouldBe "Business name: Acme Dynamite Solutions"
+    "have the correct user information" in {
+      elementText("p:nth-child(3)") shouldBe
+        "Bank account name: Mickey Flanagan " +
+        "Business name: Acme Dynamite Solutions"
     }
 
     "have the correct second paragraph" in {
-      elementText("p:nth-child(5)") shouldBe "HMRC can only make payments to the bank account that belongs to the registered business."
+      elementText("p:nth-child(4)") shouldBe
+        "HMRC can only make payments to the bank account that belongs to the registered business."
     }
 
     "have the correct second h2" in {
-      elementText("h2:nth-child(6)") shouldBe "What happens next"
+      elementText("h2:nth-child(5)") shouldBe "What happens next"
     }
 
     "have the correct third paragraph" in {
-      elementText("div > div > p:nth-child(7)") shouldBe "If you do not agree with our decision, you can ask for a review by an " +
-        "HMRC officer not previously involved in the matter. If you want a review, you should write to us within 30 " +
-        "days of receiving this message giving the reasons why you do not agree with our decision. Write to:"
+      elementText("div > div > p:nth-child(6)") shouldBe
+        "If you do not agree with our decision, you can ask for a review by an HMRC officer not previously involved " +
+          "in the matter. If you want a review, you should write to us within 30 days of receiving this message " +
+          "giving the reasons why you do not agree with our decision. Write to:"
     }
 
     "have the correct HMRC address as the final paragraph" in {
-      elementText("div > div > p:nth-child(8)") shouldBe "HMRC VAT Registration Service Crown House Birch " +
-        "Street WOLVERHAMPTON WV1 4JX"
-
+      elementText("div > div > p:nth-child(7)") shouldBe
+        "HMRC VAT Registration Service Crown House Birch Street WOLVERHAMPTON WV1 4JX"
     }
   }
 }

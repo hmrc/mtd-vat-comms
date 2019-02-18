@@ -16,9 +16,10 @@
 
 package views
 
-import org.jsoup.Jsoup
+import mocks.MockAppConfig
 import org.jsoup.nodes.{Document, Element}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Configuration
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.inject.Injector
 import play.api.mvc.AnyContentAsEmpty
@@ -33,6 +34,7 @@ trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(injector.instanceOf[Configuration])
 
   def element(cssSelector: String)(implicit document: Document): Element = {
     val elements = document.select(cssSelector)
@@ -52,7 +54,4 @@ trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
     val attributes = element(cssSelector).attributes.asList().asScala.toList
     attributes.map(attribute => (attribute.getKey, attribute.getValue)).toMap
   }
-
-  def formatHtml(markup: String): String = Jsoup.parseBodyFragment(s"\n$markup\n").toString.trim
-
 }
