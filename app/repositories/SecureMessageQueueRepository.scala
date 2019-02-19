@@ -16,7 +16,7 @@
 
 package repositories
 
-import config.AppConfig
+import config.{AppConfig, ConfigKeys}
 import javax.inject.{Inject, Singleton}
 import models.SecureCommsMessageModel
 import org.joda.time.{DateTime, Duration}
@@ -38,7 +38,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
     WorkItem.workItemMongoFormat[SecureCommsMessageModel]
   ) {
 
-  override val inProgressRetryAfterProperty: String = ""
+  override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
   override def now: DateTime = DateTimeUtils.now
 

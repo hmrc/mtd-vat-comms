@@ -16,7 +16,7 @@
 
 package repositories
 
-import config.AppConfig
+import config.{AppConfig, ConfigKeys}
 import javax.inject.{Inject, Singleton}
 import org.joda.time.DateTime
 import play.api.libs.json.{JsObject, Json}
@@ -27,6 +27,7 @@ import models.VatChangeEvent
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -36,7 +37,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     reactiveMongoComponent.mongoConnector.db,
     WorkItem.workItemMongoFormat[VatChangeEvent]) {
 
-  lazy override val inProgressRetryAfterProperty: String = ""
+  lazy override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
   override def now: DateTime = DateTimeUtils.now
 
