@@ -20,6 +20,8 @@ object ConfigKeys {
   val failureRetryAfterProperty: String = "queue.retryAfter"
 
   val desBase: String = "des"
+  val desAuthorisationToken = "microservice.services.des.authorisationToken"
+  val desEnvironment = "microservice.services.des.environment"
 
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
