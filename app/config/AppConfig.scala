@@ -55,8 +55,8 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   private lazy val desBase: String = baseUrl(Keys.desBase)
   override def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
   s"$desBase/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
-  override val desAuthorisationToken: String = runModeConfiguration.getString(Keys.desAuthorisationToken).getOrElse("")
-  override val desEnvironment: String = runModeConfiguration.getString(Keys.desEnvironment).getOrElse("ist0")
+  override val desAuthorisationToken: String = getString(Keys.desAuthorisationToken)
+  override val desEnvironment: String = getString(Keys.desEnvironment)
 
   override lazy val queuePollingWaitTime: Int = getInt(Keys.queuePollingInterval)
 
