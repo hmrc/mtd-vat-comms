@@ -17,10 +17,9 @@ package config
 
 object ConfigKeys {
 
-  val failureRetryAfterProperty: String = "queue.retryAfter"
-
   val desBase: String = "des"
 
+  val failureRetryAfterProperty: String = "queue.retryAfter"
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
   val queueToggleProperty: String = "queue.toggle"
