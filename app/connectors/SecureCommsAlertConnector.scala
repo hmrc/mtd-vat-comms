@@ -23,6 +23,8 @@ import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponse
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSClient, WSResponse}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.logging.Authorization
 import utils.LoggerUtil._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,8 +34,12 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
+    lazy val headers: Seq[(String, String)] = HeaderCarrier(
+      Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}"))
+    ).withExtraHeaders("Environment" -> appConfig.desEnvironment).headers
+
     val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
-    wsClient.url(url).get().map { response =>
+    wsClient.url(url).withHeaders(headers: _*).get().map { response =>
       logWarnEitherError(handleResponse(response))
     }
   }

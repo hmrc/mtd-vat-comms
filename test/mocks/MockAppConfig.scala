@@ -26,6 +26,8 @@ class MockAppConfig(val runModeConfiguration: Configuration,
 
   def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
     s"/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
+  override val desAuthorisationToken: String = "EYAUE_AISOD92834894"
+  override val desEnvironment: String = "ist0"
 
   override val retryIntervalMillis: Long = 10000L
   override val queuePollingWaitTime: Int = 1

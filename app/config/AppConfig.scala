@@ -35,6 +35,8 @@ trait AppConfig extends ServicesConfig {
   val emailServiceUrl: String
 
   val secureCommsServiceUrl: String
+  val desAuthorisationToken: String
+  val desEnvironment: String
 
   val tribunalUrl: String
 
@@ -52,7 +54,9 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   private lazy val desBase: String = baseUrl(Keys.desBase)
   override def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
-    s"$desBase/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
+  s"$desBase/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
+  override val desAuthorisationToken: String = getString(Keys.desAuthorisationToken)
+  override val desEnvironment: String = getString(Keys.desEnvironment)
 
   override lazy val queuePollingWaitTime: Int = getInt(Keys.queuePollingInterval)
 
@@ -70,5 +74,5 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   private lazy val manageVatSubscriptionBase: String = baseUrl(Keys.manageVatSubscriptionBase)
   override lazy val manageVatSubscriptionUrl: String =
-    manageVatSubscriptionBase + getString(Keys.manageVatSubscriptionUri)
+  manageVatSubscriptionBase + getString(Keys.manageVatSubscriptionUri)
 }
