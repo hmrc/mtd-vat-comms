@@ -16,10 +16,12 @@
 
 package modules
 
-import services.CommsEventQueuePollingService
+import services.{CommsEventQueuePollingService, EmailMessageQueuePollingService}
 import com.google.inject.AbstractModule
 
-class SchedulerModule() extends AbstractModule {
-  override def configure(): Unit =
+class SchedulerModule extends AbstractModule {
+  override def configure(): Unit = {
     bind(classOf[CommsEventQueuePollingService]).asEagerSingleton()
+    bind(classOf[EmailMessageQueuePollingService]).asEagerSingleton()
+  }
 }

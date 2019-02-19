@@ -17,15 +17,49 @@
 package services
 
 import javax.inject.Inject
+import metrics.QueueMetrics
 import models.SecureCommsMessageModel
+import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
+import uk.gov.hmrc.workitem.Failed
+import uk.gov.hmrc.workitem.WorkItem
+import utils.SecureCommsMessageParser
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository)(
+class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository,
+                                    emailService: EmailService,
+                                    metrics: QueueMetrics)(
                                     implicit ec: ExecutionContext) {
 
-  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] =
+  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
+    metrics.emailMessageEnqueued()
     emailMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+  }
+
+  def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[SecureCommsMessageModel]] = {
+    val pullWorkItems: Enumerator[WorkItem[SecureCommsMessageModel]] =
+      Enumerator.generateM(emailMessageQueueRepository.pullOutstanding)
+
+    val processWorkItems = Iteratee.foldM(Seq.empty[SecureCommsMessageModel]) {
+      processWorkItem
+    }
+
+    pullWorkItems.run(processWorkItems)
+  }
+
+  def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
+    SecureCommsMessageParser.parseModel(workItem.item) match {
+      case Right(message) => emailService.sendEmailRequest(message).flatMap {
+        case Right(_) =>
+          metrics.emailMessageDequeued()
+          emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        case _  => emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+      }
+      case _ =>
+        metrics.emailMessageDequeued()
+        emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+    }
+  }
 }
