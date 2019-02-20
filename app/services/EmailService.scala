@@ -30,47 +30,24 @@ import scala.concurrent.{ExecutionContext, Future}
 class EmailService @Inject()(emailRendererConnector: EmailConnector) {
 
   def sendEmailRequest(message: MessageModel)(implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
-    Future.sequence(mapTemplateId(message.getTemplateId).map { templateId =>
-      toRequest(templateId, message) match {
-        case Right(request) => emailRendererConnector.sendEmailRequest(request)
-        case Left(error) => Future.successful(Left(error))
-      }
-    }).map {
-      _.foldRight[Either[ErrorModel, EmailRendererResponseModel]](Right(EmailRendererResponseModel(ACCEPTED))) {
-        (currentIndex: Either[ErrorModel, EmailRendererResponseModel], lastIndex: Either[ErrorModel, EmailRendererResponseModel]) =>
-          (currentIndex.isRight, lastIndex.isRight) match {
-            case (false, false) =>
-              Left(ErrorModel(
-                currentIndex.left.get.code,
-                currentIndex.left.get.body + "\n" + lastIndex.left.get.body
-              ))
-            case (true, false) => lastIndex
-            case (_, true) => currentIndex
-          }
-      }
+    val mappedTemplateId = mapTemplateId(message.getTemplateId)
+    toRequest(mappedTemplateId, message) match {
+      case Right(request) => emailRendererConnector.sendEmailRequest(request)
+      case Left(error) => Future.successful(Left(error))
     }
   }
 
-  def mapTemplateId(input: String): Seq[String] = {
-    val allTemplateIds: Map[String, Seq[String]] = Map(
-      "VRT12C_SM1C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
-      "VRT12C_SM3C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
-      "VRT12C_SM5C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
-      "VRT23C_SM7C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_ACCEPTED),
-      "VRT14C_SM2C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
-      "VRT14C_SM4C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
-      "VRT14C_SM6C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
-      "VRT15C_SM8C" -> Seq(CLIENT_NOTIFICATION_AGENT_CHANGE, AGENT_NOTIFICATION_CHANGE_REJECTED),
-      "VRT12A_SM1A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT14A_SM2A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT12A_SM3A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT14A_SM4A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT12A_SM5A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT14A_SM6A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT23A_SM7A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT15A_SM8A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT12A_SM9A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE),
-      "VRT14A_SM10A" -> Seq(CLIENT_NOTIFICATION_SELF_CHANGE)
+  def mapTemplateId(input: String): String = {
+    val allTemplateIds: Map[String, String] = Map(
+      "VRT12C_SM1C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED,
+      "VRT12C_SM3C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED,
+      "VRT12C_SM5C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED,
+      "VRT23C_SM7C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED,
+      "VRT14C_SM2C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
+      "VRT14C_SM4C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
+      "VRT14C_SM6C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
+      "VRT15C_SM8C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
+      "VRT12A_SM9A" -> CLIENT_NOTIFICATION_SELF_CHANGE
     )
     allTemplateIds(input)
   }
@@ -79,7 +56,7 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
     try {
 
       val notificationDependentDetails: (String, Map[String, String]) = templateId match {
-        case CLIENT_NOTIFICATION_SELF_CHANGE | CLIENT_NOTIFICATION_AGENT_CHANGE =>
+        case CLIENT_NOTIFICATION_SELF_CHANGE =>
           (
             messageModel.getCustomerDetails.customerEmail,
             Map("recipientName_line1" -> messageModel.getBusinessName)
