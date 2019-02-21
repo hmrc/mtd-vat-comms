@@ -32,7 +32,7 @@ import scala.concurrent.ExecutionContext
 trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   implicit override lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
   val injector: Injector = app.injector
-  val mockAppConfig = new MockAppConfig(app.configuration)
+  implicit val mockAppConfig = new MockAppConfig(app.configuration)
   val request = FakeRequest()
 
   implicit val materializer: Materializer = app.materializer

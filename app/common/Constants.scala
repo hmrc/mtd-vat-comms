@@ -78,12 +78,27 @@ object Constants {
     val F_PREFS = "formatPreference"
   }
 
+  object MessageKeys {
+    val EMAIL_BASE_KEY = "email"
+    val DEREG_BASE_KEY = "dereg"
+    val PPOB_BASE_KEY = "ppob"
+    val BANK_DETAILS_BASE_KEY = "bankDetails"
+    val STAGGER_BASE_KEY = "stagger"
+    val APPROVED_SUFFIX = "Approved"
+    val REJECTED_SUFFIX = "Rejected"
+    val TITLE_KEY_CLIENT = ".title"
+    val TITLE_KEY_TRANSACTOR = "Transactor.title"
+  }
+
   object TemplateIdReadableNames {
     val CLIENT_NOTIFICATION_SELF_CHANGE = "newMessageAlert_VRT1214A"
     val CLIENT_NOTIFICATION_AGENT_CHANGE = "newMessageAlert_VRT1214C"
     val AGENT_NOTIFICATION_CHANGE_ACCEPTED = "newMessageAlert_VRT12B"
     val AGENT_NOTIFICATION_CHANGE_REJECTED = "newMessageAlert_VRT14B"
   }
+
+  val TAX_IDENTIFIER_MTDVAT = "HMRC-MTD-VAT"
+  val SECURE_MESSAGE_TYPE_TEMPLATE = "newMessageAlert_VRT1214A"
 
   object SecureCommsServiceFieldValues {
     val MTDP = "mtdp"

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@()(implicit messages: MessagesApi)
+package utils
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h2 class="heading-medium">@messages("emailRejected.title")</h2>
-        <p>@messages("emailRejected.p1")</p>
-        <p>@messages("common.standardReject")</p>
-        <p>
-            @messages("common.hmrcAddressLine1")<br>
-            @messages("common.hmrcAddressLine2")<br>
-            @messages("common.hmrcAddressLine3")<br>
-            @messages("common.hmrcAddressLine4")<br>
-            @messages("common.hmrcAddressPostcode")
-        </p>
-    </div>
-</div>
+import java.nio.charset.StandardCharsets
+import java.util.Base64
+
+object Base64Encoding {
+  private val encoder: Base64.Encoder = Base64.getEncoder
+  private val decoder: Base64.Decoder = Base64.getDecoder
+
+  def encode(text: String): String = encoder.encodeToString(text.getBytes(StandardCharsets.UTF_8))
+  def decode(text: String): String = new String(decoder.decode(text))
+
+}

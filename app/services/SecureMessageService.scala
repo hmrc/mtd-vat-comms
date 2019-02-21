@@ -18,7 +18,7 @@ package services
 
 import javax.inject.Inject
 import metrics.QueueMetrics
-import models.{ErrorModel, SecureCommsMessageModel}
+import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
@@ -31,8 +31,10 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
                                      metrics: QueueMetrics)(
                                       implicit ec: ExecutionContext) {
 
-  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] =
+  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
+    metrics.secureMessageEnqueued()
     secureMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+  }
 
   def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[SecureCommsMessageModel]] = {
     val pullWorkItems: Enumerator[WorkItem[SecureCommsMessageModel]] =
@@ -52,12 +54,12 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
       case Right(_) =>
         metrics.commsEventDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
-      case Left(errorModel) if errorModel.code == "ERROR_PARSING_RESPONSE" =>
-        // was 201 so created but could not parse the response
-        metrics.commsEventDequeued()
+      case Left(GenericQueueNoRetryError) | Left(UnableToParseSecureCommsServiceResponse) |
+           Left(NotFoundMissingTaxpayer) | Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>
+        metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(_) =>
-        // some other response that wasn't a created
+        // some other response that wasn't a created that we should be able to retry
         secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
   }

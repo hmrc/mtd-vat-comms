@@ -21,9 +21,9 @@ import org.jsoup.nodes.Document
 
 class VatStaggerApprovedViewSpec extends ViewBaseSpec {
 
-  "Rendering the VatStaggerApproved view for an 'MM' stagger code " should {
+  "Rendering the VatStaggerApproved view for an 'MM' stagger code and client" should {
 
-    lazy val view = views.html.vatStaggerApproved("MM")(messagesApi)
+    lazy val view = views.html.vatStaggerApproved("MM", isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -40,9 +40,28 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     }
   }
 
-  "Rendering the VatStaggerApproved view for an 'MA' stagger code " should {
+  "Rendering the VatStaggerApproved view for an 'MM' stagger code and transactor" should {
 
-    lazy val view = views.html.vatStaggerApproved("MA")(messagesApi)
+    lazy val view = views.html.vatStaggerApproved("MM", isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your VAT Return dates"
+    }
+
+    "have the correct new VAT return dates" in {
+      elementText("p:nth-child(2)") shouldBe "Your new return dates for VAT are: Every Month"
+    }
+
+    "have the correct final paragraph" in {
+      elementText("p:nth-child(3)") shouldBe "Your new return dates might only take effect from " +
+        "your next tax period. Check what returns are currently due to make sure you do not miss any."
+    }
+  }
+
+  "Rendering the VatStaggerApproved view for an 'MA' stagger code and client" should {
+
+    lazy val view = views.html.vatStaggerApproved("MA", isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -59,9 +78,28 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     }
   }
 
-  "Rendering the VatStaggerApproved view for an 'MB' stagger code " should {
+  "Rendering the VatStaggerApproved view for an 'MA' stagger code and transactor" should {
 
-    lazy val view = views.html.vatStaggerApproved("MB")(messagesApi)
+    lazy val view = views.html.vatStaggerApproved("MA", isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your VAT Return dates"
+    }
+
+    "have the correct new VAT return dates" in {
+      elementText("p:nth-child(2)") shouldBe "Your new return dates for VAT are: January, April, July and October"
+    }
+
+    "have the correct final paragraph" in {
+      elementText("p:nth-child(3)") shouldBe "Your new return dates might only take effect from " +
+        "your next tax period. Check what returns are currently due to make sure you do not miss any."
+    }
+  }
+
+  "Rendering the VatStaggerApproved view for an 'MB' stagger code and client" should {
+
+    lazy val view = views.html.vatStaggerApproved("MB", isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -78,13 +116,51 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     }
   }
 
-  "Rendering the VatStaggerApproved view for an 'MC' stagger code " should {
+  "Rendering the VatStaggerApproved view for an 'MB' stagger code and transactor" should {
 
-    lazy val view = views.html.vatStaggerApproved("MC")(messagesApi)
+    lazy val view = views.html.vatStaggerApproved("MB", isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your VAT Return dates"
+    }
+
+    "have the correct new VAT return dates" in {
+      elementText("p:nth-child(2)") shouldBe "Your new return dates for VAT are: February, May, August and November"
+    }
+
+    "have the correct final paragraph" in {
+      elementText("p:nth-child(3)") shouldBe "Your new return dates might only take effect from " +
+        "your next tax period. Check what returns are currently due to make sure you do not miss any."
+    }
+  }
+
+  "Rendering the VatStaggerApproved view for an 'MC' stagger code and client" should {
+
+    lazy val view = views.html.vatStaggerApproved("MC", isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
       elementText("h2") shouldBe "You have successfully changed your VAT Return dates"
+    }
+
+    "have the correct new VAT return dates" in {
+      elementText("p:nth-child(2)") shouldBe "Your new return dates for VAT are: March, June, September and December"
+    }
+
+    "have the correct final paragraph" in {
+      elementText("p:nth-child(3)") shouldBe "Your new return dates might only take effect from " +
+        "your next tax period. Check what returns are currently due to make sure you do not miss any."
+    }
+  }
+
+  "Rendering the VatStaggerApproved view for an 'MC' stagger code and transactor" should {
+
+    lazy val view = views.html.vatStaggerApproved("MC", isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your VAT Return dates"
     }
 
     "have the correct new VAT return dates" in {

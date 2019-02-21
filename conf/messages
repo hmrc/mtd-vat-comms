@@ -7,6 +7,7 @@ common.hmrcAddressLine4 = WOLVERHAMPTON
 common.hmrcAddressPostcode = WV1 4JX
 
 staggerApproved.title = You have successfully changed your VAT Return dates
+staggerApprovedTransactor.title = Your agent has successfully changed your VAT Return dates
 staggerApproved.p1 = Your new return dates for VAT are:
 staggerApproved.p2 = Your new return dates might only take effect from your next tax period. Check what returns are currently due to make sure you do not miss any.
 staggerApproved.mm = Every Month
@@ -16,15 +17,18 @@ staggerApproved.mc = March, June, September and December
 
 
 staggerRejected.title = We have rejected the change to your business VAT Return dates
+staggerRejectedTransactor.title = We have rejected your agent’s change to your business VAT Return dates
 staggerRejected.p1 = You must continue to submit to your current deadlines.
 staggerRejected.p2 = If you do not agree with our decision, you can ask for a review by an HMRC officer not previously involved in the matter. If you want a review, you should write to us within 30 days of receiving this message giving the reasons why you do not agree with our decision. Write to:
 
 deregApproved.title = We have accepted your request to deregister from VAT
+deregApprovedTransactor.title = We have accepted your agent’s request to deregister from VAT
 deregApproved.p1 = The business will be deregistered from VAT on {0}.
 deregApproved.p2 = Submit any outstanding VAT Returns which cover the period up to {0}.
 deregApproved.p3 = Register for VAT again if your taxable turnover goes above the VAT threshold.
 
 deregRejected.title = We have rejected your request to deregister from VAT
+deregRejectedTransactor.title = We have rejected your agent’s request to deregister your business from VAT
 deregRejected.p1 = From the information available to us, we think you are not eligible to deregister from VAT and will remain registered.
 deregRejected.p2 = You can apply to deregister again if your turnover falls below the threshold.
 deregRejected.p3a = You also have the option to
@@ -32,21 +36,25 @@ deregRejected.p3b = appeal to the tax tribunal (opens in a new tab)
 deregRejected.p3c = to request a review of an HMRC decision.
 
 bankDetailsApproved.title = You have successfully changed your bank details for VAT repayments
+bankDetailsApprovedTransactor.title = Your agent has successfully changed your bank details for VAT repayments
 bankDetailsApproved.p1 = Your new bank details for VAT repayments are:
 bankDetailsApproved.p2 = Account name:
 bankDetailsApproved.p3 = Sort code:
 bankDetailsApproved.p4 = Account number:
 
 bankDetailsRejected.title = We have rejected the change to your bank details for VAT repayments
+bankDetailsRejectedTransactor.title = We have rejected your agent’s change to your bank details for VAT repayments
 bankDetailsRejected.p1 = This is because the bank account name is different from the business name on your VAT certificate.
 bankDetailsRejected.p2 = Bank account name:
 bankDetailsRejected.p3 = Business name:
 bankDetailsRejected.p4 = HMRC can only make payments to the bank account that belongs to the registered business.
 
 ppobApproved.title = You have successfully changed your principal place of business for VAT
+ppobApprovedTransactor.title = Your agent has successfully changed your principal place of business for VAT
 ppobApproved.p1 = Your new principal place of business for VAT is:
 
 ppobRejected.title = We have rejected the change to your principal place of business for VAT
+ppobRejectedTransactor.title = We have rejected your agent’s change to your principal place of business for VAT
 ppobRejected.p1 = Your principal place of business for VAT cannot be any of these address types:
 ppobRejected.bullet1 = the address of a third-party accountant or tax agent
 ppobRejected.bullet2 = a PO box address

@@ -51,7 +51,7 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
       case Success(Result(_)) =>
         logInfo(_)
       case Failure(throwable) =>
-        logError(s"Exception completing work item", throwable)
+        logWarn(s"Exception completing work item", throwable)
     })
   }
 

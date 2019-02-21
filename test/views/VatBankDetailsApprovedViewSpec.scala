@@ -21,9 +21,9 @@ import org.jsoup.nodes.Document
 
 class VatBankDetailsApprovedViewSpec extends ViewBaseSpec {
 
-  "Rendering the VatBankDetailsApproved secure message content" should {
+  "Rendering the VatBankDetailsApproved secure message content for a client" should {
 
-    lazy val view = views.html.vatBankDetailsApproved("Mickey Flanagan", "21****", "****3218")
+    lazy val view = views.html.vatBankDetailsApproved("Mickey Flanagan", "21****", "****3218", isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -37,8 +37,29 @@ class VatBankDetailsApprovedViewSpec extends ViewBaseSpec {
     "have the correct user information" in {
       elementText("p:nth-child(3)") shouldBe
         "Account name: Mickey Flanagan " +
-        "Sort code: 21**** " +
-        "Account number: ****3218"
+          "Sort code: 21**** " +
+          "Account number: ****3218"
+    }
+  }
+
+  "Rendering the VatBankDetailsApproved secure message content when a transactor" should {
+
+    lazy val view = views.html.vatBankDetailsApproved("Mickey Flanagan", "21****", "****3218", isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your bank details for VAT repayments"
+    }
+
+    "have the correct first paragraph" in {
+      elementText("p:nth-child(2)") shouldBe "Your new bank details for VAT repayments are:"
+    }
+
+    "have the correct user information" in {
+      elementText("p:nth-child(3)") shouldBe
+        "Account name: Mickey Flanagan " +
+          "Sort code: 21**** " +
+          "Account number: ****3218"
     }
   }
 }

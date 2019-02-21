@@ -26,6 +26,7 @@ object LoggerUtil {
   def logInfo(content: String): Unit = Logger.info(content)
   def logDebug(content: String): Unit = Logger.debug(content)
   def logWarn(content: String): Unit = Logger.warn(content)
+  def logWarn(content: String, throwable: Throwable): Unit = Logger.warn(content, throwable)
   def logError(content: String): Unit = Logger.error(content)
   def logError(content: String, throwable: Throwable): Unit = Logger.error(content, throwable)
 
