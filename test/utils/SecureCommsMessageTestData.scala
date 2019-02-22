@@ -284,6 +284,294 @@ object SecureCommsMessageTestData {
     )
   }
 
+  object SendSecureMessageModels {
+
+    val messageModelDeRegistrationInvalidTemplate = SecureCommsMessageModel(
+      "NO SUCH ID",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      Some("20181227"),
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val deRegistrationValidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT23C_SM7C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      Some("20181227"),
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val deRegistrationValidRejectedTransactorRequest = SecureCommsMessageModel(
+      "VRT15C_SM8C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      Some("20181227"),
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val deRegistrationValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT23A_SM7A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      Some("20181227"),
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val deRegistrationValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT15A_SM8A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      Some("20181227"),
+      None,
+      None,
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val bankDetailsValidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT12C_SM3C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val bankDetailsValidRejectedTransactorRequest = SecureCommsMessageModel(
+      "VRT14C_SM4C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val bankDetailsValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT12A_SM3A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val bankDetailsValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT14A_SM4A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val staggerValidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT12C_SM5C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some("MM"),
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val staggerValidRejectedTransactorRequest = SecureCommsMessageModel(
+      "VRT14C_SM6C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some("MC"),
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val staggerValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT12A_SM5A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some("MB"),
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val staggerValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT14A_SM6A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some("12jje7uw"),
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val ppobValidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT12C_SM1C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val ppobValidRejectedTransactorRequest = SecureCommsMessageModel(
+      "VRT14C_SM2C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val ppobValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT12A_SM1A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val ppobValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT14A_SM2A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
+      None,
+      None,
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val emailValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT12A_SM9A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      Some("dragonborn@winterhold.tam"),
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val emailValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT14A_SM10A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      Some("dragonborn@winterhold.tam"),
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+  }
+
   object JsonModelForModels {
     val validJsonForModelEverything: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",

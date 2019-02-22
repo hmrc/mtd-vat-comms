@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-package models.responseModels
+package utils
 
-import play.api.libs.json.{Json, Reads}
+import java.text.SimpleDateFormat
 
-case class SecureCommsServiceResponseModel(id: String)
+import scala.util.{Failure, Success, Try}
 
-object SecureCommsServiceResponseModel {
-  implicit val reads: Reads[SecureCommsServiceResponseModel] = Json.reads[SecureCommsServiceResponseModel]
+object DateFormatter {
+
+  def etmpToFullMonthDateString(date: String): String = {
+    Try {
+
+      val inFormat = new SimpleDateFormat("yyyyMMdd")
+      val outFormat = new SimpleDateFormat("dd MMMM yyyy")
+      outFormat.setLenient(false)
+      inFormat.setLenient(false)
+      val formattedDate = outFormat.format(inFormat.parse(date))
+      formattedDate
+
+    } match {
+      case Success(result) => result
+      // just return an empty string in implementation
+      case Failure(_) => ""
+    }
+
+  }
+
 }

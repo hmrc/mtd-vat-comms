@@ -17,37 +17,138 @@
 package services
 
 import base.BaseSpec
-import models.SecureCommsMessageModel
+import metrics.QueueMetrics
+import models._
 import org.joda.time.{DateTime, DateTimeZone}
+import repositories.SecureMessageQueueRepository
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{never, times, verify, when}
+import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
-import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.workitem.{InProgress, WorkItem}
-import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
+import utils.SecureCommsMessageTestData.SendSecureMessageModels._
 
 import scala.concurrent.Future
 
 class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
-  "EmailMessageService" should {
+  "The queueRequest function" should {
 
-    "queue a request when calling queueRequest" in new TestSetup {
-      await(secureMessageService.queueRequest(exampleSecureCommsModel)) shouldBe true
+    "add an item to the repository" in new TestSetup {
+      when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
+      await(secureMessageService.queueRequest(exampleVatChangeEvent)) shouldBe true
     }
   }
 
-  trait TestSetup {
+  "The retrieveWorkItems function" when {
 
-    val now: DateTime = new DateTime(0, DateTimeZone.UTC)
-    val exampleSecureCommsModel: SecureCommsMessageModel = expectedResponseEverything
-    val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
-      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleSecureCommsModel)
-    val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
+    "a secure comms model is retrieved from the SecureCommsAlertService" when {
+      "a message model is successfully parsed by the SecureCommsMessageParser" when {
+        "the email request is successfully sent" should {
+          "remove the item from the queue" in new TestSetup {
+            secureCommsMock(Right(true))
+            completeItemMock(true)
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
 
-    when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
 
-    lazy val secureMessageService = new SecureMessageService(queue)
+        "the send secure message request is unsuccessfully sent for a GenericQueueNoRetryError" should {
+          "remove the item form the queue" in new TestSetup {
+            secureCommsMock(Left(GenericQueueNoRetryError))
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
+        "the send secure message request is unsuccessfully sent for an UnableToParseSecureCommsServiceResponse" should {
+          "remove the item form the queue" in new TestSetup {
+            secureCommsMock(Left(UnableToParseSecureCommsServiceResponse))
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
+        "the send secure message request is unsuccessfully sent for an BadRequestUnknownTaxIdentifier" should {
+          "remove the item form the queue" in new TestSetup {
+            secureCommsMock(Left(BadRequestUnknownTaxIdentifier))
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
+        "the send secure message request is unsuccessfully sent for an NotFoundMissingTaxpayer" should {
+          "remove the item form the queue" in new TestSetup {
+            secureCommsMock(Left(NotFoundMissingTaxpayer))
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
+        "the send secure message request is unsuccessfully sent for an NotFoundUnverifiedEmail" should {
+          "remove the item form the queue" in new TestSetup {
+            secureCommsMock(Left(NotFoundUnverifiedEmail))
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
+        "the secure message request is unsuccessfully sent but it a recoverable error" should {
+
+          "mark the item as failed" in new TestSetup {
+            secureCommsMock(Left(ErrorModel("Some general error", "Not of the non recoverable types")))
+            markItemAsFailedMock
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, never()).complete(any())(any())
+          }
+        }
+
+      }
+    }
+
   }
+
+  trait TestSetup {
+    val now: DateTime = new DateTime(0, DateTimeZone.UTC)
+    val exampleVatChangeEvent: SecureCommsMessageModel = emailValidApprovedClientRequest
+    val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
+      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
+    val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
+    val secureCommsService: SecureCommsService = mock[SecureCommsService]
+    val metrics: QueueMetrics = mock[QueueMetrics]
+
+    def secureCommsMock(response: Either[ErrorModel, Boolean]):
+    OngoingStubbing[Future[Either[ErrorModel, Boolean]]] =
+      when(secureCommsService.sendSecureCommsMessage(any())(any()))
+        .thenReturn(Future.successful(response))
+
+    def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
+      when(queue.complete(any())(any())).thenReturn(Future.successful(response))
+
+    def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
+      when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
+
+    lazy val secureMessageService =
+      new SecureMessageService(queue, secureCommsService, metrics)
+  }
+
 }

@@ -17,32 +17,31 @@
 package services
 
 import akka.actor.ActorSystem
-import config.AppConfig
 import com.google.inject.{Inject, Singleton}
+import config.AppConfig
 import uk.gov.hmrc.play.scheduling.ExclusiveScheduledJob
-
-import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.duration._
 import utils.LoggerUtil._
 
+import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 @Singleton
-class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
-                                              appConfig: AppConfig,
-                                              commsEventService: CommsEventService)(
+class SecureMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
+                                                 appConfig: AppConfig,
+                                                 secureMessageService: SecureMessageService)(
                                               implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
 
-  override def name: String = "CommsEventQueuePollingService"
+  override def name: String = "SecureMessageQueuePollingService"
 
   override def executeInMutex(implicit ec: ExecutionContext): Future[Result] = {
-    commsEventService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} comms events"))
+    secureMessageService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} secure message events"))
   }
 
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds
 
-  logInfo(s"Starting comms event queue scheduler." +
+  logInfo(s"Starting secure message event queue scheduler." +
     s"\nInitial delay: $initialDelay" +
     s"\nPolling interval: $interval")
 
@@ -51,7 +50,7 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
       case Success(Result(_)) =>
         logInfo(_)
       case Failure(throwable) =>
-        logWarn(s"Exception completing work item", throwable)
+        logError(s"Exception completing work item", throwable)
     })
   }
 

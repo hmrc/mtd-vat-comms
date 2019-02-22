@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@()(implicit messages: MessagesApi)
+package utils
+import base.BaseSpec
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h2 class="heading-medium">@messages("emailRejected.title")</h2>
-        <p>@messages("emailRejected.p1")</p>
-        <p>@messages("common.standardReject")</p>
-        <p>
-            @messages("common.hmrcAddressLine1")<br>
-            @messages("common.hmrcAddressLine2")<br>
-            @messages("common.hmrcAddressLine3")<br>
-            @messages("common.hmrcAddressLine4")<br>
-            @messages("common.hmrcAddressPostcode")
-        </p>
-    </div>
-</div>
+class Base64EncodingSpec extends BaseSpec {
+
+  val testData: String = "This is some test data"
+  val expectedEncodedValue: String = "VGhpcyBpcyBzb21lIHRlc3QgZGF0YQ=="
+
+  "Base 64 Encoder" should {
+    "encode to the expected value" in {
+
+      val encoded = Base64Encoding.encode(testData)
+      encoded shouldBe expectedEncodedValue
+    }
+  }
+
+  "Base 64 Encoder" should {
+    "decode to the expected value" in {
+
+      Base64Encoding.decode(expectedEncodedValue) shouldBe testData
+    }
+  }
+}

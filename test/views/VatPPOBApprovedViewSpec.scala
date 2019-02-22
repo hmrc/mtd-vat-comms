@@ -22,11 +22,11 @@ import org.jsoup.nodes.Document
 
 class VatPPOBApprovedViewSpec extends ViewBaseSpec {
 
-  "Rendering the VatPPOBApproved secure message content" should {
+  "Rendering the VatPPOBApproved secure message content for a client" should {
 
     val viewModel = VatPPOBViewModel("21 Blackjack Street", "Stirchley", Some("Telford"), Some("Shropshire"), None, Some("TF2 5TH"), Some("United Kingdom"))
 
-    lazy val view = views.html.vatPPOBApproved(viewModel)
+    lazy val view = views.html.vatPPOBApproved(viewModel, isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {
@@ -42,4 +42,26 @@ class VatPPOBApprovedViewSpec extends ViewBaseSpec {
     }
 
   }
+
+  "Rendering the VatPPOBApproved secure message content for a transactor" should {
+
+    val viewModel = VatPPOBViewModel("21 Blackjack Street", "Stirchley", Some("Telford"), Some("Shropshire"), None, Some("TF2 5TH"), Some("United Kingdom"))
+
+    lazy val view = views.html.vatPPOBApproved(viewModel, isTransactor = true)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct h2" in {
+      elementText("h2") shouldBe "Your agent has successfully changed your principal place of business for VAT"
+    }
+
+    "have the correct first paragraph" in {
+      elementText("p:nth-child(2)") shouldBe "Your new principal place of business for VAT is:"
+    }
+
+    "have the correct address" in {
+      elementText("p:nth-child(3)") shouldBe "21 Blackjack Street Stirchley Telford Shropshire TF2 5TH United Kingdom"
+    }
+
+  }
+
 }

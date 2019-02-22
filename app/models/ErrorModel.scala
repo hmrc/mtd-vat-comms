@@ -37,6 +37,7 @@ object UnableToParseSecureCommsErrorResponseError extends ErrorModel("ERROR_PARS
 
 object BadRequestUnknownTaxIdentifier extends ErrorModel("BAD_REQUEST", "Unknown tax identifier name XYZ")
 object NotFoundUnknownReason extends ErrorModel("NOT_FOUND", "Unknown reason for status. Check logs.")
+object GenericQueueNoRetryError extends ErrorModel("ERROR_NO_RETRY", "Error. Item should not be processed again from the queue.")
 object NotFoundMissingTaxpayer extends ErrorModel("NOT_FOUND", "Taxpayer not found")
 object NotFoundUnverifiedEmail extends ErrorModel("NOT_FOUND", "Email not verified")
 object ConflictDuplicateMessage extends ErrorModel("CONFLICT", "Duplicate Message")

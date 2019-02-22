@@ -32,8 +32,8 @@ trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   lazy val injector: Injector = app.injector
-  lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
+  implicit val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(injector.instanceOf[Configuration])
 
   def element(cssSelector: String)(implicit document: Document): Element = {

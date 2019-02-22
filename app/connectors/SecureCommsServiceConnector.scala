@@ -38,7 +38,6 @@ class SecureCommsServiceConnector @Inject()(wSClient: WSClient, appConfig: AppCo
       .map {
         r: WSResponse => logWarnEitherError(handleResponse(r))
       }
-
   }
 
   private def handleResponse(response: WSResponse) = {

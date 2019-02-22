@@ -17,15 +17,50 @@
 package services
 
 import javax.inject.Inject
-import models.SecureCommsMessageModel
+import metrics.QueueMetrics
+import models._
+import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
+import uk.gov.hmrc.workitem.{Failed, WorkItem}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository)(
-                                     implicit ec: ExecutionContext) {
+class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository,
+                                     secureCommsService: SecureCommsService,
+                                     metrics: QueueMetrics)(
+                                      implicit ec: ExecutionContext) {
 
-  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] =
+  def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
+    metrics.secureMessageEnqueued()
     secureMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+  }
+
+  def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[SecureCommsMessageModel]] = {
+    val pullWorkItems: Enumerator[WorkItem[SecureCommsMessageModel]] =
+      Enumerator.generateM(secureMessageQueueRepository.pullOutstanding)
+
+    val processWorkItems = Iteratee.foldM(Seq.empty[SecureCommsMessageModel]) {
+      processWorkItem
+    }
+
+    pullWorkItems.run(processWorkItems)
+  }
+
+  def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
+    val secureCommsModel: Future[Either[ErrorModel, Boolean]] =
+      secureCommsService.sendSecureCommsMessage(workItem.item)
+    secureCommsModel.flatMap {
+      case Right(_) =>
+        metrics.secureMessageDequeued()
+        secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+      case Left(GenericQueueNoRetryError) | Left(UnableToParseSecureCommsServiceResponse) |
+           Left(NotFoundMissingTaxpayer) | Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>
+        metrics.secureMessageDequeued()
+        secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+      case Left(_) =>
+        // some other response that wasn't a created that we should be able to retry
+        secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+    }
+  }
 }
