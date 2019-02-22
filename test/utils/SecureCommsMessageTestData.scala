@@ -570,20 +570,6 @@ object SecureCommsMessageTestData {
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
-
-    case class UnsupportedMessageModel(
-                                        templateId: String,
-                                        vrn: String,
-                                        formBundleReference: String,
-                                        businessName: String,
-                                        transactorDetails: TransactorModel,
-                                        customerDetails: CustomerModel,
-                                        preferences: PreferencesModel,
-                                        originalEmailAddress: String
-                                      )
-      extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
-    }
-
   }
 
   object JsonModelForModels {
