@@ -19,7 +19,7 @@ package services
 import common.ApiConstants.serviceName
 import javax.inject.{Inject, Singleton}
 import metrics.QueueMetrics
-import models.{GenericParsingError, JsonParsingError, VatChangeEvent}
+import models.{GenericParsingError, JsonParsingError, NotFoundNoMatch, VatChangeEvent}
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
@@ -71,7 +71,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
           metrics.commsEventDequeued()
           commsEventQueueRepository.complete(workItem.id).map(_ => acc)
         }
-      case Left(GenericParsingError) | Left(JsonParsingError) =>
+      case Left(GenericParsingError) | Left(JsonParsingError) | Left(NotFoundNoMatch) =>
         metrics.commsEventDequeued()
         commsEventQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(_) =>

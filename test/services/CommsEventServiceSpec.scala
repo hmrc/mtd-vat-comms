@@ -131,6 +131,18 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
       }
     }
 
+    "there is a not found no match" should {
+
+      "remove the work item from the queue" in new TestSetup {
+        secureCommsAlertMock(Left(NotFoundNoMatch))
+        completeItemMock(true)
+
+        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+        verify(queue, times(1)).complete(any())(any())
+      }
+    }
+
     "there is an unexpected error" should {
 
       "mark the item as failed and not remove it from the queue" in new TestSetup {

@@ -46,25 +46,44 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
 
   def handleResponse(response: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
     response.status match {
-      case OK => Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
-        case Some(responseModel) => Right(responseModel)
-        case None =>
-            logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-              "Failed to validate response to SecureCommsResponseModel")
-            logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
-            Left(UnableToParseSecureCommsResponseError)
-      }
-      case BAD_REQUEST => Json.parse(response.body).validate[SecureCommsErrorResponseModel].asOpt match {
-        case Some(error) => Left(ErrorModel(error.code, error.reason))
-        case None =>
-            logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-              s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${response.body}'")
-            Left(UnableToParseSecureCommsErrorResponseError)
-      }
+      case OK => handleOk(response)
+      case BAD_REQUEST => handleBadRequest(response)
+      case NOT_FOUND => handleNotFound(response)
       case status: Int =>
           logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
             s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
           Left(ErrorModel(s"${response.status}", response.body))
+    }
+  }
+
+  private def handleOk(wSResponse: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
+    Json.parse(wSResponse.body).validate[SecureCommsResponseModel].asOpt match {
+      case Some(responseModel) => Right(responseModel)
+      case None =>
+        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+          "Failed to validate response to SecureCommsResponseModel")
+        logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${wSResponse.body}'")
+        Left(UnableToParseSecureCommsResponseError)
+    }
+  }
+
+  private def handleBadRequest(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
+    Json.parse(wSResponse.body).validate[SecureCommsErrorResponseModel].asOpt match {
+      case Some(error) => Left(ErrorModel(error.code, error.reason))
+      case None =>
+        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+          s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${wSResponse.body}'")
+        Left(UnableToParseSecureCommsErrorResponseError)
+    }
+  }
+
+  private def handleNotFound(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
+    Json.parse(wSResponse.body).validate[SecureCommsErrorResponseModel].asOpt match {
+      case Some(_) => Left(NotFoundNoMatch)
+      case None =>
+        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+          s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${wSResponse.body}'")
+        Left(UnableToParseSecureCommsErrorResponseError)
     }
   }
 }
