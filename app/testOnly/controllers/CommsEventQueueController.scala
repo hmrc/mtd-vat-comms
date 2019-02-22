@@ -20,14 +20,21 @@ import controllers.MicroserviceBaseController
 import com.google.inject.Inject
 import play.api.mvc.{Action, AnyContent}
 import repositories.CommsEventQueueRepository
+import services.CommsEventQueuePollingService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository)(
+class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository,
+                                          scheduler: CommsEventQueuePollingService)(
                                           implicit ec: ExecutionContext) extends MicroserviceBaseController {
 
   def count: Action[AnyContent] = Action.async { implicit request =>
     val result: Future[Int] = repository.count
     result.map(count => Ok(count.toString))
+  }
+
+  def poll: Action[AnyContent] = Action { implicit request =>
+    scheduler.executor()
+    Ok
   }
 }

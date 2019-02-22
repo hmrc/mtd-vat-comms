@@ -28,9 +28,9 @@ import scala.util.{Failure, Success}
 
 @Singleton
 class EmailMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
-                                    appConfig: AppConfig,
-                                    emailMessageService: EmailMessageService)
-                                    (implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
+                                                appConfig: AppConfig,
+                                                emailMessageService: EmailMessageService)
+                                                (implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
 
   override def name: String = "EmailMessageQueuePollingService"
 
@@ -45,7 +45,7 @@ class EmailMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
     s"\nInitial delay: $initialDelay" +
     s"\nPolling interval: $interval")
 
-  def executor(): Unit = {
+  def executor()(implicit ec: ExecutionContext): Unit = {
     execute.onComplete({
       case Success(Result(_)) =>
         logInfo(_)

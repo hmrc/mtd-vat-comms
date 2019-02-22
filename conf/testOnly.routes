@@ -15,4 +15,8 @@ GET        /mtd-vat-comms/test-only/comms-event-queue/count      @testOnly.contr
 GET        /mtd-vat-comms/test-only/email-message-queue/count    @testOnly.controllers.EmailMessageQueueController.count
 GET        /mtd-vat-comms/test-only/secure-message-queue/count   @testOnly.controllers.SecureMessageQueueController.count
 
+GET        /mtd-vat-comms/test-only/comms-event-queue/poll       @testOnly.controllers.CommsEventQueueController.poll
+GET        /mtd-vat-comms/test-only/email-message-queue/poll     @testOnly.controllers.EmailMessageQueueController.poll
+GET        /mtd-vat-comms/test-only/secure-message-queue/poll    @testOnly.controllers.SecureMessageQueueController.poll
+
 ->         /                                                     prod.Routes

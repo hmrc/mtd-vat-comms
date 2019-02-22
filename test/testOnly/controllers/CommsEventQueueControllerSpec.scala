@@ -21,13 +21,15 @@ import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Result
 import repositories.CommsEventQueueRepository
+import services.CommsEventQueuePollingService
 
 import scala.concurrent.Future
 
 class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar {
 
   val repository: CommsEventQueueRepository = mock[CommsEventQueueRepository]
-  val controller = new CommsEventQueueController(repository)
+  val scheduler: CommsEventQueuePollingService = mock[CommsEventQueuePollingService]
+  val controller = new CommsEventQueueController(repository, scheduler)
   val recordCount = 99
 
   "The count action" should {
