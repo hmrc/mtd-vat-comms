@@ -222,13 +222,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
       }
     }
 
-    "return a GenericQueueNoRetryError error" when {
-      "an unknown MessageModel is passed to build a request" in {
-        val result = await(service.buildResponse(unsupportedMessageModel, isTransactor = true, isApproval = true))
-        result shouldBe Left(GenericQueueNoRetryError)
-      }
-    }
-
     "return the expected subject for an email secure message" when {
       "it is for a client approved change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval = true, isTransactor = false)

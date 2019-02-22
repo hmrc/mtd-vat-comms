@@ -52,7 +52,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
       secureCommsService.sendSecureCommsMessage(workItem.item)
     secureCommsModel.flatMap {
       case Right(_) =>
-        metrics.commsEventDequeued()
+        metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(GenericQueueNoRetryError) | Left(UnableToParseSecureCommsServiceResponse) |
            Left(NotFoundMissingTaxpayer) | Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>

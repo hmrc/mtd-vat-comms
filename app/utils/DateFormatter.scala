@@ -25,7 +25,7 @@ object DateFormatter {
   def etmpToFullMonthDateString(date: String): String = {
     Try {
 
-      val inFormat= new SimpleDateFormat("yyyyMMdd")
+      val inFormat = new SimpleDateFormat("yyyyMMdd")
       val outFormat = new SimpleDateFormat("dd MMMM yyyy")
       outFormat.setLenient(false)
       inFormat.setLenient(false)
@@ -34,11 +34,8 @@ object DateFormatter {
 
     } match {
       case Success(result) => result
-
       // just return an empty string in implementation
-      case Failure(_) => {
-        ""
-      }
+      case Failure(_) => ""
     }
 
   }

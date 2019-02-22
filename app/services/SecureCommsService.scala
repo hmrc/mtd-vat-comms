@@ -74,21 +74,15 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         logWarn(content = s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.getTemplateId}")
         Left(GenericQueueNoRetryError)
       case Success(isApproval) =>
-        try{
-          buildResponse(messageModel, isTransactor, isApproval)
-        } catch {
-          case e: Throwable =>
-            logWarn(content = "[SecureCommsService][getRequest] - Unexpected Error returned from buildResponse call", e)
-            Left(GenericQueueNoRetryError)
-        }
+        Right(buildResponse(messageModel, isTransactor, isApproval))
     }
   }
 
   private[services] def buildResponse(messageModel: MessageModel, isTransactor: Boolean,
-                                      isApproval: Boolean): Either[ErrorModel, SecureCommsServiceRequestModel] = {
+                                      isApproval: Boolean): SecureCommsServiceRequestModel = {
+
     val vrn = messageModel.getVrn
     val businessName = messageModel.getBusinessName
-
     messageModel match {
       case deregModel: DeRegistrationModel =>
         val html = getDeregistrationChangeHtml(deregModel, isApproval, isTransactor)
@@ -110,25 +104,17 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         val html = getEmailChangeHtml(emailModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(html, emailModel.customerDetails.customerEmail, subject, vrn, salutation = businessName)
-      case _ =>
-        logWarn(content = "[SecureCommsService][buildResponse] - Unexpected Message model type is not supported")
-        Left(GenericQueueNoRetryError)
     }
   }
 
   private def buildSecureCommsServiceRequestModel(htmlContent: String, userEmail: String, subject: String,
-                                                  vrn: String, salutation: String): Either[ErrorModel, SecureCommsServiceRequestModel] = {
-    try {
-      val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MTDP)
-      val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
-      val nameModel = NameModel(line1 = subject)
-      val recipientModel = RecipientModel(taxIdentifierModel, name = nameModel, email = userEmail)
-      Right(SecureCommsServiceRequestModel(externalRefModel, recipientModel, SECURE_MESSAGE_TYPE_TEMPLATE, subject, content = encode(htmlContent)))
-    } catch {
-      case e: Throwable =>
-        logWarn(content = "[SecureCommsService][buildSecureCommsServiceRequestModel] - Unexpected Error building secureCommsRequestModel", e)
-        Left(GenericQueueNoRetryError)
-    }
+                                                  vrn: String, salutation: String): SecureCommsServiceRequestModel = {
+
+    val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MTDP)
+    val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
+    val nameModel = NameModel(line1 = subject)
+    val recipientModel = RecipientModel(taxIdentifierModel, name = nameModel, email = userEmail)
+    SecureCommsServiceRequestModel(externalRefModel, recipientModel, SECURE_MESSAGE_TYPE_TEMPLATE, subject, content = encode(htmlContent))
   }
 
   private def getEmailChangeHtml(emailAddressChangeModel: EmailAddressChangeModel,

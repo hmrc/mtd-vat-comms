@@ -584,16 +584,6 @@ object SecureCommsMessageTestData {
       extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
     }
 
-
-    val unsupportedMessageModel: UnsupportedMessageModel = UnsupportedMessageModel(
-      "VRT14A_SM10A",
-      "100065579",
-      "092000003080",
-      "CoC Company Holdings Ltd",
-      TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT), "dragonborn@winterhold.tam"
-    )
   }
 
   object JsonModelForModels {
