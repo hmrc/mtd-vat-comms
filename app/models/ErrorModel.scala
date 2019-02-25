@@ -41,6 +41,5 @@ object GenericQueueNoRetryError extends ErrorModel("ERROR_NO_RETRY", "Error. Ite
 object NotFoundMissingTaxpayer extends ErrorModel("NOT_FOUND", "Taxpayer not found")
 object NotFoundUnverifiedEmail extends ErrorModel("NOT_FOUND", "Email not verified")
 object ConflictDuplicateMessage extends ErrorModel("CONFLICT", "Duplicate Message")
-object UnableToParseSecureCommsServiceResponse extends ErrorModel("ERROR_PARSING", "Unable to parse response received from the Secure Comms service")
 
 object NotFoundNoMatch extends ErrorModel("NOT_FOUND", "The back end has indicated that there is no match found.")

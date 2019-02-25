@@ -19,7 +19,6 @@ package connectors
 import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
-import models.responseModels.SecureCommsServiceResponseModel
 import models.secureCommsServiceModels._
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
@@ -55,22 +54,13 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
       stubPostRequest(url, requestBody, CREATED, returnBody)
 
-      val result: Either[ErrorModel, SecureCommsServiceResponseModel] = await(connector.sendMessage(requestModel))
+      val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
-      result shouldBe Right(SecureCommsServiceResponseModel("i_ajdsjhfkjshdf"))
+      result shouldBe Right(true)
     }
+
     "return an ErrorModel" when {
-      "the call is successful but the response cannot be " in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "didNotExpectThis" -> "i_ajdsjhfkjshdf"
-        )
 
-        stubPostRequest(url, requestBody, CREATED, returnBody)
-        val result: Either[ErrorModel, SecureCommsServiceResponseModel] = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(UnableToParseSecureCommsServiceResponse)
-      }
       "a TaxpayerNotFound error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj(
@@ -78,10 +68,11 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         )
 
         stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, SecureCommsServiceResponseModel] = await(connector.sendMessage(requestModel))
+        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(NotFoundMissingTaxpayer)
       }
+
       "an EmailNotVerified error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj(
@@ -89,10 +80,11 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         )
 
         stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, SecureCommsServiceResponseModel] = await(connector.sendMessage(requestModel))
+        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(NotFoundUnverifiedEmail)
       }
+
       "a BAD_REQUEST error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj(
@@ -100,10 +92,11 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         )
 
         stubPostRequest(url, requestBody, BAD_REQUEST, returnBody)
-        val result: Either[ErrorModel, SecureCommsServiceResponseModel] = await(connector.sendMessage(requestModel))
+        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(BadRequestUnknownTaxIdentifier)
       }
+
       "an unexpected response body is returned in the 404" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj(
