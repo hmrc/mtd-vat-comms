@@ -98,7 +98,6 @@ object Constants {
   }
 
   val TAX_IDENTIFIER_MTDVAT = "HMRC-MTD-VAT"
-  val SECURE_MESSAGE_TYPE_TEMPLATE = "newMessageAlert_VRT1214A"
 
   object SecureCommsServiceFieldValues {
     val MTDP = "mtdp"
