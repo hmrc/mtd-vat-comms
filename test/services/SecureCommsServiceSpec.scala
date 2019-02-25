@@ -18,7 +18,6 @@ package services
 
 import base.BaseSpec
 import connectors.SecureCommsServiceConnector
-import models.responseModels.SecureCommsServiceResponseModel
 import models.secureCommsServiceModels._
 import models._
 import org.scalamock.scalatest.MockFactory
@@ -352,10 +351,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
   private def setupSuccessResponse = {
     (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
       .expects(*, *)
-      .returns(
-        Right(SecureCommsServiceResponseModel(
-          "1234"
-        ))
-      )
+      .returns(Right(true))
   }
 }

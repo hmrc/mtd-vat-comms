@@ -66,17 +66,6 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-        "the send secure message request is unsuccessfully sent for an UnableToParseSecureCommsServiceResponse" should {
-          "remove the item form the queue" in new TestSetup {
-            secureCommsMock(Left(UnableToParseSecureCommsServiceResponse))
-            completeItemMock(true)
-
-            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
-
-            verify(queue, times(1)).complete(any())(any())
-          }
-        }
-
         "the send secure message request is unsuccessfully sent for an BadRequestUnknownTaxIdentifier" should {
           "remove the item form the queue" in new TestSetup {
             secureCommsMock(Left(BadRequestUnknownTaxIdentifier))

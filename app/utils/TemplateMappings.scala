@@ -58,8 +58,7 @@ object TemplateMappings {
     "VRT14A_SM10A" -> false
   )
 
-  def isTemplateIdApproval(templateId: String): Boolean = {
-    templateIdApprovalMap.filterKeys(_ == templateId).values.head
-  }
+  def isTemplateIdApproval(templateId: String): Option[Boolean] =
+    templateIdApprovalMap.filterKeys(_ == templateId).values.headOption
 
 }

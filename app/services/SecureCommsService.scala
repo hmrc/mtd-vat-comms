@@ -66,14 +66,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
     val isTransactor = messageModel.getTransactorDetails.transactorEmail.nonEmpty
 
-    Try {
-      isTemplateIdApproval(messageModel.getTemplateId)
-    }
-    match {
-      case Failure(_) =>
+    isTemplateIdApproval(messageModel.getTemplateId) match {
+      case None =>
         logWarn(content = s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.getTemplateId}")
         Left(GenericQueueNoRetryError)
-      case Success(isApproval) =>
+      case Some(isApproval) =>
         Right(buildResponse(messageModel, isTransactor, isApproval))
     }
   }

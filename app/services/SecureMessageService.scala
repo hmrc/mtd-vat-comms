@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository,
                                      secureCommsService: SecureCommsService,
                                      metrics: QueueMetrics)(
-                                      implicit ec: ExecutionContext) {
+                                     implicit ec: ExecutionContext) {
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.secureMessageEnqueued()
@@ -54,12 +54,11 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
       case Right(_) =>
         metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
-      case Left(GenericQueueNoRetryError) | Left(UnableToParseSecureCommsServiceResponse) |
-           Left(NotFoundMissingTaxpayer) | Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>
+      case Left(GenericQueueNoRetryError) | Left(NotFoundMissingTaxpayer) |
+           Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>
         metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(_) =>
-        // some other response that wasn't a created that we should be able to retry
         secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
   }
