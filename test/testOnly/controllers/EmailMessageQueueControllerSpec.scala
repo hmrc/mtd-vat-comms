@@ -21,13 +21,15 @@ import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Result
 import repositories.EmailMessageQueueRepository
+import services.EmailMessageQueuePollingService
 
 import scala.concurrent.Future
 
 class EmailMessageQueueControllerSpec extends BaseSpec with MockitoSugar {
 
   val repository: EmailMessageQueueRepository = mock[EmailMessageQueueRepository]
-  val controller = new EmailMessageQueueController(repository)
+  val scheduler: EmailMessageQueuePollingService = mock[EmailMessageQueuePollingService]
+  val controller = new EmailMessageQueueController(repository, scheduler)
   val recordCount = 99
 
   "The count action" should {

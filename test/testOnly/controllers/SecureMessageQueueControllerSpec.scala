@@ -21,13 +21,15 @@ import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Result
 import repositories.SecureMessageQueueRepository
+import services.SecureMessageQueuePollingService
 
 import scala.concurrent.Future
 
 class SecureMessageQueueControllerSpec extends BaseSpec with MockitoSugar {
 
   val repository: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
-  val controller = new SecureMessageQueueController(repository)
+  val scheduler: SecureMessageQueuePollingService = mock[SecureMessageQueuePollingService]
+  val controller = new SecureMessageQueueController(repository, scheduler)
   val recordCount = 99
 
   "The count action" should {

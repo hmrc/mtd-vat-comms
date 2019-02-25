@@ -30,7 +30,7 @@ import scala.util.{Failure, Success}
 class SecureMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
                                                  appConfig: AppConfig,
                                                  secureMessageService: SecureMessageService)(
-                                              implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
+                                                 implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
 
   override def name: String = "SecureMessageQueuePollingService"
 
@@ -45,7 +45,7 @@ class SecureMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
     s"\nInitial delay: $initialDelay" +
     s"\nPolling interval: $interval")
 
-  def executor(): Unit = {
+  def executor()(implicit ec: ExecutionContext): Unit = {
     execute.onComplete({
       case Success(Result(_)) =>
         logInfo(_)

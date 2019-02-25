@@ -46,7 +46,7 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
     s"\nInitial delay: $initialDelay" +
     s"\nPolling interval: $interval")
 
-  def executor(): Unit = {
+  def executor()(implicit ec: ExecutionContext): Unit = {
     execute.onComplete({
       case Success(Result(_)) =>
         logInfo(_)
