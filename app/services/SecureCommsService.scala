@@ -19,6 +19,7 @@ package services
 import java.util.UUID
 import common.Constants._
 import common.Constants.MessageKeys._
+import common.Constants.TemplateIdReadableNames._
 import config.AppConfig
 import connectors.SecureCommsServiceConnector
 import javax.inject.Inject
@@ -35,7 +36,6 @@ import utils.DateFormatter._
 import utils.LoggerUtil.logWarn
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
 
 class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServiceConnector)
                                   (implicit val messagesApi: MessagesApi, appConfig: AppConfig) extends I18nSupport {
@@ -84,35 +84,50 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       case deregModel: DeRegistrationModel =>
         val html = getDeregistrationChangeHtml(deregModel, isApproval, isTransactor)
         val subject = getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(html, deregModel.customerDetails.customerEmail, subject, vrn, businessName)
+        buildSecureCommsServiceRequestModel(
+          html, deregModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
       case ppobModel: PPOBChangeModel =>
         val html = getPpobChangeHtml(ppobModel, isApproval, isTransactor)
         val subject = getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName)
+        buildSecureCommsServiceRequestModel(
+          html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
       case repaymentModel: RepaymentsBankAccountChangeModel =>
         val html = getBankDetailsChangeHtml(repaymentModel, isApproval, isTransactor)
         val subject = getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName)
+        buildSecureCommsServiceRequestModel(
+          html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
       case staggerModel: VATStaggerChangeModel =>
         val html = getStaggerChangeHtml(staggerModel, isApproval, isTransactor)
         val subject = getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName)
+        buildSecureCommsServiceRequestModel(
+          html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
       case emailModel: EmailAddressChangeModel =>
         val html = getEmailChangeHtml(emailModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(html, emailModel.customerDetails.customerEmail, subject, vrn, businessName)
+        buildSecureCommsServiceRequestModel(
+          html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
     }
   }
 
-  private def buildSecureCommsServiceRequestModel(htmlContent: String, userEmail: String, subject: String,
-                                                  vrn: String, salutation: String): SecureCommsServiceRequestModel = {
+  private def buildSecureCommsServiceRequestModel(htmlContent: String,
+                                                  userEmail: String,
+                                                  subject: String,
+                                                  vrn: String,
+                                                  salutation: String,
+                                                  isTransactor: Boolean): SecureCommsServiceRequestModel = {
 
     val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MTDP)
     val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
     val nameModel = NameModel(line1 = salutation)
     val recipientModel = RecipientModel(taxIdentifier = taxIdentifierModel, name = nameModel, email = userEmail)
+    val templateId = if(isTransactor) CLIENT_NOTIFICATION_AGENT_CHANGE else CLIENT_NOTIFICATION_SELF_CHANGE
     SecureCommsServiceRequestModel(
-      externalRefModel, recipientModel, SECURE_MESSAGE_TYPE_TEMPLATE, subject, encode(htmlContent)
+      externalRefModel, recipientModel, templateId, subject, encode(htmlContent)
     )
   }
 
@@ -166,11 +181,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     }
   }
 
-  private def getStaggerChangeHtml(vATStaggerChangeModel: VATStaggerChangeModel,
+  private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
                                    isApproval: Boolean,
                                    isTransactor: Boolean): String = {
     if (isApproval) {
-      vatStaggerApproved(vATStaggerChangeModel.stagger, isTransactor).toString
+      vatStaggerApproved(vatStaggerChangeModel.stagger, isTransactor).toString
     } else {
       vatStaggerRejected(isTransactor).toString
     }
