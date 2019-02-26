@@ -66,9 +66,9 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-        "the send secure message request is unsuccessfully sent for an BadRequestUnknownTaxIdentifier" should {
+        "the send secure message request is unsuccessfully sent for a BadRequest" should {
           "remove the item form the queue" in new TestSetup {
-            secureCommsMock(Left(BadRequestUnknownTaxIdentifier))
+            secureCommsMock(Left(BadRequest))
             completeItemMock(true)
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
@@ -77,7 +77,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-        "the send secure message request is unsuccessfully sent for an NotFoundMissingTaxpayer" should {
+        "the send secure message request is unsuccessfully sent for a NotFoundMissingTaxpayer" should {
           "remove the item form the queue" in new TestSetup {
             secureCommsMock(Left(NotFoundMissingTaxpayer))
             completeItemMock(true)
@@ -88,7 +88,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-        "the send secure message request is unsuccessfully sent for an NotFoundUnverifiedEmail" should {
+        "the send secure message request is unsuccessfully sent for a NotFoundUnverifiedEmail" should {
           "remove the item form the queue" in new TestSetup {
             secureCommsMock(Left(NotFoundUnverifiedEmail))
             completeItemMock(true)

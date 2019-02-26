@@ -55,7 +55,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
         metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(GenericQueueNoRetryError) | Left(NotFoundMissingTaxpayer) |
-           Left(NotFoundUnverifiedEmail) | Left(BadRequestUnknownTaxIdentifier) =>
+           Left(NotFoundUnverifiedEmail) | Left(BadRequest) =>
         metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
       case Left(_) =>

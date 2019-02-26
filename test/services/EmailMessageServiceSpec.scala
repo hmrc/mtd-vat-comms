@@ -19,7 +19,7 @@ package services
 import base.BaseSpec
 import metrics.QueueMetrics
 import models.responseModels.EmailRendererResponseModel
-import models.{ErrorModel, NotFoundUnknownReason, SecureCommsMessageModel}
+import models.{BadRequest, ErrorModel, NotFoundNoMatch, SecureCommsMessageModel}
 import org.joda.time.{DateTime, DateTimeZone}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
@@ -59,10 +59,34 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
         }
       }
 
-      "the email request is unsuccessfully sent" should {
+      "the email service returns BAD_REQUEST (400)" should {
 
         "mark the item as failed" in new TestSetup {
-          emailServiceMock(Left(NotFoundUnknownReason))
+          emailServiceMock(Left(BadRequest))
+          completeItemMock(true)
+
+          await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+          verify(queue, times(1)).complete(any())(any())
+        }
+      }
+
+      "the email service returns NOT_FOUND (404)" should {
+
+        "mark the item as failed" in new TestSetup {
+          emailServiceMock(Left(NotFoundNoMatch))
+          completeItemMock(true)
+
+          await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+          verify(queue, times(1)).complete(any())(any())
+        }
+      }
+
+      "the email service returns an unexpected status" should {
+
+        "mark the item as failed" in new TestSetup {
+          emailServiceMock(Left(ErrorModel("unknown", "unknown")))
           markItemAsFailedMock
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))

@@ -32,14 +32,9 @@ object SpecificParsingError extends ErrorModel("ERROR_PARSING", "There has been 
 object GenericParsingError extends ErrorModel("ERROR_PARSING", "There has been an issue creating the generic model.")
 object JsonParsingError extends ErrorModel("ERROR_PARSING", "Unable to parse SecureCommText string into Json.")
 
-object UnableToParseSecureCommsResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned response from SecureComms.")
-object UnableToParseSecureCommsErrorResponseError extends ErrorModel("ERROR_PARSING", "Unable to parse the returned error response from SecureComms.")
-
-object BadRequestUnknownTaxIdentifier extends ErrorModel("BAD_REQUEST", "Unknown tax identifier name XYZ")
-object NotFoundUnknownReason extends ErrorModel("NOT_FOUND", "Unknown reason for status. Check logs.")
+object BadRequest extends ErrorModel("BAD_REQUEST", "Bad request")
 object GenericQueueNoRetryError extends ErrorModel("ERROR_NO_RETRY", "Error. Item should not be processed again from the queue.")
 object NotFoundMissingTaxpayer extends ErrorModel("NOT_FOUND", "Taxpayer not found")
 object NotFoundUnverifiedEmail extends ErrorModel("NOT_FOUND", "Email not verified")
 object ConflictDuplicateMessage extends ErrorModel("CONFLICT", "Duplicate Message")
-
 object NotFoundNoMatch extends ErrorModel("NOT_FOUND", "The back end has indicated that there is no match found.")

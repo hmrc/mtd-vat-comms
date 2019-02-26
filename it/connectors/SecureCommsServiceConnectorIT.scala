@@ -94,7 +94,7 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         stubPostRequest(url, requestBody, BAD_REQUEST, returnBody)
         val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
-        result shouldBe Left(BadRequestUnknownTaxIdentifier)
+        result shouldBe Left(BadRequest)
       }
 
       "an unexpected response body is returned in the 404" in {

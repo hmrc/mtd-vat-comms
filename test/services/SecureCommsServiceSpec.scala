@@ -213,11 +213,11 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
         (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
           .expects(*, *)
           .returns(
-            Left(BadRequestUnknownTaxIdentifier)
+            Left(BadRequest)
           )
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
-        result shouldBe Left(BadRequestUnknownTaxIdentifier)
+        result shouldBe Left(BadRequest)
       }
     }
 

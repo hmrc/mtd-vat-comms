@@ -71,8 +71,78 @@ class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
         result shouldBe expectedResult
       }
     }
+    "return BadRequest" when {
+      s"a $BAD_REQUEST response is received from EmailRenderer" in {
+        val postBody = EmailRequestModel(
+          Seq("fusrohdah@whiterun.tam"),
+          "thisIsDefoAnId",
+          Map(
+            "FUS" -> "ROH DAHL"
+          )
+        )
+        val apiResponse: JsObject = Json.obj(
+          "body" -> "Bad request"
+        )
+
+        stubPostRequest(
+          postUrl,
+          Json.toJson(postBody),
+          BAD_REQUEST,
+          apiResponse
+        )
+
+        val expectedResult = Left(BadRequest)
+
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
+          EmailRequestModel(
+            Seq("fusrohdah@whiterun.tam"),
+            "thisIsDefoAnId",
+            Map(
+              "FUS" -> "ROH DAHL"
+            )
+          )
+        ))
+
+        result shouldBe expectedResult
+      }
+    }
+    "return NotFoundNoMatch" when {
+      s"a $NOT_FOUND response is received from EmailRenderer" in {
+        val postBody = EmailRequestModel(
+          Seq("fusrohdah@whiterun.tam"),
+          "thisIsDefoAnId",
+          Map(
+            "FUS" -> "ROH DAHL"
+          )
+        )
+        val apiResponse: JsObject = Json.obj(
+          "body" -> "Not found"
+        )
+
+        stubPostRequest(
+          postUrl,
+          Json.toJson(postBody),
+          NOT_FOUND,
+          apiResponse
+        )
+
+        val expectedResult = Left(NotFoundNoMatch)
+
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
+          EmailRequestModel(
+            Seq("fusrohdah@whiterun.tam"),
+            "thisIsDefoAnId",
+            Map(
+              "FUS" -> "ROH DAHL"
+            )
+          )
+        ))
+
+        result shouldBe expectedResult
+      }
+    }
     "return an ErrorModel" when {
-      s"a $BAD_REQUEST response is received from SecureComms, and the response can be parsed" in {
+      s"an unexpected response is received from EmailRenderer" in {
         val postBody = EmailRequestModel(
           Seq("fusrohdah@whiterun.tam"),
           "thisIsDefoAnId",
@@ -87,11 +157,11 @@ class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
         stubPostRequest(
           postUrl,
           Json.toJson(postBody),
-          BAD_REQUEST,
+          INTERNAL_SERVER_ERROR,
           apiResponse
         )
 
-        val expectedResult = Left(ErrorModel(BAD_REQUEST.toString, Json.stringify(apiResponse)))
+        val expectedResult = Left(ErrorModel(INTERNAL_SERVER_ERROR.toString, Json.stringify(apiResponse)))
 
         val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
           EmailRequestModel(

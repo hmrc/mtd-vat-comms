@@ -19,7 +19,7 @@ package connectors
 import config.AppConfig
 import com.google.inject.Inject
 import models._
-import models.responseModels.{SecureCommsErrorResponseModel, SecureCommsResponseModel}
+import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSClient, WSResponse}
@@ -63,27 +63,18 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
         logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           "Failed to validate response to SecureCommsResponseModel")
         logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${wSResponse.body}'")
-        Left(UnableToParseSecureCommsResponseError)
+        Left(GenericParsingError)
     }
   }
 
   private def handleBadRequest(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    Json.parse(wSResponse.body).validate[SecureCommsErrorResponseModel].asOpt match {
-      case Some(error) => Left(ErrorModel(error.code, error.reason))
-      case None =>
-        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-          s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${wSResponse.body}'")
-        Left(UnableToParseSecureCommsErrorResponseError)
-    }
+    logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${wSResponse.body}'")
+    Left(BadRequest)
   }
 
   private def handleNotFound(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    Json.parse(wSResponse.body).validate[SecureCommsErrorResponseModel].asOpt match {
-      case Some(_) => Left(NotFoundNoMatch)
-      case None =>
-        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-          s"Failed to validate error response to SecureCommsErrorResponseModel. Body: '${wSResponse.body}'")
-        Left(UnableToParseSecureCommsErrorResponseError)
-    }
+    logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+      s"The requested data was not found. Body: '${wSResponse.body}'")
+    Left(NotFoundNoMatch)
   }
 }

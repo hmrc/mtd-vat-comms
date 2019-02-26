@@ -18,7 +18,7 @@ package services
 
 import javax.inject.Inject
 import metrics.QueueMetrics
-import models.SecureCommsMessageModel
+import models.{BadRequest, NotFoundNoMatch, SecureCommsMessageModel}
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
@@ -53,6 +53,9 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
     SecureCommsMessageParser.parseModel(workItem.item) match {
       case Right(message) => emailService.sendEmailRequest(message).flatMap {
         case Right(_) =>
+          metrics.emailMessageDequeued()
+          emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        case Left(BadRequest) | Left(NotFoundNoMatch) =>
           metrics.emailMessageDequeued()
           emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
         case _  => emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)

@@ -18,7 +18,7 @@ package connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import models.ErrorModel
+import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import play.api.libs.json.Json
@@ -40,6 +40,8 @@ class EmailConnector @Inject()(wsClient: WSClient, appConfig: AppConfig) {
   def handleResponse(response: WSResponse): Either[ErrorModel, EmailRendererResponseModel] = {
     response.status match {
       case ACCEPTED => Right(EmailRendererResponseModel(ACCEPTED))
+      case BAD_REQUEST => Left(BadRequest)
+      case NOT_FOUND => Left(NotFoundNoMatch)
       case _ => Left(ErrorModel(response.status.toString, response.body))
     }
   }

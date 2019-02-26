@@ -41,7 +41,7 @@ class SecureCommsServiceConnector @Inject()(wSClient: WSClient, appConfig: AppCo
   private def handleResponse(response: WSResponse) =
     response.status match {
       case CREATED => Right(true)
-      case BAD_REQUEST => Left(BadRequestUnknownTaxIdentifier)
+      case BAD_REQUEST => Left(BadRequest)
       case NOT_FOUND => Left(handle404Possibilities(response.body))
       case CONFLICT => Left(ConflictDuplicateMessage)
       case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))
