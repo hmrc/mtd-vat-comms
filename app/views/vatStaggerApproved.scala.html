@@ -16,17 +16,10 @@
 
 @import views.html.templates.displayStagger
 
-@(stagger: String, isTransactor: Boolean)(implicit messages: MessagesApi)
+@(stagger: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-            @messages("staggerApprovedTransactor.title")
-            } else {
-            @messages("staggerApproved.title")
-            }
-        </h2>
         <p>@messages("staggerApproved.p1") @displayStagger(stagger)</p>
         <p>@messages("staggerApproved.p2")</p>
     </div>

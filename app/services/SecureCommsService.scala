@@ -82,25 +82,25 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     val businessName = messageModel.getBusinessName
     messageModel match {
       case deregModel: DeRegistrationModel =>
-        val html = getDeregistrationChangeHtml(deregModel, isApproval, isTransactor)
+        val html = getDeregistrationChangeHtml(deregModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, deregModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case ppobModel: PPOBChangeModel =>
-        val html = getPpobChangeHtml(ppobModel, isApproval, isTransactor)
+        val html = getPpobChangeHtml(ppobModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case repaymentModel: RepaymentsBankAccountChangeModel =>
-        val html = getBankDetailsChangeHtml(repaymentModel, isApproval, isTransactor)
+        val html = getBankDetailsChangeHtml(repaymentModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case staggerModel: VATStaggerChangeModel =>
-        val html = getStaggerChangeHtml(staggerModel, isApproval, isTransactor)
+        val html = getStaggerChangeHtml(staggerModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
@@ -141,53 +141,51 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   }
 
   private def getBankDetailsChangeHtml(repaymentsBankAccountChangeModel: RepaymentsBankAccountChangeModel,
-                                       isApproval: Boolean,
-                                       isTransactor: Boolean): String = {
+                                       isApproval: Boolean): String = {
     if (isApproval) {
       vatBankDetailsApproved(repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountName,
         repaymentsBankAccountChangeModel.bankAccountDetails.bankSortCode,
-        repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountNumber, isTransactor).toString
+        repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountNumber).toString
     } else {
       vatBankDetailsRejected(repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountName,
-        repaymentsBankAccountChangeModel.businessName, isTransactor).toString
+        repaymentsBankAccountChangeModel.businessName).toString
     }
   }
 
   private def getDeregistrationChangeHtml(deRegistrationModel: DeRegistrationModel,
-                                          isApproval: Boolean, isTransactor: Boolean): String = {
+                                          isApproval: Boolean): String = {
     if (isApproval) {
-      vatDeregApproved(etmpToFullMonthDateString(deRegistrationModel.effectiveDateOfDeRegistration), isTransactor).toString
+      vatDeregApproved(etmpToFullMonthDateString(deRegistrationModel.effectiveDateOfDeRegistration)).toString
     } else {
-      vatDeregRejected(isTransactor).toString
+      vatDeregRejected().toString
     }
   }
 
   private def getPpobChangeHtml(ppobChangeModel: PPOBChangeModel,
-                                isApproval: Boolean,
-                                isTransactor: Boolean): String = {
+                                isApproval: Boolean): String = {
     if (isApproval) {
       vatPPOBApproved(
-        VatPPOBViewModel
-        (ppobChangeModel.addressDetails.addressLine1,
+        VatPPOBViewModel(
+          ppobChangeModel.addressDetails.addressLine1,
           ppobChangeModel.addressDetails.addressLine2,
           if (ppobChangeModel.addressDetails.addressLine3.isEmpty) None else Some(ppobChangeModel.addressDetails.addressLine3),
           if (ppobChangeModel.addressDetails.addressLine4.isEmpty) None else Some(ppobChangeModel.addressDetails.addressLine4),
           if (ppobChangeModel.addressDetails.addressLine5.isEmpty) None else Some(ppobChangeModel.addressDetails.addressLine5),
           if (ppobChangeModel.addressDetails.postCode.isEmpty) None else Some(ppobChangeModel.addressDetails.postCode),
-          if (ppobChangeModel.addressDetails.countryName.isEmpty) None else Some(ppobChangeModel.addressDetails.countryName)),
-        isTransactor).toString
+          if (ppobChangeModel.addressDetails.countryName.isEmpty) None else Some(ppobChangeModel.addressDetails.countryName)
+        )
+      ).toString
     } else {
-      vatPPOBRejected(isTransactor).toString
+      vatPPOBRejected().toString
     }
   }
 
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
-                                   isApproval: Boolean,
-                                   isTransactor: Boolean): String = {
+                                   isApproval: Boolean): String = {
     if (isApproval) {
-      vatStaggerApproved(vatStaggerChangeModel.stagger, isTransactor).toString
+      vatStaggerApproved(vatStaggerChangeModel.stagger).toString
     } else {
-      vatStaggerRejected(isTransactor).toString
+      vatStaggerRejected().toString
     }
   }
 

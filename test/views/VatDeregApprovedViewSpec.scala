@@ -21,59 +21,26 @@ import org.jsoup.nodes.Document
 
 class VatDeregApprovedViewSpec extends ViewBaseSpec {
 
-  "Rendering the VatDeregApproved secure message content for a client" should {
+  "Rendering the VatDeregApproved secure message content" should {
 
-    lazy val view = views.html.vatDeregApproved("03 October 2018", isTransactor = false)
+    lazy val view = views.html.vatDeregApproved("03 October 2018")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "have the correct h2" in {
-      elementText("h2") shouldBe "We have accepted your request to deregister from VAT"
-    }
-
     "have the correct first paragraph" in {
-      elementText("p:nth-child(2)") shouldBe "The business will be deregistered from VAT on 03 October 2018."
+      elementText("p:nth-child(1)") shouldBe "The business will be deregistered from VAT on 03 October 2018."
     }
 
     "have the correct second h2" in {
-      elementText("h2:nth-child(3)") shouldBe "What happens next"
+      elementText("h2:nth-child(2)") shouldBe "What happens next"
     }
 
     "have the correct second paragraph" in {
-      elementText("p:nth-child(4)") shouldBe "Submit any outstanding VAT Returns which cover " +
+      elementText("p:nth-child(3)") shouldBe "Submit any outstanding VAT Returns which cover " +
         "the period up to 03 October 2018."
     }
 
     "have the correct final paragraph" in {
-      elementText("p:nth-child(5)") shouldBe "Register for VAT again if your taxable turnover " +
-        "goes above the VAT threshold."
-    }
-
-  }
-
-  "Rendering the VatDeregApproved secure message content for a transactor" should {
-
-    lazy val view = views.html.vatDeregApproved("03 October 2018", isTransactor = true)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
-
-    "have the correct h2" in {
-      elementText("h2") shouldBe "We have accepted your agent’s request to deregister from VAT"
-    }
-
-    "have the correct first paragraph" in {
-      elementText("p:nth-child(2)") shouldBe "The business will be deregistered from VAT on 03 October 2018."
-    }
-
-    "have the correct second h2" in {
-      elementText("h2:nth-child(3)") shouldBe "What happens next"
-    }
-
-    "have the correct second paragraph" in {
-      elementText("p:nth-child(4)") shouldBe "Submit any outstanding VAT Returns which cover " +
-        "the period up to 03 October 2018."
-    }
-
-    "have the correct final paragraph" in {
-      elementText("p:nth-child(5)") shouldBe "Register for VAT again if your taxable turnover " +
+      elementText("p:nth-child(4)") shouldBe "Register for VAT again if your taxable turnover " +
         "goes above the VAT threshold."
     }
 

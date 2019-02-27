@@ -14,24 +14,17 @@
  * limitations under the License.
  *@
 
-@(accountName: String, businessName: String, isTransactor: Boolean)(implicit messages: MessagesApi)
+@(accountName: String, businessName: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-                @messages("bankDetailsRejectedTransactor.title")
-            } else {
-                @messages("bankDetailsRejected.title")
-            }
-        </h2>
         <p>@messages("bankDetailsRejected.p1")</p>
         <p>
           <strong>@messages("bankDetailsRejected.p2")</strong> @accountName<br>
           <strong>@messages("bankDetailsRejected.p3")</strong> @businessName
         </p>
         <p>@messages("bankDetailsRejected.p4")</p>
-        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
+        <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
         <p>@messages("common.standardReject")</p>
         <p>
             @messages("common.hmrcAddressLine1")<br>

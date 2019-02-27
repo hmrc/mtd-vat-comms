@@ -14,17 +14,10 @@
  * limitations under the License.
  *@
 
-@(accountName: String, sortCode: String, accountNumber: String, isTransactor: Boolean)(implicit messages: MessagesApi)
+@(accountName: String, sortCode: String, accountNumber: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-                @messages("bankDetailsApprovedTransactor.title")
-            } else {
-                @messages("bankDetailsApproved.title")
-            }
-        </h2>
         <p>@messages("bankDetailsApproved.p1")</p>
         <p>
           <strong>@messages("bankDetailsApproved.p2")</strong> @accountName<br>
