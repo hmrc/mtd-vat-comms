@@ -14,19 +14,12 @@
  * limitations under the License.
  *@
 
-@(deregDate: String, isTransactor: Boolean)(implicit messages: MessagesApi)
+@(deregDate: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-                @messages("deregApprovedTransactor.title")
-            } else {
-                @messages("deregApproved.title")
-            }
-        </h2>
         <p>@messages("deregApproved.p1", deregDate)</p>
-        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
+        <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
         <p>@messages("deregApproved.p2", deregDate)</p>
         <p>@messages("deregApproved.p3")</p>
     </div>

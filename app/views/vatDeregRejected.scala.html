@@ -16,19 +16,12 @@
 
 @import config.AppConfig
 
-@(isTransactor: Boolean)(implicit messages: MessagesApi, appConfig: AppConfig)
+@()(implicit messages: MessagesApi, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-                @messages("deregRejectedTransactor.title")
-            } else {
-                @messages("deregRejected.title")
-            }
-        </h2>
         <p>@messages("deregRejected.p1")</p>
-        <h2 class="heading-medium">@messages("common.whatHappensNext")</h2>
+        <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
         <p>@messages("deregRejected.p2")</p>
         <p>@messages("common.standardReject")</p>
         <p>

@@ -16,17 +16,10 @@
 
 @import models.viewModels.VatPPOBViewModel
 
-@(model: VatPPOBViewModel, isTransactor: Boolean)(implicit messages: MessagesApi)
+@(model: VatPPOBViewModel)(implicit messages: MessagesApi)
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h2 class="heading-medium">
-            @if(isTransactor) {
-                @messages("ppobApprovedTransactor.title")
-            } else {
-                @messages("ppobApproved.title")
-            }
-        </h2>
         <p>@messages("ppobApproved.p1")</p>
         <p>
           @model.addressLine1<br>
