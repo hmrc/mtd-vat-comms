@@ -8,13 +8,12 @@ common.hmrcAddressPostcode = WV1 4JX
 
 staggerApproved.title = You have successfully changed your VAT Return dates
 staggerApprovedTransactor.title = Your agent has successfully changed your VAT Return dates
-staggerApproved.p1 = Your new return dates for VAT are:
+staggerApproved.p1 = You now submit your VAT Returns
 staggerApproved.p2 = Your new return dates might only take effect from your next tax period. Check what returns are currently due to make sure you do not miss any.
-staggerApproved.mm = Every Month
-staggerApproved.ma = January, April, July and October
-staggerApproved.mb = February, May, August and November
-staggerApproved.mc = March, June, September and December
-
+staggerApproved.mm = every month.
+staggerApproved.ma = in April, July, October and January.
+staggerApproved.mb = in May, August, November and February.
+staggerApproved.mc = in March, June, September and December.
 
 staggerRejected.title = We have rejected the change to your business VAT Return dates
 staggerRejectedTransactor.title = We have rejected your agent’s change to your business VAT Return dates
