@@ -136,7 +136,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     if (isApproval) {
       vatEmailApproved(emailAddressChangeModel.customerDetails.customerEmail).toString
     } else {
-      vatEmailRejected.toString
+      vatEmailRejected().toString
     }
   }
 

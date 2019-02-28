@@ -17,11 +17,11 @@
 @(accountName: String, businessName: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
-    <div class="column-two-thirds">
+    <div class="column-full">
         <p>@messages("bankDetailsRejected.p1")</p>
         <p>
-          <strong>@messages("bankDetailsRejected.p2")</strong> @accountName<br>
-          <strong>@messages("bankDetailsRejected.p3")</strong> @businessName
+          <span class="bold-small">@messages("bankDetailsRejected.p2")</span> @accountName<br>
+          <span class="bold-small">@messages("bankDetailsRejected.p3")</span> @businessName
         </p>
         <p>@messages("bankDetailsRejected.p4")</p>
         <h2 class="heading-small">@messages("common.whatHappensNext")</h2>

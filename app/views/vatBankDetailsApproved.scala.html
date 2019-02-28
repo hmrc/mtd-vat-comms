@@ -17,12 +17,12 @@
 @(accountName: String, sortCode: String, accountNumber: String)(implicit messages: MessagesApi)
 
 <div class="grid-row">
-    <div class="column-two-thirds">
+    <div class="column-full">
         <p>@messages("bankDetailsApproved.p1")</p>
         <p>
-          <strong>@messages("bankDetailsApproved.p2")</strong> @accountName<br>
-          <strong>@messages("bankDetailsApproved.p3")</strong> @sortCode<br>
-          <strong>@messages("bankDetailsApproved.p4")</strong> @accountNumber
+          <span class="bold-small">@messages("bankDetailsApproved.p2")</span> @accountName<br>
+          <span class="bold-small">@messages("bankDetailsApproved.p3")</span> @sortCode<br>
+          <span class="bold-small">@messages("bankDetailsApproved.p4")</span> @accountNumber
         </p>
     </div>
 </div>

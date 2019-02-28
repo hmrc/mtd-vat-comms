@@ -21,8 +21,7 @@ import javax.inject.Inject
 import models.ErrorModel
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
-import models.secureMessageAlertModels.messageTypes.MessageModel
-import play.api.http.Status.ACCEPTED
+import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, MessageModel}
 import common.Constants.TemplateIdReadableNames._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -52,29 +51,22 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
     allTemplateIds(input)
   }
 
-  def toRequest(templateId: String, messageModel: MessageModel): Either[ErrorModel, EmailRequestModel] = {
-    try {
+  def toRequest(templateId: String, messageModel: MessageModel): Either[ErrorModel, EmailRequestModel] =
+    messageModel match {
 
-      val notificationDependentDetails: (String, Map[String, String]) = templateId match {
-        case CLIENT_NOTIFICATION_SELF_CHANGE =>
-          (
-            messageModel.getCustomerDetails.customerEmail,
-            Map("recipientName_line1" -> messageModel.getBusinessName)
-          )
-        case AGENT_NOTIFICATION_CHANGE_ACCEPTED | AGENT_NOTIFICATION_CHANGE_REJECTED =>
-          (
-            messageModel.getTransactorDetails.transactorEmail,
-            Map(
-              "transactorName" -> messageModel.getTransactorDetails.transactorName,
-              "clientName" -> messageModel.getBusinessName,
-              "clientVrn" -> messageModel.getVrn
-            )
-          )
-      }
+      case model: EmailAddressChangeModel if templateId == CLIENT_NOTIFICATION_SELF_CHANGE =>
+        val notificationDependentDetails: Map[String, String] = Map("recipientName_line1" -> model.getBusinessName)
+        Right(EmailRequestModel(Seq(model.originalEmailAddress), templateId, notificationDependentDetails))
 
-      Right(EmailRequestModel(Seq(notificationDependentDetails._1), templateId, notificationDependentDetails._2))
-    } catch {
-      case error: Throwable => Left(ErrorModel("ERROR_CREATING_REQUEST", error.getMessage))
+      case _ if templateId == AGENT_NOTIFICATION_CHANGE_ACCEPTED || templateId == AGENT_NOTIFICATION_CHANGE_REJECTED =>
+        val notificationDependentDetails: Map[String, String] = Map(
+          "transactorName" -> messageModel.getTransactorDetails.transactorName,
+          "clientName" -> messageModel.getBusinessName,
+          "clientVrn" -> messageModel.getVrn
+        )
+        Right(EmailRequestModel(
+          Seq(messageModel.getTransactorDetails.transactorEmail), templateId, notificationDependentDetails
+        ))
+      case _ => Left(ErrorModel("ERROR_CREATING_REQUEST", s"Template ID '$templateId' is not supported."))
     }
-  }
 }

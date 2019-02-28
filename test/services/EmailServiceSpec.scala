@@ -21,7 +21,7 @@ import connectors.EmailConnector
 import models.ErrorModel
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
-import models.secureMessageAlertModels.messageTypes.MessageModel
+import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, MessageModel}
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.ACCEPTED
@@ -111,19 +111,19 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
 
       "a valid client template id is used" in {
         val templateId = CLIENT_NOTIFICATION_SELF_CHANGE
-        val mModel = new MessageModel(
+        val mModel = new EmailAddressChangeModel(
           "VRT12A_SM9A",
           "1234567890",
           "ALSKDLASKKDLAKS",
           "FusRohDheli",
           TransactorModel("", ""),
           CustomerModel("some@email.co.uk", VERIFIED),
-          PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
-
+          PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+          "mynewemail@vat.change"
         )
         val params = Map("recipientName_line1" -> mModel.getBusinessName)
 
-        service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("some@email.co.uk"), templateId, params))
+        service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("mynewemail@vat.change"), templateId, params))
       }
 
       "a valid agent template id is used" in {
@@ -162,7 +162,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
         )
 
         service.toRequest(templateId, mModel) shouldBe
-          Left(ErrorModel("ERROR_CREATING_REQUEST", "newMessageAlert_VRT1214B (of class java.lang.String)"))
+          Left(ErrorModel("ERROR_CREATING_REQUEST", "Template ID 'newMessageAlert_VRT1214B' is not supported."))
       }
     }
   }

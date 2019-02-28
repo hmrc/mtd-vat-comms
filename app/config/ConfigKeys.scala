@@ -32,6 +32,6 @@ object ConfigKeys {
 
   val tribunalUrl: String = "govuk.tribunalUrl"
 
-  val manageVatSubscriptionBase = "manageVatSubscriptionFrontend"
-  val manageVatSubscriptionUri: String = "microservice.services.manageVatSubscriptionFrontend.changeBusinessDetailsUri"
+  val manageVatSubscriptionHost = "manage-vat-subscription-frontend.host"
+  val manageVatSubscriptionUri: String = "manage-vat-subscription-frontend.changeBusinessDetailsUri"
 }

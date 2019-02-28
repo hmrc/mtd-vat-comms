@@ -72,7 +72,7 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
 
   override lazy val tribunalUrl: String = getString(Keys.tribunalUrl)
 
-  private lazy val manageVatSubscriptionBase: String = baseUrl(Keys.manageVatSubscriptionBase)
+  private lazy val manageVatSubscriptionHost: String = getString(Keys.manageVatSubscriptionHost)
   override lazy val manageVatSubscriptionUrl: String =
-  manageVatSubscriptionBase + getString(Keys.manageVatSubscriptionUri)
+    manageVatSubscriptionHost + getString(Keys.manageVatSubscriptionUri)
 }
