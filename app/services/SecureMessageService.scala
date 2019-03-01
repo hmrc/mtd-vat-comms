@@ -23,6 +23,7 @@ import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, WorkItem}
+import utils.LoggerUtil.logError
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -61,5 +62,9 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
       case Left(_) =>
         secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
+  }.recoverWith {
+    case e =>
+      logError(content = s"[SecureMessageService][processWorkItem] - Unexpected Error recovered.", e)
+      secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }

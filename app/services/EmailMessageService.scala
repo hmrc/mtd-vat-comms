@@ -24,6 +24,7 @@ import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.Failed
 import uk.gov.hmrc.workitem.WorkItem
+import utils.LoggerUtil.logError
 import utils.SecureCommsMessageParser
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -64,5 +65,9 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
         metrics.emailMessageDequeued()
         emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
     }
+  }.recoverWith {
+    case e =>
+      logError(content = s"[EmailMessageService][processWorkItem] - Unexpected Error recovered.", e)
+      emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }
