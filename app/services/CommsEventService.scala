@@ -25,6 +25,7 @@ import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.Failed
 import uk.gov.hmrc.workitem.WorkItem
+import utils.LoggerUtil.logError
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -77,5 +78,9 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
       case Left(_) =>
         commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
+  }.recoverWith {
+    case e =>
+      logError(content = s"[CommsEventService][processWorkItem] - Unexpected Error recovered.", e)
+      commsEventQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }

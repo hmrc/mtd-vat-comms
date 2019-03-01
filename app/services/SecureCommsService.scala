@@ -42,24 +42,20 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
   def sendSecureCommsMessage(workItem: SecureCommsMessageModel)
                             (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] = {
-    try {
-      parseModel(workItem) match {
-        case Left(_) => Future(Left(GenericQueueNoRetryError))
-        case Right(messageModel) =>
-          getRequest(messageModel) match {
-            case Left(_: ErrorModel) => Future(Left(GenericQueueNoRetryError))
-            case Right(model: SecureCommsServiceRequestModel) =>
-              secureCommsServiceConnector.sendMessage(model).map {
-                case Right(_) => Right(true)
-                case Left(error: ErrorModel) => Left(error)
-              }
-          }
-      }
-    } catch {
-      case e: Throwable =>
-        logWarn(content = s"[SecureCommsService][sendSecureCommsMessage] - Unexpected Error recovered.", e)
-        Future(Left(GenericQueueNoRetryError))
+
+    parseModel(workItem) match {
+      case Left(_) => Future(Left(GenericQueueNoRetryError))
+      case Right(messageModel) =>
+        getRequest(messageModel) match {
+          case Left(_: ErrorModel) => Future(Left(GenericQueueNoRetryError))
+          case Right(model: SecureCommsServiceRequestModel) =>
+            secureCommsServiceConnector.sendMessage(model).map {
+              case Right(_) => Right(true)
+              case Left(error: ErrorModel) => Left(error)
+            }
+        }
     }
+
   }
 
   private def getRequest(messageModel: MessageModel): Either[ErrorModel, SecureCommsServiceRequestModel] = {
