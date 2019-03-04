@@ -27,7 +27,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
-      elementText("p:nth-child(1)") shouldBe "You now submit your VAT Returns every month."
+      elementText("p:nth-child(1)") shouldBe "Your new return dates for VAT are every month."
     }
 
     "have the correct final paragraph" in {
@@ -42,7 +42,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
-      elementText("p:nth-child(1)") shouldBe "You now submit your VAT Returns in April, July, October and January."
+      elementText("p:nth-child(1)") shouldBe "Your new return dates for VAT are April, July, October and January."
     }
 
     "have the correct final paragraph" in {
@@ -57,7 +57,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
-      elementText("p:nth-child(1)") shouldBe "You now submit your VAT Returns in May, August, November and February."
+      elementText("p:nth-child(1)") shouldBe "Your new return dates for VAT are May, August, November and February."
     }
 
     "have the correct final paragraph" in {
@@ -72,7 +72,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
-      elementText("p:nth-child(1)") shouldBe "You now submit your VAT Returns in March, June, September and December."
+      elementText("p:nth-child(1)") shouldBe "Your new return dates for VAT are March, June, September and December."
     }
 
     "have the correct final paragraph" in {
