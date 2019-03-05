@@ -35,7 +35,9 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
   extends WorkItemRepository[VatChangeEvent, BSONObjectID](
     "CommsEventQueue",
     reactiveMongoComponent.mongoConnector.db,
-    WorkItem.workItemMongoFormat[VatChangeEvent]) {
+    WorkItem.workItemMongoFormat[VatChangeEvent],
+    appConfig.configuration.underlying
+  ) {
 
   lazy override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
@@ -60,6 +62,6 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
   def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
     val selector = JsObject(
       Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
-    collection.remove(selector).map(_.n > 0)
+    collection.delete().one(selector).map(_.n > 0)
   }
 }

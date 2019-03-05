@@ -18,7 +18,7 @@ package testOnly.controllers
 
 import base.BaseSpec
 import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
 import repositories.EmailMessageQueueRepository
 import services.EmailMessageQueuePollingService

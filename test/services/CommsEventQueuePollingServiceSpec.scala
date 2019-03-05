@@ -23,7 +23,7 @@ import mocks.MockAppConfig
 import models.VatChangeEvent
 import org.mockito.Mockito
 import org.mockito.Mockito.{timeout, verify, when}
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 
 import scala.concurrent.Future
