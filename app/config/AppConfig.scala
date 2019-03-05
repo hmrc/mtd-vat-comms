@@ -24,6 +24,8 @@ import config.{ConfigKeys => Keys}
 
 @ImplementedBy(classOf[MicroserviceAppConfig])
 trait AppConfig extends ServicesConfig {
+  val configuration: Configuration
+
   val retryIntervalMillis: Long
 
   def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String
@@ -47,6 +49,7 @@ trait AppConfig extends ServicesConfig {
 class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment)
   extends AppConfig {
 
+  override val configuration: Configuration = runModeConfiguration
   override def mode: Mode.Mode = environment.mode
 
   override lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(Keys.failureRetryAfterProperty)

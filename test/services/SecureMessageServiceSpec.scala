@@ -24,7 +24,7 @@ import repositories.SecureMessageQueueRepository
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.workitem.{InProgress, WorkItem}
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._

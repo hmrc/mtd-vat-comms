@@ -24,6 +24,8 @@ class MockAppConfig(val runModeConfiguration: Configuration,
                     val mode: Mode = Mode.Test,
                     override val pollingToggle: Boolean = false) extends AppConfig {
 
+  override val configuration: Configuration = runModeConfiguration
+
   def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
     s"/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
   override val desAuthorisationToken: String = "EYAUE_AISOD92834894"
