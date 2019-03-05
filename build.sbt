@@ -34,7 +34,7 @@ val compile = Seq(
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "hmrctest"                     % "3.3.0"             % scope,
+  "uk.gov.hmrc"            %% "hmrctest"                     % "3.6.0-play-25"             % scope,
   "org.scalatest"          %% "scalatest"                    % "3.0.6"             % scope,
   "com.typesafe.play"      %% "play-test"                    % PlayVersion.current % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
