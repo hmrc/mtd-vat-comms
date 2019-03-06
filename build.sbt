@@ -44,7 +44,8 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
   "uk.gov.hmrc"            %% "reactivemongo-test"           % "4.9.0-play-25"     % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.11.3"            % scope
+  "org.jsoup"              %  "jsoup"                        % "1.11.3"            % scope,
+  "org.reactivemongo"      %  "reactivemongo-shaded-native"  % "0.16.1-osx-x86-64" % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
