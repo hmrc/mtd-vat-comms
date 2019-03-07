@@ -32,7 +32,9 @@ object SecureCommsMessageParser {
 
   def parseMessage(message: String): Either[ErrorModel, JsValue] = {
     try {
-      val stringAsMap = message.replace("<p>", "").split("</p>").filter(_.nonEmpty)
+      val stringAsMap = message
+        .stripPrefix("<![CDATA[").stripSuffix("]]>").replace("P>", "p>")
+        .replace("<p>", "").split("</p>").filter(_.nonEmpty)
         .map { keyValuePair =>
           val splitValues = keyValuePair.split("\\|", 2)
           convertToCamelCase(splitValues.head) -> splitValues(1)
