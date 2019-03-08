@@ -30,12 +30,12 @@ import utils.SecureCommsMessageTestData.{ResponseAsModel, Responses}
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
-  val stringToParse: String = "<p>TEMPLATE-ID|VRT41A_SM1A</p><p>VRN|100065579</p>" +
-    "<p>FORM BUNDLE REFERENCE|092000003080</p><p>BUSINESS NAME|CoC Company Holdings Ltd</p>" +
-    "<p>EFFECTIVE DATE OF DE-REGISTRATION|20181227</p><p>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</p>" +
-    "<p>CUSTOMER EMAIL|info@CoCHoldings.co.uk</p>" +
-    "<p>CUSTOMER EMAIL STATUS|VERIFIED</p><p>NOTIFICATION PREFERENCE|EMAIL</p><p>CHANNEL PREFERENCE|PAPER</p><p>LANGUAGE PREFERENCE|ENGLISH</p>" +
-    "<p>FORMAT PREFERENCE|TEXT</p>"
+  val stringToParse: String = "<![CDATA[<P>TEMPLATE-ID|VRT41A_SM1A</P><P>VRN|100065579</P>" +
+    "<P>FORM BUNDLE REFERENCE|092000003080</P><P>BUSINESS NAME|CoC Company Holdings Ltd</P>" +
+    "<P>EFFECTIVE DATE OF DE-REGISTRATION|20181227</P><P>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</P>" +
+    "<P>CUSTOMER EMAIL|info@CoCHoldings.co.uk</P>" +
+    "<P>CUSTOMER EMAIL STATUS|VERIFIED</P><P>NOTIFICATION PREFERENCE|EMAIL</P><P>CHANNEL PREFERENCE|PAPER</P><P>LANGUAGE PREFERENCE|ENGLISH</P>" +
+    "<P>FORMAT PREFERENCE|TEXT</P>]]>"
 
   val expectedJson: JsObject = Json.obj(
     "templateId" -> "VRT41A_SM1A",
@@ -53,7 +53,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
   )
 
   "parseMessage" should {
-    "successfully parse an incoming string into valid json" in { //Need to find a less offensive way of doing this
+    "successfully parse an incoming string into valid json" in {
       val parsedJson = SecureCommsMessageParser.parseMessage(stringToParse).right.get.as[JsObject]
       val parsedJsonAsPrettyString = parsedJson.fields.sortBy(_._1).toMap[String, JsValue]
       val expectedJsonAsPrettyString = expectedJson.fields.sortBy(_._1).toMap[String, JsValue]
