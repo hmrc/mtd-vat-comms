@@ -49,22 +49,25 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
   }
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
-    val secureCommsModel: Future[Either[ErrorModel, Boolean]] =
-      secureCommsService.sendSecureCommsMessage(workItem.item)
-    secureCommsModel.flatMap {
-      case Right(_) =>
+    try {
+      val secureCommsModel: Future[Either[ErrorModel, Boolean]] =
+        secureCommsService.sendSecureCommsMessage(workItem.item)
+      secureCommsModel.flatMap {
+        case Right(_) =>
+          metrics.secureMessageDequeued()
+          secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        case Left(GenericQueueNoRetryError) | Left(NotFoundMissingTaxpayer) |
+             Left(NotFoundUnverifiedEmail) | Left(BadRequest) =>
+          metrics.secureMessageDequeued()
+          secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        case Left(_) =>
+          secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+      }
+    } catch {
+      case e: Throwable =>
+        logError(content = s"[SecureMessageService][processWorkItem] - Unexpected Error recovered.", e)
         metrics.secureMessageDequeued()
         secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
-      case Left(GenericQueueNoRetryError) | Left(NotFoundMissingTaxpayer) |
-           Left(NotFoundUnverifiedEmail) | Left(BadRequest) =>
-        metrics.secureMessageDequeued()
-        secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
-      case Left(_) =>
-        secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
-  }.recoverWith {
-    case e =>
-      logError(content = s"[SecureMessageService][processWorkItem] - Unexpected Error recovered.", e)
-      secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }

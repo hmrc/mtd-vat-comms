@@ -51,23 +51,26 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
   }
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
-    SecureCommsMessageParser.parseModel(workItem.item) match {
-      case Right(message) => emailService.sendEmailRequest(message).flatMap {
-        case Right(_) =>
+    try {
+      SecureCommsMessageParser.parseModel(workItem.item) match {
+        case Right(message) => emailService.sendEmailRequest(message).flatMap {
+          case Right(_) =>
+            metrics.emailMessageDequeued()
+            emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+          case Left(BadRequest) | Left(NotFoundNoMatch) =>
+            metrics.emailMessageDequeued()
+            emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+          case _ => emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+        }
+        case _ =>
           metrics.emailMessageDequeued()
           emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
-        case Left(BadRequest) | Left(NotFoundNoMatch) =>
-          metrics.emailMessageDequeued()
-          emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
-        case _  => emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
       }
-      case _ =>
+    } catch {
+      case e: Throwable =>
+        logError(content = s"[EmailMessageService][processWorkItem] - Unexpected Error recovered.", e)
         metrics.emailMessageDequeued()
         emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
     }
-  }.recoverWith {
-    case e =>
-      logError(content = s"[EmailMessageService][processWorkItem] - Unexpected Error recovered.", e)
-      emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }
