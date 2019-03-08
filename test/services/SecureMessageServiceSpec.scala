@@ -88,6 +88,16 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
+        "the send secure message request is unsuccessfully sent due to an invalid vat stagger code" when {
+          "remove the item form the queue" in new TestSetup {
+            completeItemMock(true)
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleBadStaggerWorkItem))
+
+            verify(queue, times(1)).complete(any())(any())
+          }
+        }
+
         "the send secure message request is unsuccessfully sent for a NotFoundUnverifiedEmail" should {
           "remove the item form the queue" in new TestSetup {
             secureCommsMock(Left(NotFoundUnverifiedEmail))
@@ -119,8 +129,11 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
   trait TestSetup {
     val now: DateTime = new DateTime(0, DateTimeZone.UTC)
     val exampleVatChangeEvent: SecureCommsMessageModel = emailValidApprovedClientRequest
+    val exampleBadVatStaggerEvent: SecureCommsMessageModel = staggerinvalidApprovedTransactorRequest
     val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
       WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
+    val exampleBadStaggerWorkItem: WorkItem[SecureCommsMessageModel] =
+      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleBadVatStaggerEvent)
     val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
     val secureCommsService: SecureCommsService = mock[SecureCommsService]
     val metrics: QueueMetrics = mock[QueueMetrics]

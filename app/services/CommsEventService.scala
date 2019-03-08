@@ -28,6 +28,7 @@ import uk.gov.hmrc.workitem.WorkItem
 import utils.LoggerUtil.logError
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 @Singleton
 class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepository,
@@ -54,33 +55,37 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
   }
 
   def processWorkItem(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent]): Future[Seq[VatChangeEvent]] = {
-    val secureCommsModel =
-      secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
-    secureCommsModel.flatMap {
-      case Right(model) =>
-        if(model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
-          emailMessageService.queueRequest(model).flatMap {
-            case true =>
-              secureMessageService.queueRequest(model)
-              metrics.commsEventDequeued()
-              commsEventQueueRepository.complete(workItem.id).map(_ => acc)
-            case false =>
-              commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+
+    try {
+      val secureCommsModel =
+        secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
+      secureCommsModel.flatMap {
+        case Right(model) =>
+          if (model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
+            emailMessageService.queueRequest(model).flatMap {
+              case true =>
+                secureMessageService.queueRequest(model)
+                metrics.commsEventDequeued()
+                commsEventQueueRepository.complete(workItem.id).map(_ => acc)
+              case false =>
+                commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+            }
+          } else {
+            secureMessageService.queueRequest(model)
+            metrics.commsEventDequeued()
+            commsEventQueueRepository.complete(workItem.id).map(_ => acc)
           }
-        } else {
-          secureMessageService.queueRequest(model)
+        case Left(GenericParsingError) | Left(JsonParsingError) | Left(NotFoundNoMatch) | Left(BadRequest) =>
           metrics.commsEventDequeued()
           commsEventQueueRepository.complete(workItem.id).map(_ => acc)
-        }
-      case Left(GenericParsingError) | Left(JsonParsingError) | Left(NotFoundNoMatch) | Left(BadRequest) =>
+        case Left(_) =>
+          commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+      }
+    } catch {
+      case e: Throwable =>
+        logError(content = s"[CommsEventService][processWorkItem] - Unexpected Error recovered.", e)
         metrics.commsEventDequeued()
         commsEventQueueRepository.complete(workItem.id).map(_ => acc)
-      case Left(_) =>
-        commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     }
-  }.recoverWith {
-    case e =>
-      logError(content = s"[CommsEventService][processWorkItem] - Unexpected Error recovered.", e)
-      commsEventQueueRepository.complete(workItem.id).map(_ => acc)
   }
 }

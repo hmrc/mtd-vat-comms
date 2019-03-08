@@ -436,6 +436,21 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
+    val staggerinvalidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT12C_SM5C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some("InvalidStaggerCode"),
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
     val staggerValidRejectedTransactorRequest = SecureCommsMessageModel(
       "VRT14C_SM6C",
       "100065579",
