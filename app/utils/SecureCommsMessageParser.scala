@@ -55,7 +55,6 @@ object SecureCommsMessageParser {
       case x@SecureCommsMessageModel(_, _, _, _, None, None, Some(_), None, None, _, _, _) => Right(toGivenModel[RepaymentsBankAccountChangeModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, Some(_), None, _, _, _) => Right(toGivenModel[VATStaggerChangeModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, Some(_), _, _, _) => Right(toGivenModel[EmailAddressChangeModel](x))
-      case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, _, _, _) => Right(toGivenModel[BusinessNameChangeModel](x))
       case x: SecureCommsMessageModel =>
         logError("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
           "Populated optional fields:" + generateStringFromOptionalFields(x)
@@ -65,7 +64,7 @@ object SecureCommsMessageParser {
   }
 
   private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String =
-    input.effectiveDateOfDeRegistration.fold("")(_ => "\n- Effective Date of DeRegistration") +
+    input.effectiveDateOfDeregistration.fold("")(_ => "\n- Effective Date of Deregistration") +
     input.addressDetails.fold("")(_ => "\n- Address Details") +
     input.stagger.fold("")(_ => "\n- Stagger") +
     input.originalEmailAddress.fold("")(_ => "\n- Original Email Address")

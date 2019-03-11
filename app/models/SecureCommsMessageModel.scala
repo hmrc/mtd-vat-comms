@@ -27,7 +27,7 @@ case class SecureCommsMessageModel(
                                     vrn: String,
                                     formBundleReference: String,
                                     businessName: String,
-                                    effectiveDateOfDeRegistration: Option[String],
+                                    effectiveDateOfDeregistration: Option[String],
                                     addressDetails: Option[AddressDetailsModel],
                                     bankAccountDetails: Option[BankDetailsModel],
                                     stagger: Option[String],

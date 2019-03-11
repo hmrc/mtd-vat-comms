@@ -151,7 +151,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   private def getDeregistrationChangeHtml(deRegistrationModel: DeRegistrationModel,
                                           isApproval: Boolean): String = {
     if (isApproval) {
-      vatDeregApproved(etmpToFullMonthDateString(deRegistrationModel.effectiveDateOfDeRegistration)).toString
+      vatDeregApproved(etmpToFullMonthDateString(deRegistrationModel.effectiveDateOfDeregistration)).toString
     } else {
       vatDeregRejected().toString
     }

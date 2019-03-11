@@ -50,7 +50,7 @@ object Constants {
     val VRN = "vrn"
     val FORM_BUNDLE_REFERENCE = "formBundleReference"
     val BUSINESS_NAME = "businessName"
-    val EFFECTIVE_DOD = "effectiveDateOfDeRegistration"
+    val EFFECTIVE_DOD = "effectiveDateOfDeregistration"
     val TRANSACTOR_DETAILS = "transactorDetails"
     val TRANSACTOR_EMAIL = "transactorEmail"
     val TRANSACTOR_NAME = "transactorName"

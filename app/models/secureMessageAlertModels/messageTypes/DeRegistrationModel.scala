@@ -27,7 +27,7 @@ case class DeRegistrationModel(
                                 transactorDetails: TransactorModel,
                                 customerDetails: CustomerModel,
                                 preferences: PreferencesModel,
-                                effectiveDateOfDeRegistration: String
+                                effectiveDateOfDeregistration: String
                               )
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }
