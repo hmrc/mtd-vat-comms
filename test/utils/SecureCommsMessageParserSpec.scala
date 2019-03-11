@@ -32,7 +32,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
 
   val stringToParse: String = "<![CDATA[<P>TEMPLATE-ID|VRT41A_SM1A</P><P>VRN|100065579</P>" +
     "<P>FORM BUNDLE REFERENCE|092000003080</P><P>BUSINESS NAME|CoC Company Holdings Ltd</P>" +
-    "<P>EFFECTIVE DATE OF DE-REGISTRATION|20181227</P><P>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</P>" +
+    "<P>EFFECTIVE DATE OF DEREGISTRATION|20181227</P><P>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</P>" +
     "<P>CUSTOMER EMAIL|info@CoCHoldings.co.uk</P>" +
     "<P>CUSTOMER EMAIL STATUS|VERIFIED</P><P>NOTIFICATION PREFERENCE|EMAIL</P><P>CHANNEL PREFERENCE|PAPER</P><P>LANGUAGE PREFERENCE|ENGLISH</P>" +
     "<P>FORMAT PREFERENCE|TEXT</P>]]>"
@@ -42,7 +42,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     "vrn" -> "100065579",
     "formBundleReference" -> "092000003080",
     "businessName" -> "CoC Company Holdings Ltd",
-    "effectiveDateOfDeRegistration" -> "20181227",
+    "effectiveDateOfDeregistration" -> "20181227",
     "transactorEmail" -> "Info_in_FB@CoCHoldingsLtd.co.uk",
     "customerEmail" -> "info@CoCHoldings.co.uk",
     "customerEmailStatus" -> VERIFIED,
@@ -68,8 +68,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     ("Repayments Bank Account Change",
       Responses.expectedResponseBankRepaymentAccountChange, ResponseAsModel.expectedResponseRepaymentsBankAccountChange),
     ("VAT Stagger", Responses.expectedResponseStagger, ResponseAsModel.expectedResponseStagger),
-    ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange),
-    ("Business Name Change", Responses.expectedResponseBusinessNameChange, ResponseAsModel.expectedResponseBusinessNameChange)
+    ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange)
   )
 
   parsingTest.foreach { case (testName, genericResponse, modelResponse) =>
@@ -93,7 +92,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
           TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
       }).filter { passedForwardModel =>
         Seq(
-          passedForwardModel.effectiveDateOfDeRegistration,
+          passedForwardModel.effectiveDateOfDeregistration,
           passedForwardModel.addressDetails,
           passedForwardModel.bankAccountDetails,
           passedForwardModel.stagger,
@@ -101,7 +100,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       }
 
       allInvalidCombinations.foreach { model =>
-        s"the following combination of optional parameters are used: ${model.effectiveDateOfDeRegistration}," +
+        s"the following combination of optional parameters are used: ${model.effectiveDateOfDeregistration}," +
           s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.stagger}, ${model.originalEmailAddress}" in {
           SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
         }
