@@ -33,7 +33,8 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
         case Right(parsedJson) => parsedJson.validate[SecureCommsMessageModel].asOpt match {
           case Some(parsedModel) => Right(parsedModel)
           case None =>
-            logWarn(s"${GenericParsingError.code} => ${GenericParsingError.body}")
+            logWarn(s"[SecureCommsAlertService][getSecureCommsMessage] - " +
+              s"${GenericParsingError.code} => ${GenericParsingError.body}")
             Left(GenericParsingError)
         }
         case Left(_) => Left(JsonParsingError)
