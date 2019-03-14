@@ -50,7 +50,6 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
 
-    println("XXXXXXxxxxSXXXXXXXXXx")
     try {
 
       val secureCommsModel: Future[Either[ErrorModel, Boolean]] =

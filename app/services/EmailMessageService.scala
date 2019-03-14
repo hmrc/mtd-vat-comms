@@ -50,8 +50,6 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
   }
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
-    println("XXXXXXxxxxSXXXXXXXXXx")
-
     try {
       SecureCommsMessageParser.parseModel(workItem.item) match {
         case Right(message) => emailService.sendEmailRequest(message).flatMap {

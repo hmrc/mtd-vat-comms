@@ -52,8 +52,8 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
   "CommsEventQueue Repository" should {
 
     "ensure indexes are created" in {
-      val v = await(repo.collection.indexesManager.list())
-      v.size shouldBe 5
+      val indexList = await(repo.collection.indexesManager.list())
+      indexList.size shouldBe 5
     }
 
     val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
