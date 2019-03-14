@@ -56,10 +56,10 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
   }
 
   actorSystem.scheduler.schedule(initialDelay, interval) {
-    if (appConfig.pollingToggle) {
-      executor()
-    } else {
-      logInfo("Polling is toggled off")
-    }
+//    if (appConfig.pollingToggle) {
+//      executor()
+//    } else {
+//      logInfo("Polling is toggled off")
+//    }
   }
 }

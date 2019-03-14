@@ -51,15 +51,16 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
 
   "CommsEventQueue Repository" should {
 
+    "ensure indexes are created" in {
+      val v = await(repo.collection.indexesManager.list())
+      v.size shouldBe 5
+    }
+
     val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
     "generate a Duration of 10000 milliseconds from config value" in {
       val dur: Duration = Duration.millis(mockAppConfig.retryIntervalMillis)
       dur.getMillis shouldBe 10000L
-    }
-
-    "ensure indexes are created" in {
-      await(repo.collection.indexesManager.list()).size shouldBe 4
     }
 
     "be able to save and reload a vat change request" in {
