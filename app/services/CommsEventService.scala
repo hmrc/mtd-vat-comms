@@ -107,7 +107,11 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
     val message = s"[CommsEventService][processWorkItem] - $errorTypeName when processing item with vrn: " +
       s"${workItem.item.vrn} and BPContactNumber: ${workItem.item.BPContactNumber}"
 
-    if (exception.isDefined) logError(message, exception.get) else logWarn(message)
+    exception match {
+      case Some(error) => logError(message, error)
+      case None => logWarn(message)
+    }
+
     commsEventQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
   }
 }

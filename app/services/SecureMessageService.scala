@@ -87,7 +87,11 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
     val message = s"[SecureMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
       s"${workItem.item.vrn} and form bundle ref: ${workItem.item.formBundleReference}"
 
-    if (exception.isDefined) logError(message, exception.get) else logWarn(message)
+    exception match {
+      case Some(error) => logError(message, error)
+      case None => logWarn(message)
+    }
+
     secureMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
   }
 
