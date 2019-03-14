@@ -26,7 +26,7 @@ import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.workitem.{InProgress, WorkItem}
+import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._
 
 import scala.concurrent.Future
@@ -54,58 +54,57 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-
         "the send secure message request is unsuccessfully sent for a GenericQueueNoRetryError" should {
-          "remove the item form the queue" in new TestSetup {
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
             secureCommsMock(Left(GenericQueueNoRetryError))
-            completeItemMock(true)
+            markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, never()).complete(any())(any())
           }
         }
 
         "the send secure message request is unsuccessfully sent for a BadRequest" should {
-          "remove the item form the queue" in new TestSetup {
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
             secureCommsMock(Left(BadRequest))
-            completeItemMock(true)
+            markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, never).complete(any())(any())
           }
         }
 
         "the send secure message request is unsuccessfully sent for a NotFoundMissingTaxpayer" should {
-          "remove the item form the queue" in new TestSetup {
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
             secureCommsMock(Left(NotFoundMissingTaxpayer))
-            completeItemMock(true)
+            markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, never).complete(any())(any())
           }
         }
 
         "the send secure message request is unsuccessfully sent due to an invalid vat stagger code" when {
-          "remove the item form the queue" in new TestSetup {
-            completeItemMock(true)
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+            markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleBadStaggerWorkItem))
 
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, never).complete(any())(any())
           }
         }
 
         "the send secure message request is unsuccessfully sent for a NotFoundUnverifiedEmail" should {
           "remove the item form the queue" in new TestSetup {
             secureCommsMock(Left(NotFoundUnverifiedEmail))
-            completeItemMock(true)
+            markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, never).complete(any())(any())
           }
         }
 
@@ -148,6 +147,9 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
+
+    def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
+      when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))
 
     lazy val secureMessageService =
       new SecureMessageService(queue, secureCommsService, metrics)

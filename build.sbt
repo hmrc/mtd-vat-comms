@@ -71,6 +71,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "config.*",
     "testOnly.*",
     ".*feedback*.*",
+    "views.html.*",
     "partials.*"
   )
 

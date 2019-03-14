@@ -32,6 +32,7 @@ trait AppConfig extends ServicesConfig {
 
   val queuePollingWaitTime: Int
   val initialWaitTime: Int
+  val queueItemExpirySeconds: Int
   val pollingToggle: Boolean
 
   val emailServiceUrl: String
@@ -64,6 +65,8 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   override lazy val queuePollingWaitTime: Int = getInt(Keys.queuePollingInterval)
 
   override lazy val initialWaitTime: Int = getInt(Keys.queueInitialWait)
+
+  override lazy val queueItemExpirySeconds: Int = getInt(Keys.queueItemExpiry)
 
   override lazy val pollingToggle: Boolean = getBoolean(Keys.queueToggleProperty)
 

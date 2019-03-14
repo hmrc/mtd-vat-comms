@@ -51,7 +51,7 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wit
   "EmailMessageQueue Repository" should {
 
     "ensure indexes are created" in {
-      await(repo.collection.indexesManager.list()).size shouldBe 4
+      await(repo.collection.indexesManager.list()).size shouldBe 5
     }
 
     "be able to save and reload an item" in {

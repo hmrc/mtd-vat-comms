@@ -22,9 +22,8 @@ import models.{BadRequest, NotFoundNoMatch, SecureCommsMessageModel}
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.Failed
-import uk.gov.hmrc.workitem.WorkItem
-import utils.LoggerUtil.logError
+import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
+import utils.LoggerUtil.{logError, logWarn}
 import utils.SecureCommsMessageParser
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -57,20 +56,34 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
           case Right(_) =>
             metrics.emailMessageDequeued()
             emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
-          case Left(BadRequest) | Left(NotFoundNoMatch) =>
-            metrics.emailMessageDequeued()
-            emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
-          case _ => emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+          case Left(BadRequest) =>
+            metrics.emailMessageBadRequestError()
+            handleNonRecoverableError(acc, workItem, "BadRequestError")
+          case Left(NotFoundNoMatch) =>
+            metrics.emailMessageNotFoundError()
+            handleNonRecoverableError(acc, workItem, "MessageNotFoundError")
+          case _ =>
+            metrics.emailMessageQueuedForRetry()
+            emailMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
         }
         case _ =>
-          metrics.emailMessageDequeued()
-          emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+          metrics.emailMessageParsingError()
+          handleNonRecoverableError(acc, workItem, "ParsingError")
       }
     } catch {
       case e: Throwable =>
-        logError(content = s"[EmailMessageService][processWorkItem] - Unexpected Error recovered.", e)
-        metrics.emailMessageDequeued()
-        emailMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        metrics.emailMessageUnexpectedError()
+        handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
     }
+  }
+
+  private def handleNonRecoverableError(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel],
+                                        errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[SecureCommsMessageModel]] = {
+
+    val message = s"[EmailMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
+      s"${workItem.item.vrn} and form bundle ref: ${workItem.item.formBundleReference}"
+
+    if (exception.isDefined) logError(message, exception.get) else logWarn(message)
+    emailMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
   }
 }

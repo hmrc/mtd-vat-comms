@@ -27,7 +27,7 @@ import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.workitem.{InProgress, WorkItem}
+import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._
 
 import scala.concurrent.Future
@@ -111,35 +111,46 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
       "remove the work item from the queue" in new TestSetup {
         secureCommsAlertMock(Left(GenericParsingError))
-        completeItemMock(true)
-
+        markItemAsPermanentlyFailedMock
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, times(1)).complete(any())(any())
+        verify(queue, never).complete(any())(any())
       }
     }
 
     "there is a parsing error when parsing the secure comms string to JSON" should {
 
-      "remove the work item from the queue" in new TestSetup {
+      "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
         secureCommsAlertMock(Left(JsonParsingError))
-        completeItemMock(true)
+        markItemAsPermanentlyFailedMock
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, times(1)).complete(any())(any())
+        verify(queue, never).complete(any())(any())
       }
     }
 
     "there is a not found no match" should {
 
-      "remove the work item from the queue" in new TestSetup {
+      "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
         secureCommsAlertMock(Left(NotFoundNoMatch))
-        completeItemMock(true)
+        markItemAsPermanentlyFailedMock
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, times(1)).complete(any())(any())
+        verify(queue, never).complete(any())(any())
+      }
+    }
+
+    "there is a bad request" should {
+
+      "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+        secureCommsAlertMock(Left(BadRequest))
+        markItemAsPermanentlyFailedMock
+
+        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+        verify(queue, never).complete(any())(any())
       }
     }
 
@@ -153,6 +164,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         verify(queue, never()).complete(any())(any())
       }
+
     }
   }
 
@@ -174,6 +186,9 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
       when(queue.complete(any())(any())).thenReturn(Future.successful(response))
+
+    def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
+      when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))

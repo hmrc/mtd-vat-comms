@@ -24,6 +24,7 @@ object ConfigKeys {
   val failureRetryAfterProperty: String = "queue.retryAfter"
   val queuePollingInterval: String = "queue.pollingInterval"
   val queueInitialWait: String = "queue.initialWait"
+  val queueItemExpiry: String = "queue.expiryInSeconds"
   val queueToggleProperty: String = "queue.toggle"
 
   val emailServiceBase = "emailService"

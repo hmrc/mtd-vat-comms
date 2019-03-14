@@ -23,12 +23,10 @@ import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.Failed
-import uk.gov.hmrc.workitem.WorkItem
-import utils.LoggerUtil.logError
+import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
+import utils.LoggerUtil.{logError, logWarn}
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 
 @Singleton
 class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepository,
@@ -61,31 +59,55 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
         secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
       secureCommsModel.flatMap {
         case Right(model) =>
-          if (model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
-            emailMessageService.queueRequest(model).flatMap {
-              case true =>
-                secureMessageService.queueRequest(model)
-                metrics.commsEventDequeued()
-                commsEventQueueRepository.complete(workItem.id).map(_ => acc)
-              case false =>
-                commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
-            }
-          } else {
-            secureMessageService.queueRequest(model)
-            metrics.commsEventDequeued()
-            commsEventQueueRepository.complete(workItem.id).map(_ => acc)
-          }
-        case Left(GenericParsingError) | Left(JsonParsingError) | Left(NotFoundNoMatch) | Left(BadRequest) =>
-          metrics.commsEventDequeued()
-          commsEventQueueRepository.complete(workItem.id).map(_ => acc)
+          handleItemSuccess(acc, workItem, model)
+        case Left(GenericParsingError) =>
+          metrics.commsEventGenericParsingError()
+          handleNonRecoverableError(acc, workItem, "GenericParsingError")
+        case Left(JsonParsingError) =>
+          metrics.commsEventJsonParsingError()
+          handleNonRecoverableError(acc, workItem, "JsonParsingError")
+        case Left(NotFoundNoMatch) =>
+          metrics.commsEventNotFoundError()
+          handleNonRecoverableError(acc, workItem, "NotFoundError")
+        case Left(BadRequest) =>
+          metrics.commsEventBadRequestError()
+          handleNonRecoverableError(acc, workItem, "BadRequestError")
         case Left(_) =>
+          metrics.commsEventQueuedForRetry()
           commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
       }
     } catch {
       case e: Throwable =>
-        logError(content = s"[CommsEventService][processWorkItem] - Unexpected Error recovered.", e)
-        metrics.commsEventDequeued()
-        commsEventQueueRepository.complete(workItem.id).map(_ => acc)
+        metrics.commsEventUnexpectedError()
+        handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
     }
+  }
+
+  private def handleItemSuccess(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent], model: SecureCommsMessageModel): Future[Seq[VatChangeEvent]] = {
+    if (model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
+      emailMessageService.queueRequest(model).flatMap {
+        case true =>
+          secureMessageService.queueRequest(model)
+          metrics.commsEventDequeued()
+          commsEventQueueRepository.complete(workItem.id).map(_ => acc)
+        case false =>
+          metrics.commsEventQueuedForRetry()
+          commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+      }
+    } else {
+      secureMessageService.queueRequest(model)
+      metrics.commsEventDequeued()
+      commsEventQueueRepository.complete(workItem.id).map(_ => acc)
+    }
+  }
+
+  private def handleNonRecoverableError(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent],
+                                        errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[VatChangeEvent]] = {
+
+    val message = s"[CommsEventService][processWorkItem] - $errorTypeName when processing item with vrn: " +
+      s"${workItem.item.vrn} and BPContactNumber: ${workItem.item.BPContactNumber}"
+
+    if (exception.isDefined) logError(message, exception.get) else logWarn(message)
+    commsEventQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
   }
 }

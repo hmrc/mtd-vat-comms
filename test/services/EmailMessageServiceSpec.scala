@@ -28,7 +28,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.ACCEPTED
 import reactivemongo.bson.BSONObjectID
 import repositories.EmailMessageQueueRepository
-import uk.gov.hmrc.workitem.{InProgress, WorkItem}
+import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._
 
 import scala.concurrent.Future
@@ -61,31 +61,31 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
       "the email service returns BAD_REQUEST (400)" should {
 
-        "mark the item as failed" in new TestSetup {
+        "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
           emailServiceMock(Left(BadRequest))
-          completeItemMock(true)
+          markItemAsPermanentlyFailedMock
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, times(1)).complete(any())(any())
+          verify(queue, never).complete(any())(any())
         }
       }
 
       "the email service returns NOT_FOUND (404)" should {
 
-        "mark the item as failed" in new TestSetup {
+        "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
           emailServiceMock(Left(NotFoundNoMatch))
-          completeItemMock(true)
+          markItemAsPermanentlyFailedMock
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, times(1)).complete(any())(any())
+          verify(queue, never).complete(any())(any())
         }
       }
 
       "the email service returns an unexpected status" should {
 
-        "mark the item as failed" in new TestSetup {
+        "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
           emailServiceMock(Left(ErrorModel("unknown", "unknown")))
           markItemAsFailedMock
 
@@ -98,14 +98,14 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
     "a message model is unsuccessfully parsed by the SecureCommsMessageParser" should {
 
-      "remove the item from the queue" in new TestSetup {
+      "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
         val failureWorkItem: WorkItem[SecureCommsMessageModel] =
           WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, expectedResponseEverything)
-        completeItemMock(true)
+        markItemAsPermanentlyFailedMock
 
         await(emailMessageService.processWorkItem(Seq.empty, failureWorkItem))
 
-        verify(queue, times(1)).complete(any())(any())
+        verify(queue, never).complete(any())(any())
       }
     }
   }
@@ -124,6 +124,9 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
+
+    def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
+      when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))
 
     def emailServiceMock(response: Either[ErrorModel, EmailRendererResponseModel]):
     OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =

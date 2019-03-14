@@ -22,8 +22,8 @@ import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{Failed, WorkItem}
-import utils.LoggerUtil.logError
+import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
+import utils.LoggerUtil.{logError, logWarn}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -50,24 +50,44 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
     try {
+
       val secureCommsModel: Future[Either[ErrorModel, Boolean]] =
         secureCommsService.sendSecureCommsMessage(workItem.item)
       secureCommsModel.flatMap {
         case Right(_) =>
           metrics.secureMessageDequeued()
           secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
-        case Left(GenericQueueNoRetryError) | Left(NotFoundMissingTaxpayer) |
-             Left(NotFoundUnverifiedEmail) | Left(BadRequest) =>
-          metrics.secureMessageDequeued()
-          secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        case Left(GenericQueueNoRetryError) =>
+          metrics.secureMessageGenericQueueNoRetryError()
+          handleNonRecoverableError(acc, workItem, "GenericQueueNoRetryError")
+        case Left(NotFoundMissingTaxpayer) =>
+          metrics.secureMessageNotFoundMissingTaxpayerError()
+          handleNonRecoverableError(acc, workItem, "NotFoundMissingTaxpayerError")
+        case Left(NotFoundUnverifiedEmail) =>
+          metrics.secureMessageNotFoundUnverifiedEmailError()
+          handleNonRecoverableError(acc, workItem, "NotFoundUnverifiedEmailError")
+        case Left(BadRequest) =>
+          metrics.secureMessageBadRequestError()
+          handleNonRecoverableError(acc, workItem, "BadRequestError")
         case Left(_) =>
+          metrics.secureMessageQueuedForRetry()
           secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
       }
     } catch {
       case e: Throwable =>
-        logError(content = s"[SecureMessageService][processWorkItem] - Unexpected Error recovered.", e)
-        metrics.secureMessageDequeued()
-        secureMessageQueueRepository.complete(workItem.id).map(_ => acc)
+        metrics.secureMessageUnexpectedError()
+        handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
     }
   }
+
+  private def handleNonRecoverableError(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel],
+                                  errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[SecureCommsMessageModel]] = {
+
+    val message = s"[SecureMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
+      s"${workItem.item.vrn} and form bundle ref: ${workItem.item.formBundleReference}"
+
+    if (exception.isDefined) logError(message, exception.get) else logWarn(message)
+    secureMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
+  }
+
 }
