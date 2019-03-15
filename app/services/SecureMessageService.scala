@@ -82,6 +82,10 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
         metrics.secureMessageUnexpectedError()
         handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
     }
+  }.recoverWith {
+    case e =>
+      metrics.secureMessageUnexpectedError()
+      handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
   }
 
   private def handleNonRecoverableError(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel],
