@@ -84,7 +84,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
   }.recoverWith {
     case e =>
       metrics.commsEventUnexpectedError()
-      handleNonRecoverableError(acc, workItem, "recoverWith", Some(e))
+      handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
   }
 
   private def handleItemSuccess(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent], model: SecureCommsMessageModel): Future[Seq[VatChangeEvent]] = {
