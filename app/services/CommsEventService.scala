@@ -105,7 +105,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
                                         errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[VatChangeEvent]] = {
 
     val message = s"[CommsEventService][processWorkItem] - $errorTypeName when processing item with vrn: " +
-      s"${workItem.item.vrn} and BPContactNumber: ${workItem.item.BPContactNumber}"
+      s"${workItem.item.vrn}, BPContactNumber: ${workItem.item.BPContactNumber} and work item id: ${workItem.id}"
 
     exception match {
       case Some(error) => logError(message, error)

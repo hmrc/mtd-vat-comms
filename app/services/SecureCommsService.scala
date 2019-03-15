@@ -17,13 +17,14 @@
 package services
 
 import java.util.UUID
+
 import common.Constants._
 import common.Constants.MessageKeys._
 import common.Constants.TemplateIdReadableNames._
 import config.AppConfig
 import connectors.SecureCommsServiceConnector
 import javax.inject.Inject
-import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel}
+import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel, SpecificParsingError}
 import models.secureCommsServiceModels.{SecureCommsServiceRequestModel, _}
 import models.secureMessageAlertModels.messageTypes._
 import models.viewModels.VatPPOBViewModel
@@ -44,7 +45,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                             (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] = {
 
     parseModel(workItem) match {
-      case Left(_) => Future(Left(GenericQueueNoRetryError))
+      case Left(_) => Future(Left(SpecificParsingError))
       case Right(messageModel) =>
         getRequest(messageModel) match {
           case Left(_: ErrorModel) => Future(Left(GenericQueueNoRetryError))

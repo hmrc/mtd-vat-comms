@@ -70,6 +70,9 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
         case Left(BadRequest) =>
           metrics.secureMessageBadRequestError()
           handleNonRecoverableError(acc, workItem, "BadRequestError")
+        case Left(SpecificParsingError) =>
+          metrics.secureMessageSpecificParsingError()
+          handleNonRecoverableError(acc, workItem, "SpecificParsingError")
         case Left(_) =>
           metrics.secureMessageQueuedForRetry()
           secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
@@ -84,8 +87,8 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
   private def handleNonRecoverableError(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel],
                                   errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[SecureCommsMessageModel]] = {
 
-    val message = s"[SecureMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
-      s"${workItem.item.vrn} and form bundle ref: ${workItem.item.formBundleReference}"
+    val message = s"[EmailMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
+      s"${workItem.item.vrn}, form bundle ref: ${workItem.item.formBundleReference} and work item id: ${workItem.id}"
 
     exception match {
       case Some(error) => logError(message, error)

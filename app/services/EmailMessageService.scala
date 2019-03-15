@@ -81,7 +81,7 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
                                         errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[SecureCommsMessageModel]] = {
 
     val message = s"[EmailMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
-      s"${workItem.item.vrn} and form bundle ref: ${workItem.item.formBundleReference}"
+      s"${workItem.item.vrn}, form bundle ref: ${workItem.item.formBundleReference} and work item id: ${workItem.id}"
 
     exception match {
       case Some(error) => logError(message, error)

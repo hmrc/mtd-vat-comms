@@ -87,6 +87,17 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
+        "the send secure message request is unsuccessfully sent for a SpecificParsingError" should {
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+            secureCommsMock(Left(SpecificParsingError))
+            markItemAsPermanentlyFailedMock
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, never).complete(any())(any())
+          }
+        }
+
         "the send secure message request is unsuccessfully sent due to an invalid vat stagger code" when {
           "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
             markItemAsPermanentlyFailedMock

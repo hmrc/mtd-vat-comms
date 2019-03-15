@@ -45,6 +45,7 @@ class QueueMetrics @Inject()(metrics: Metrics) {
   val secureMessageNotFoundMissingTaxpayerErrorCounter: Counter = metrics.defaultRegistry.counter("secureMessage.notFoundMissingTaxpayerError")
   val secureMessageNotFoundUnverifiedEmailErrorCounter: Counter = metrics.defaultRegistry.counter("secureMessage.notFoundUnverifiedEmailError")
   val secureMessageBadRequestErrorCounter: Counter = metrics.defaultRegistry.counter("secureMessage.badRequestError")
+  val secureMessageSpecificParsingErrorCounter: Counter = metrics.defaultRegistry.counter("secureMessage.specificParsingError")
   val secureMessageUnexpectedErrorCounter: Counter = metrics.defaultRegistry.counter("secureMessage.unexpectedError")
   val secureMessageQueuedForRetryCounter: Counter = metrics.defaultRegistry.counter("secureMessage.queuedForRetry")
 
@@ -71,6 +72,7 @@ class QueueMetrics @Inject()(metrics: Metrics) {
   def secureMessageNotFoundMissingTaxpayerError(): Unit = secureMessageNotFoundMissingTaxpayerErrorCounter.inc()
   def secureMessageNotFoundUnverifiedEmailError(): Unit = secureMessageNotFoundUnverifiedEmailErrorCounter.inc()
   def secureMessageBadRequestError(): Unit = secureMessageBadRequestErrorCounter.inc()
+  def secureMessageSpecificParsingError(): Unit = secureMessageSpecificParsingErrorCounter.inc()
   def secureMessageUnexpectedError(): Unit = secureMessageUnexpectedErrorCounter.inc()
   def secureMessageQueuedForRetry(): Unit = secureMessageQueuedForRetryCounter.inc()
 
