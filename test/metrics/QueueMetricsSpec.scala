@@ -283,10 +283,8 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 }
 
 
-  // ScalaMock does not currently handle classes.
+  // ScalaMock doesn't currently handle classes.
   private trait Setup {
-
-    //val WITH_NINO_COUNTER = "match-user.nino"
 
     val mockedMetrics: Metrics = new MockMetrics
     val mockedRegistry: MetricRegistry = new MetricRegistry()
@@ -322,4 +320,3 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
     }
 
   }
-
