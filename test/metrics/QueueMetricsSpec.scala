@@ -22,10 +22,9 @@ import com.kenshoo.play.metrics.Metrics
 
 
 class QueueMetricsSpec extends BaseSpec with MockitoSugar {
-  "SecureCommsMessageModel" when {
+  "QueueMetrics" when {
 
-
-    "QueueMetrics" should {
+    "the registry counters are incremented" should {
 
       "increment the commsEvent.enqueued count" in new Setup {
 
