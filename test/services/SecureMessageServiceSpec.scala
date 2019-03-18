@@ -16,6 +16,8 @@
 
 package services
 
+import java.net.UnknownHostException
+
 import base.BaseSpec
 import metrics.QueueMetrics
 import models._
@@ -57,6 +59,17 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
         "the send secure message request is unsuccessfully sent for a GenericQueueNoRetryError" should {
           "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
             secureCommsMock(Left(GenericQueueNoRetryError))
+            markItemAsPermanentlyFailedMock
+
+            await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+            verify(queue, never()).complete(any())(any())
+          }
+        }
+
+        "TOFODODOricQueueNoRetryError" should {
+          "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+            secureCommsExceptionMock
             markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
@@ -152,6 +165,11 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
     OngoingStubbing[Future[Either[ErrorModel, Boolean]]] =
       when(secureCommsService.sendSecureCommsMessage(any())(any()))
         .thenReturn(Future.successful(response))
+
+    def secureCommsExceptionMock():
+    OngoingStubbing[Future[Either[ErrorModel, Boolean]]] =
+      when(secureCommsService.sendSecureCommsMessage(any())(any()))
+        .thenReturn(Future.failed(new UnknownHostException("some error")))
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
       when(queue.complete(any())(any())).thenReturn(Future.successful(response))

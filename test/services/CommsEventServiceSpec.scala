@@ -16,6 +16,8 @@
 
 package services
 
+import java.net.UnknownHostException
+
 import base.BaseSpec
 import common.ApiConstants.vatChangeEventModel
 import metrics.QueueMetrics
@@ -166,6 +168,19 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
       }
 
     }
+
+    "there is an unexpected exception" should {
+
+      "mark the item as failed and not remove it from the queue" in new TestSetup {
+        secureCommsAlertExceptionMock()
+        markItemAsPermanentlyFailedMock
+
+        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+        verify(queue, never()).complete(any())(any())
+      }
+
+    }
   }
 
   trait TestSetup {
@@ -183,6 +198,11 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
       OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
         when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
           .thenReturn(Future.successful(response))
+
+    def secureCommsAlertExceptionMock():
+    OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
+      when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
+        .thenReturn(Future.failed(new UnknownHostException("some error")))
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
       when(queue.complete(any())(any())).thenReturn(Future.successful(response))
