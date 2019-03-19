@@ -16,6 +16,8 @@
 
 package services
 
+import java.net.UnknownHostException
+
 import base.BaseSpec
 import metrics.QueueMetrics
 import models.responseModels.EmailRendererResponseModel
@@ -94,6 +96,20 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
           verify(queue, never()).complete(any())(any())
         }
       }
+
+      "the email service returns an unexpected exception" should {
+
+        "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+          markItemAsPermanentlyFailedMock
+
+          emailServiceExceptionMock()
+
+          await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+          verify(queue, never()).complete(any())(any())
+        }
+
+      }
     }
 
     "a message model is unsuccessfully parsed by the SecureCommsMessageParser" should {
@@ -132,6 +148,11 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
     OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =
       when(emailService.sendEmailRequest(any())(any()))
         .thenReturn(Future.successful(response))
+
+    def emailServiceExceptionMock():
+    OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =
+      when(emailService.sendEmailRequest(any())(any()))
+        .thenReturn(Future.failed(new UnknownHostException("some error")))
 
     lazy val emailMessageService = new EmailMessageService(queue, emailService, metrics)
   }
