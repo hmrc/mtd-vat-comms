@@ -67,9 +67,9 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           }
         }
 
-        "TOFODODOricQueueNoRetryError" should {
+        "the secure message service returns an unexpected exception" should {
           "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
-            secureCommsExceptionMock
+            secureCommsExceptionMock()
             markItemAsPermanentlyFailedMock
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))

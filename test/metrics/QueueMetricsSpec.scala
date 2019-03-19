@@ -30,10 +30,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.enqueued").getCount
 
-        queueMetrics.commsEventEnqueuedCounter.inc()
         queueMetrics.commsEventEnqueued()
 
-        mockedRegistry.counter("commsEvent.enqueued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.enqueued").getCount shouldBe countBefore + 1
 
       }
 
@@ -41,10 +40,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.dequeued").getCount
 
-        queueMetrics.commsEventDequeuedCounter.inc()
         queueMetrics.commsEventDequeued()
 
-        mockedRegistry.counter("commsEvent.dequeued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.dequeued").getCount shouldBe countBefore + 1
 
       }
 
@@ -52,10 +50,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.genericParsingError").getCount
 
-        queueMetrics.commsEventGenericParsingErrorCounter.inc()
         queueMetrics.commsEventGenericParsingError()
 
-        mockedRegistry.counter("commsEvent.genericParsingError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.genericParsingError").getCount shouldBe countBefore + 1
 
       }
 
@@ -63,10 +60,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.jsonParsingError").getCount
 
-        queueMetrics.commsEventJsonParsingErrorCounter.inc()
         queueMetrics.commsEventJsonParsingError()
 
-        mockedRegistry.counter("commsEvent.jsonParsingError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.jsonParsingError").getCount shouldBe countBefore + 1
 
       }
 
@@ -74,10 +70,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.notFoundError").getCount
 
-        queueMetrics.commsEventNotFoundErrorCounter.inc()
         queueMetrics.commsEventNotFoundError()
 
-        mockedRegistry.counter("commsEvent.notFoundError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.notFoundError").getCount shouldBe countBefore + 1
 
       }
 
@@ -85,10 +80,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.badRequestError").getCount
 
-        queueMetrics.commsEventBadRequestErrorCounter.inc()
         queueMetrics.commsEventBadRequestError()
 
-        mockedRegistry.counter("commsEvent.badRequestError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.badRequestError").getCount shouldBe countBefore + 1
 
       }
 
@@ -96,10 +90,9 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.unexpectedError").getCount
 
-        queueMetrics. commsEventUnexpectedErrorCounter.inc()
         queueMetrics.commsEventUnexpectedError()
 
-        mockedRegistry.counter("commsEvent.unexpectedError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.unexpectedError").getCount shouldBe countBefore + 1
 
       }
 
@@ -107,21 +100,19 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("commsEvent.queuedForRetry").getCount
 
-        queueMetrics. commsEventQueuedForRetryCounter.inc()
         queueMetrics.commsEventQueuedForRetry()
 
-        mockedRegistry.counter("commsEvent.queuedForRetry").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("commsEvent.queuedForRetry").getCount shouldBe countBefore + 1
 
       }
 
       "increment the emailMessage.parsingError count" in new Setup {
 
-        val countBefore: Long = mockedRegistry.counter("commsEvent.dequeued").getCount
+        val countBefore: Long = mockedRegistry.counter("emailMessage.parsingErro").getCount
 
-        queueMetrics.emailMessageParsingErrorCounter.inc()
         queueMetrics.emailMessageParsingError()
 
-        mockedRegistry.counter("emailMessage.parsingError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.parsingError").getCount shouldBe countBefore + 1
 
       }
 
@@ -129,70 +120,68 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.enqueued").getCount
 
-        queueMetrics.emailMessageEnqueuedCounter.inc()
+        //queueMetrics.emailMessageEnqueuedCounter.inc()
         queueMetrics.emailMessageEnqueued()
 
-        mockedRegistry.counter("emailMessage.enqueued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.enqueued").getCount shouldBe countBefore + 1
       }
 
       "increment the emailMessage.dequeued count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.dequeued").getCount
 
-        queueMetrics.emailMessageDequeuedCounter.inc()
         queueMetrics.emailMessageDequeued()
 
-        mockedRegistry.counter("emailMessage.dequeued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.dequeued").getCount shouldBe countBefore + 1
       }
 
       "increment the emailMessage.notFoundError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.notFoundError").getCount
 
-        queueMetrics.emailMessageNotFoundErrorCounter.inc()
+        //queueMetrics.emailMessageNotFoundErrorCounter.inc()
         queueMetrics.emailMessageNotFoundError()
 
-        mockedRegistry.counter("emailMessage.notFoundError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.notFoundError").getCount shouldBe countBefore + 1
       }
 
       "increment the emailMessage.badRequestError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.badRequestError").getCount
 
-        queueMetrics.emailMessageBadRequestErrorCounter.inc()
+        //queueMetrics.emailMessageBadRequestErrorCounter.inc()
         queueMetrics.emailMessageBadRequestError()
 
-        mockedRegistry.counter("emailMessage.badRequestError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.badRequestError").getCount shouldBe countBefore + 1
       }
 
       "increment the emailMessage.unexpectedError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.unexpectedError").getCount
 
-        queueMetrics.emailMessageUnexpectedErrorCounter.inc()
+        //queueMetrics.emailMessageUnexpectedErrorCounter.inc()
         queueMetrics.emailMessageUnexpectedError()
 
-        mockedRegistry.counter("emailMessage.unexpectedError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.unexpectedError").getCount shouldBe countBefore + 1
       }
 
       "increment the emailMessage.queuedForRetry count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.queuedForRetry").getCount
 
-        queueMetrics.emailMessageQueuedForRetryCounter.inc()
         queueMetrics.emailMessageQueuedForRetry()
 
-        mockedRegistry.counter("emailMessage.queuedForRetry").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("emailMessage.queuedForRetry").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.enqueued count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.enqueued").getCount
 
-        queueMetrics.secureMessageEnqueuedCounter.inc()
+        //queueMetrics.secureMessageEnqueuedCounter.inc()
         queueMetrics.secureMessageEnqueued()
 
-        mockedRegistry.counter("secureMessage.enqueued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.enqueued").getCount shouldBe countBefore + 1
       }
 
 
@@ -200,30 +189,28 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.dequeued").getCount
 
-        queueMetrics.secureMessageDequeuedCounter.inc()
         queueMetrics.secureMessageDequeued()
 
-        mockedRegistry.counter("secureMessage.dequeued").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.dequeued").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.genericQueueNoRetryError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount
 
-        queueMetrics.secureMessageGenericQueueNoRetryErrorCounter.inc()
+        //queueMetrics.secureMessageGenericQueueNoRetryErrorCounter.inc()
         queueMetrics.secureMessageGenericQueueNoRetryError()
 
-        mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.notFoundMissingTaxpayerError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount
 
-        queueMetrics.secureMessageNotFoundMissingTaxpayerErrorCounter.inc()
         queueMetrics.secureMessageNotFoundMissingTaxpayerError()
 
-        mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount shouldBe countBefore + 1
       }
 
 
@@ -231,50 +218,47 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount
 
-        queueMetrics.secureMessageNotFoundUnverifiedEmailErrorCounter.inc()
         queueMetrics.secureMessageNotFoundUnverifiedEmailError()
 
-        mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.badRequestError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.badRequestError").getCount
 
-        queueMetrics.secureMessageBadRequestErrorCounter.inc()
+        //queueMetrics.secureMessageBadRequestErrorCounter.inc()
         queueMetrics.secureMessageBadRequestError()
 
-        mockedRegistry.counter("secureMessage.badRequestError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.badRequestError").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.specificParsingError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.specificParsingError").getCount
 
-        queueMetrics.secureMessageSpecificParsingErrorCounter.inc()
         queueMetrics.secureMessageSpecificParsingError()
 
-        mockedRegistry.counter("secureMessage.specificParsingError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.specificParsingError").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.unexpectedError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.unexpectedError").getCount
 
-        queueMetrics.secureMessageUnexpectedErrorCounter.inc()
+        //queueMetrics.secureMessageUnexpectedErrorCounter.inc()
         queueMetrics.secureMessageUnexpectedError()
 
-        mockedRegistry.counter("secureMessage.unexpectedError").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.unexpectedError").getCount shouldBe countBefore + 1
       }
 
       "increment the secureMessage.queuedForRetry count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.queuedForRetry").getCount
 
-        queueMetrics.secureMessageQueuedForRetryCounter.inc()
         queueMetrics.secureMessageQueuedForRetry()
 
-        mockedRegistry.counter("secureMessage.queuedForRetry").getCount shouldBe countBefore + 2
+        mockedRegistry.counter("secureMessage.queuedForRetry").getCount shouldBe countBefore + 1
       }
 
     }

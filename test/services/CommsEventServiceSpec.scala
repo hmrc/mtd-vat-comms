@@ -171,7 +171,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
     "there is an unexpected exception" should {
 
-      "mark the item as failed and not remove it from the queue" in new TestSetup {
+      "mark the item as permanently failed and not remove it from the queue" in new TestSetup {
         secureCommsAlertExceptionMock()
         markItemAsPermanentlyFailedMock
 
