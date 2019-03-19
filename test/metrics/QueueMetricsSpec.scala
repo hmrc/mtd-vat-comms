@@ -120,7 +120,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.enqueued").getCount
 
-        //queueMetrics.emailMessageEnqueuedCounter.inc()
         queueMetrics.emailMessageEnqueued()
 
         mockedRegistry.counter("emailMessage.enqueued").getCount shouldBe countBefore + 1
@@ -139,7 +138,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.notFoundError").getCount
 
-        //queueMetrics.emailMessageNotFoundErrorCounter.inc()
         queueMetrics.emailMessageNotFoundError()
 
         mockedRegistry.counter("emailMessage.notFoundError").getCount shouldBe countBefore + 1
@@ -149,7 +147,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.badRequestError").getCount
 
-        //queueMetrics.emailMessageBadRequestErrorCounter.inc()
         queueMetrics.emailMessageBadRequestError()
 
         mockedRegistry.counter("emailMessage.badRequestError").getCount shouldBe countBefore + 1
@@ -159,7 +156,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("emailMessage.unexpectedError").getCount
 
-        //queueMetrics.emailMessageUnexpectedErrorCounter.inc()
         queueMetrics.emailMessageUnexpectedError()
 
         mockedRegistry.counter("emailMessage.unexpectedError").getCount shouldBe countBefore + 1
@@ -178,7 +174,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.enqueued").getCount
 
-        //queueMetrics.secureMessageEnqueuedCounter.inc()
         queueMetrics.secureMessageEnqueued()
 
         mockedRegistry.counter("secureMessage.enqueued").getCount shouldBe countBefore + 1
@@ -198,7 +193,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount
 
-        //queueMetrics.secureMessageGenericQueueNoRetryErrorCounter.inc()
         queueMetrics.secureMessageGenericQueueNoRetryError()
 
         mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount shouldBe countBefore + 1
@@ -227,7 +221,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.badRequestError").getCount
 
-        //queueMetrics.secureMessageBadRequestErrorCounter.inc()
         queueMetrics.secureMessageBadRequestError()
 
         mockedRegistry.counter("secureMessage.badRequestError").getCount shouldBe countBefore + 1
@@ -246,7 +239,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.unexpectedError").getCount
 
-        //queueMetrics.secureMessageUnexpectedErrorCounter.inc()
         queueMetrics.secureMessageUnexpectedError()
 
         mockedRegistry.counter("secureMessage.unexpectedError").getCount shouldBe countBefore + 1
