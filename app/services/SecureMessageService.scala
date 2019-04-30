@@ -91,7 +91,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
   private def handleNonRecoverableError(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel],
                                   errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[SecureCommsMessageModel]] = {
 
-    val message = s"[EmailMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
+    val message = s"[SecureMessageService][processWorkItem] - $errorTypeName when processing item with vrn: " +
       s"${workItem.item.vrn}, form bundle ref: ${workItem.item.formBundleReference} and work item id: ${workItem.id}"
 
     exception match {
