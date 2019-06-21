@@ -68,7 +68,8 @@ class SecureCommsMessageParserSpec extends BaseSpec {
     ("Repayments Bank Account Change",
       Responses.expectedResponseBankRepaymentAccountChange, ResponseAsModel.expectedResponseRepaymentsBankAccountChange),
     ("VAT Stagger", Responses.expectedResponseStagger, ResponseAsModel.expectedResponseStagger),
-    ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange)
+    ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange),
+    ("Opt Out", Responses.expectedResponseOptOut, ResponseAsModel.expectedResponseOptOut)
   )
 
   parsingTest.foreach { case (testName, genericResponse, modelResponse) =>
@@ -87,8 +88,9 @@ class SecureCommsMessageParserSpec extends BaseSpec {
         bankDetails <- Seq(Some(BankDetailsModel("Bank of Tamriel", "8493483729273", "32-12-22")), None)
         stagger <- Seq(Some("EE02"), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
+        mandationStatus <- Seq(Some("04"), None)
       } yield {
-        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, stagger, oEmail,
+        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, stagger, oEmail, mandationStatus,
           TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
       }).filter { passedForwardModel =>
         Seq(
@@ -96,12 +98,14 @@ class SecureCommsMessageParserSpec extends BaseSpec {
           passedForwardModel.addressDetails,
           passedForwardModel.bankAccountDetails,
           passedForwardModel.stagger,
-          passedForwardModel.originalEmailAddress).count(_.nonEmpty) > 1
+          passedForwardModel.originalEmailAddress,
+          passedForwardModel.mandationStatus).count(_.nonEmpty) > 1
       }
 
       allInvalidCombinations.foreach { model =>
         s"the following combination of optional parameters are used: ${model.effectiveDateOfDeregistration}," +
-          s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.stagger}, ${model.originalEmailAddress}" in {
+          s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.stagger}, " +
+          s"${model.originalEmailAddress}, ${model.mandationStatus}" in {
           SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
         }
       }

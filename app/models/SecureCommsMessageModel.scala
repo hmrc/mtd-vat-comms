@@ -32,6 +32,7 @@ case class SecureCommsMessageModel(
                                     bankAccountDetails: Option[BankDetailsModel],
                                     stagger: Option[String],
                                     originalEmailAddress: Option[String],
+                                    mandationStatus: Option[String],
                                     transactorDetails: TransactorModel,
                                     customerDetails: CustomerModel,
                                     preferences: PreferencesModel
@@ -48,36 +49,37 @@ object SecureCommsMessageModel {
 
   implicit val reads: Reads[SecureCommsMessageModel] = (
     (JsPath \ TEMPLATE_ID).read[String] and
-      (JsPath \ VRN).read[String] and
-      (JsPath \ FORM_BUNDLE_REFERENCE).read[String] and
-      (JsPath \ BUSINESS_NAME).read[String] and
-      (JsPath \ EFFECTIVE_DOD).readNullable[String] and
-      ((JsPath \\ AL1).readNullable[String] and
-        (JsPath \\ AL2).readNullable[String] and
-        (JsPath \\ AL3).readNullable[String] and
-        (JsPath \\ AL4).readNullable[String] and
-        (JsPath \\ AL5).readNullable[String] and
-        (JsPath \\ POST_CODE).readNullable[String] and
-        (JsPath \\ COUNTRY_NAME).readNullable[String]
-        tupled) and
-      ((JsPath \\ ACCOUNT_NAME).readNullable[String] and
-        (JsPath \\ ACCOUNT_NUMBER).readNullable[String] and
-        (JsPath \\ SORT_CODE).readNullable[String]
-        tupled) and
-      (JsPath \ STAGGER).readNullable[String] and
-      (JsPath \ O_EMAIL_ADDRESS).readNullable[String] and
-      ((JsPath \\ TRANSACTOR_EMAIL).read[String] and
-        (JsPath \\ TRANSACTOR_NAME).read[String]
-        tupled) and
-      ((JsPath \\ C_EMAIL).read[String] and
-        (JsPath \\ C_EMAIL_STATUS).read[String]
-        tupled) and
-      ((JsPath \\ N_PREFS).read[String] and
-        (JsPath \\ C_PREFS).read[String] and
-        (JsPath \\ L_PREFS).read[String] and
-        (JsPath \\ F_PREFS).read[String]
-        tupled)
-    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, stagger, oEmail, tDet, cDet, prefDet) =>
+    (JsPath \ VRN).read[String] and
+    (JsPath \ FORM_BUNDLE_REFERENCE).read[String] and
+    (JsPath \ BUSINESS_NAME).read[String] and
+    (JsPath \ EFFECTIVE_DOD).readNullable[String] and
+    ((JsPath \\ AL1).readNullable[String] and
+      (JsPath \\ AL2).readNullable[String] and
+      (JsPath \\ AL3).readNullable[String] and
+      (JsPath \\ AL4).readNullable[String] and
+      (JsPath \\ AL5).readNullable[String] and
+      (JsPath \\ POST_CODE).readNullable[String] and
+      (JsPath \\ COUNTRY_NAME).readNullable[String]
+    tupled) and
+    ((JsPath \\ ACCOUNT_NAME).readNullable[String] and
+      (JsPath \\ ACCOUNT_NUMBER).readNullable[String] and
+      (JsPath \\ SORT_CODE).readNullable[String]
+    tupled) and
+    (JsPath \ STAGGER).readNullable[String] and
+    (JsPath \ O_EMAIL_ADDRESS).readNullable[String] and
+    (JsPath \ MANDATION_STATUS).readNullable[String] and
+    ((JsPath \\ TRANSACTOR_EMAIL).read[String] and
+      (JsPath \\ TRANSACTOR_NAME).read[String]
+    tupled) and
+    ((JsPath \\ C_EMAIL).read[String] and
+      (JsPath \\ C_EMAIL_STATUS).read[String]
+    tupled) and
+    ((JsPath \\ N_PREFS).read[String] and
+      (JsPath \\ C_PREFS).read[String] and
+      (JsPath \\ L_PREFS).read[String] and
+      (JsPath \\ F_PREFS).read[String]
+    tupled)
+    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, stagger, oEmail, mandationStatus, tDet, cDet, prefDet) =>
 
     val addressDetails: Option[AddressDetailsModel] = if(checkTupleForNone(addDet)) {
       Some(AddressDetailsModel(
@@ -109,6 +111,7 @@ object SecureCommsMessageModel {
       bankAccountDetails,
       stagger,
       oEmail,
+      mandationStatus,
       TransactorModel(tDet._1, tDet._2),
       CustomerModel(cDet._1, cDet._2),
       PreferencesModel(prefDet._1, prefDet._2, prefDet._3, prefDet._4)

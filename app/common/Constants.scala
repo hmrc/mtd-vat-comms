@@ -68,6 +68,7 @@ object Constants {
     val SORT_CODE = "bankSortCode"
     val STAGGER = "stagger"
     val O_EMAIL_ADDRESS = "originalEmailAddress"
+    val MANDATION_STATUS = "mandationStatus"
     val CUSTOMER_DETAILS = "customerDetails"
     val C_EMAIL = "customerEmail"
     val C_EMAIL_STATUS = "customerEmailStatus"
