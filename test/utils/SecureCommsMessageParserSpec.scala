@@ -88,7 +88,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
         bankDetails <- Seq(Some(BankDetailsModel("Bank of Tamriel", "8493483729273", "32-12-22")), None)
         stagger <- Seq(Some("EE02"), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
-        mandationStatus <- Seq(Some("04"), None)
+        mandationStatus <- Seq(Some("3"), None)
       } yield {
         SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, stagger, oEmail, mandationStatus,
           TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))

@@ -50,7 +50,7 @@ object SecureCommsMessageTestData {
       SORT_CODE -> "11-11-11",
       STAGGER -> "12jje7uw",
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
-      MANDATION_STATUS -> "04",
+      MANDATION_STATUS -> "3",
       C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
@@ -174,7 +174,7 @@ object SecureCommsMessageTestData {
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
       Some("12jje7uw"),
       Some("sofia@whiterunstables.co.tam"),
-      Some("04"),
+      Some("3"),
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -270,7 +270,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("04"),
+      Some("3"),
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -659,7 +659,7 @@ object SecureCommsMessageTestData {
       ),
       STAGGER -> "12jje7uw",
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
-      MANDATION_STATUS -> "04",
+      MANDATION_STATUS -> "3",
       CUSTOMER_DETAILS -> Json.obj(
         C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
@@ -828,7 +828,7 @@ object SecureCommsMessageTestData {
         C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
-      MANDATION_STATUS -> "04",
+      MANDATION_STATUS -> "3",
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
         C_PREFS -> PAPER,
@@ -911,7 +911,7 @@ object SecureCommsMessageTestData {
       "CoC Company Holdings Ltd",
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
-      "04",
+      "3",
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
   }
