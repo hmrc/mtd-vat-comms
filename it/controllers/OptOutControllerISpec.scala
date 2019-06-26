@@ -31,7 +31,7 @@ class OptOutControllerISpec extends IntegrationBaseSpec {
 
         val request: WSRequest = buildRequest("/events/opt-out")
 
-        val response = await(request.post(vatChangeEventJson("Opt Out Change")))
+        val response = await(request.post(vatChangeEventJson("Opt Out")))
 
         response.status shouldBe NO_CONTENT
       }

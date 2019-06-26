@@ -44,6 +44,9 @@ trait AppConfig extends ServicesConfig {
   val tribunalUrl: String
 
   val manageVatSubscriptionUrl: String
+
+  val vatSummaryUrl: String
+  val contactUsUrl: String
 }
 
 @Singleton
@@ -81,4 +84,10 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   private lazy val manageVatSubscriptionHost: String = getString(Keys.manageVatSubscriptionHost)
   override lazy val manageVatSubscriptionUrl: String =
     manageVatSubscriptionHost + getString(Keys.manageVatSubscriptionUri)
+
+  private lazy val vatSummaryHost: String = getString(Keys.vatSummaryHost)
+  override lazy val vatSummaryUrl: String =
+    vatSummaryHost + getString(Keys.vatSummaryUri)
+
+  override lazy val contactUsUrl: String = getString(Keys.contactUsUrl)
 }

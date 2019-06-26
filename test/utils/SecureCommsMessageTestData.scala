@@ -615,6 +615,38 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
+    val optOutRequest = SecureCommsMessageModel(
+      "CC07A_SM11A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      None,
+      Some("3"),
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val optOutRequestRepresented = SecureCommsMessageModel(
+      "CC07C_SM11C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      None,
+      Some("3"),
+      TransactorModel("agent@CoCHoldings.co.uk", "CoC Agent"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
     val emailValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM10A",
       "100065579",

@@ -55,7 +55,11 @@ object TemplateMappings {
     // email client approved
     "VRT12A_SM9A" -> true,
     // email client rejected
-    "VRT14A_SM10A" -> false
+    "VRT14A_SM10A" -> false,
+    //opt out client approved
+    "CC07A_SM11A" -> true,
+    //opt out agent approved
+    "CC07C_SM11C" -> true
   )
 
   def isTemplateIdApproval(templateId: String): Option[Boolean] =

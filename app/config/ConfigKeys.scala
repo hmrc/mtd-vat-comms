@@ -35,4 +35,9 @@ object ConfigKeys {
 
   val manageVatSubscriptionHost = "manage-vat-subscription-frontend.host"
   val manageVatSubscriptionUri: String = "manage-vat-subscription-frontend.changeBusinessDetailsUri"
+
+  val vatSummaryHost: String = "vat-summary-frontend.host"
+  val vatSummaryUri: String = "vat-summary-frontend.vatOverviewUri"
+
+  val contactUsUrl: String = "govuk.contactUsUrl"
 }

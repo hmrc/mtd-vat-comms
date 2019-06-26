@@ -108,6 +108,12 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         buildSecureCommsServiceRequestModel(
           html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
+      case optOutModel: OptOutModel =>
+        val html = getOptOutHtml(isTransactor)
+        val subject = getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval, isTransactor)
+        buildSecureCommsServiceRequestModel(
+          html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
     }
   }
 
@@ -183,6 +189,14 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatStaggerApproved(vatStaggerChangeModel.stagger.toUpperCase).toString
     } else {
       vatStaggerRejected().toString
+    }
+  }
+
+  private def getOptOutHtml(isTransactor: Boolean): String = {
+    if (isTransactor) {
+      vatOptOutApprovedRepresented().toString
+    } else {
+      vatOptOutApproved().toString
     }
   }
 

@@ -165,6 +165,15 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
       }
     }
 
+    "return a successful response for a transactor's opt out approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(optOutRequestRepresented))
+        result shouldBe Right(true)
+      }
+    }
+
     "return a successful response for a client ppob approval" when {
       "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
         setupSuccessResponse
@@ -197,6 +206,15 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a non represented user's opt out approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(optOutRequest))
         result shouldBe Right(true)
       }
     }
@@ -344,6 +362,20 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change to your bank details for VAT repayments"
+      }
+    }
+
+    "return the expected subject for an opt out secure message" when {
+      "it is for a non-represented user" in {
+        val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = false)
+        result shouldBe "You have opted out of Making Tax Digital for VAT"
+      }
+    }
+
+    "return the expected subject for an opt out secure message" when {
+      "it is for a represented user" in {
+        val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = true)
+        result shouldBe "You have opted out of Making Tax Digital for VAT"
       }
     }
   }
