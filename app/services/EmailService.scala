@@ -47,7 +47,7 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
       "VRT14C_SM6C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
       "VRT15C_SM8C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
       "VRT12A_SM9A" -> CLIENT_NOTIFICATION_SELF_CHANGE,
-      "CC07C_SM11C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED
+      "CC07C_SM11C" -> AGENT_NOTIFICATION_OPT_OUT
     )
     allTemplateIds(input)
   }
@@ -59,7 +59,8 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
         val notificationDependentDetails: Map[String, String] = Map("recipientName_line1" -> model.getBusinessName)
         Right(EmailRequestModel(Seq(model.originalEmailAddress), templateId, notificationDependentDetails))
 
-      case _ if templateId == AGENT_NOTIFICATION_CHANGE_ACCEPTED || templateId == AGENT_NOTIFICATION_CHANGE_REJECTED =>
+      case _ if templateId == AGENT_NOTIFICATION_CHANGE_ACCEPTED || templateId == AGENT_NOTIFICATION_CHANGE_REJECTED ||
+        templateId == AGENT_NOTIFICATION_OPT_OUT =>
         val notificationDependentDetails: Map[String, String] = Map(
           "transactorName" -> messageModel.getTransactorDetails.transactorName,
           "clientName" -> messageModel.getBusinessName,

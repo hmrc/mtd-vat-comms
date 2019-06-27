@@ -97,7 +97,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
         "VRT14C_SM6C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
         "VRT15C_SM8C" -> AGENT_NOTIFICATION_CHANGE_REJECTED,
         "VRT12A_SM9A" -> CLIENT_NOTIFICATION_SELF_CHANGE,
-        "CC07C_SM11C" -> AGENT_NOTIFICATION_CHANGE_ACCEPTED
+        "CC07C_SM11C" -> AGENT_NOTIFICATION_OPT_OUT
       ).foreach { mapping =>
         s"incoming id is ${mapping._1}" in {
           service.mapTemplateId(mapping._1) shouldBe mapping._2

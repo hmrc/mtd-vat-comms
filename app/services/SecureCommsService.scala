@@ -82,37 +82,37 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         val html = getDeregistrationChangeHtml(deregModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, deregModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, deregModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, false
         )
       case ppobModel: PPOBChangeModel =>
         val html = getPpobChangeHtml(ppobModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, false
         )
       case repaymentModel: RepaymentsBankAccountChangeModel =>
         val html = getBankDetailsChangeHtml(repaymentModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, false
         )
       case staggerModel: VATStaggerChangeModel =>
         val html = getStaggerChangeHtml(staggerModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, false
         )
       case emailModel: EmailAddressChangeModel =>
         val html = getEmailChangeHtml(emailModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, false
         )
       case optOutModel: OptOutModel =>
         val html = getOptOutHtml(isTransactor)
         val subject = getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
-          html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+          html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor, true
         )
     }
   }
@@ -122,13 +122,23 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                                                   subject: String,
                                                   vrn: String,
                                                   salutation: String,
-                                                  isTransactor: Boolean): SecureCommsServiceRequestModel = {
+                                                  isTransactor: Boolean,
+                                                  isOptOut: Boolean): SecureCommsServiceRequestModel = {
 
     val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MTDP)
     val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
     val nameModel = NameModel(line1 = salutation)
     val recipientModel = RecipientModel(taxIdentifier = taxIdentifierModel, name = nameModel, email = userEmail)
-    val templateId = if(isTransactor) CLIENT_NOTIFICATION_AGENT_CHANGE else CLIENT_NOTIFICATION_SELF_CHANGE
+    val templateId = {
+
+      (isTransactor, isOptOut) match {
+        case (true, true) => AGENT_NOTIFICATION_OPT_OUT
+        case (true, false) => CLIENT_NOTIFICATION_AGENT_CHANGE
+        case (false, true) => CLIENT_NOTIFICATION_OPT_OUT
+        case (false, false) => CLIENT_NOTIFICATION_SELF_CHANGE
+      }
+    }
+
     SecureCommsServiceRequestModel(
       externalRefModel, recipientModel, templateId, subject, encode(htmlContent)
     )
