@@ -54,7 +54,7 @@ class VatDeregRejectedViewSpec extends ViewBaseSpec {
 
     "have the correct final paragraph" in {
       elementText("p:nth-child(6)") shouldBe "You also have the option to appeal to the tax tribunal " +
-        "(opens in a new tab) to request a review of an HMRC decision."
+        "to request a review of an HMRC decision."
     }
 
     "have a link to appeal to the tax tribunal" in {

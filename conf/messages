@@ -31,7 +31,7 @@ deregRejectedTransactor.title = We have rejected your agent’s request to dereg
 deregRejected.p1 = From the information available to us, we think you are not eligible to deregister from VAT and will remain registered.
 deregRejected.p2 = You can apply to deregister again if your turnover falls below the threshold.
 deregRejected.p3a = You also have the option to
-deregRejected.p3b = appeal to the tax tribunal (opens in a new tab)
+deregRejected.p3b = appeal to the tax tribunal
 deregRejected.p3c = to request a review of an HMRC decision.
 
 bankDetailsApproved.title = You have successfully changed your bank details for VAT repayments
@@ -67,13 +67,13 @@ emailApproved.p1 = Your new email address for VAT is: {0}
 emailRejected.title = We have rejected the change of email address for VAT
 emailRejected.p1 = You cannot use the email address supplied.
 
-optOutApproved.title = You have opted out of Making Tax Digital for VAT
+optOutApproved.title = You''ve opted out of Making Tax Digital for VAT
 optOutApproved.p1 = You must continue to use software compatible with Making Tax Digital to submit your VAT Return for your current return period.
 optOutApproved.p2a = You must submit your VAT Returns using
 optOutApproved.p2b = your online VAT account
 optOutApproved.p2c = from your next return period.
 optOutApproved.p3a = If your taxable turnover goes above £85,000, you must
-optOutApproved.p3b = contact us (opens in a new tab)
+optOutApproved.p3b = contact us
 optOutApproved.p3c = to sign up again for Making Tax Digital.
 optOutApproved.p4 = By opting out you will not be cancelling your VAT registration.
 
