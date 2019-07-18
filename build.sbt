@@ -23,7 +23,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "mtd-vat-comms"
 
-lazy val appDependencies: Seq[ModuleID] = compile ++ test()
+lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
   ws,
@@ -111,5 +111,3 @@ def tmpMacWorkaround(): Seq[ModuleID] =
   if (sys.props.get("os.name").fold(false)(_.toLowerCase.contains("mac")))
     Seq("org.reactivemongo" % "reactivemongo-shaded-native" % "0.16.1-osx-x86-64" % "runtime,test,it")
   else Seq()
-
-def apply() = compile ++ test() ++ tmpMacWorkaround()
