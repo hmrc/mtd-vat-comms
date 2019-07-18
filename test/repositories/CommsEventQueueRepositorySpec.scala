@@ -45,8 +45,7 @@ class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with 
   lazy val repo: CommsEventQueueRepository = repoAtInstant(anInstant)
 
   override protected def beforeEach(): Unit = {
-    await(repo.drop)
-    await(repo.ensureIndexes)
+    await(repo.removeAll())
   }
 
   "CommsEventQueue Repository" should {

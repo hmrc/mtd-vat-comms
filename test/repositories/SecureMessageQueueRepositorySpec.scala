@@ -44,8 +44,7 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wi
   lazy val repo: SecureMessageQueueRepository = repoAtInstant(anInstant)
 
   override protected def beforeEach(): Unit = {
-    await(repo.drop)
-    await(repo.ensureIndexes)
+    await(repo.removeAll())
   }
 
   "SecureMessageQueue Repository" should {

@@ -44,8 +44,7 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport wit
   lazy val repo: EmailMessageQueueRepository = repoAtInstant(anInstant)
 
   override protected def beforeEach(): Unit = {
-    await(repo.drop)
-    await(repo.ensureIndexes)
+    await(repo.removeAll())
   }
 
   "EmailMessageQueue Repository" should {
