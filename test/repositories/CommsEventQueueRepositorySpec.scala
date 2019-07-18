@@ -22,18 +22,18 @@ import org.joda.time.{DateTime, Duration}
 import org.scalatest.BeforeAndAfterEach
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
+import uk.gov.hmrc.mongo.MongoConnector
 import uk.gov.hmrc.time.DateTimeUtils
 import models.VatChangeEvent
 import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.workitem._
 
-class CommsEventQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach {
+class CommsEventQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
 
   val anInstant: DateTime = DateTimeUtils.now
 
   val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
-    override def mongoConnector: MongoConnector = mongoConnectorForTest
+    override def mongoConnector: MongoConnector = MongoConnector(mockAppConfig.getString("mongodb.uri"))
   }
 
   def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository = new CommsEventQueueRepository(
