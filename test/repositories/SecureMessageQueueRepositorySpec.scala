@@ -16,36 +16,18 @@
 
 package repositories
 
-import base.BaseSpec
-import org.joda.time.{DateTime, Duration}
-import org.scalatest.BeforeAndAfterEach
-import play.modules.reactivemongo.ReactiveMongoComponent
+import models.SecureCommsMessageModel
+import org.joda.time.DateTime
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.MongoConnector
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-class SecureMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
 
+class SecureMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, SecureMessageQueueRepository] {
+  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
   val anInstant: DateTime = DateTimeUtils.now
-
-  val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
-    override def mongoConnector: MongoConnector = MongoConnector(mockAppConfig.getString("mongodb.uri"))
-  }
-
-  def repoAtInstant(anInstant: DateTime): SecureMessageQueueRepository = new SecureMessageQueueRepository(
-    mockAppConfig, reactiveMongoComponent) {
-    override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
-    override def now: DateTime                       = anInstant
-  }
-
-  lazy val repo: SecureMessageQueueRepository = repoAtInstant(anInstant)
-
-  override protected def beforeEach(): Unit = {
-    await(repo.removeAll())
-  }
 
   "SecureMessageQueue Repository" should {
 
@@ -60,22 +42,29 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach 
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (workItem.updatedAt)
       )
     }
 
     "be able to save the same item twice" in {
-      await(repo.pushNew(expectedResponseEverything, anInstant))
-      await(repo.pushNew(expectedResponseEverything, anInstant))
+      val firstItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      val secondItem = await(repo.pushNew(expectedResponseEverything, anInstant))
 
       val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
-      every(requests) should have(
+
+      requests(0) should have(
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (firstItem.updatedAt)
+      )
+      requests(1) should have(
+        'item (expectedResponseEverything),
+        'status (ToDo),
+        'receivedAt (anInstant),
+        'updatedAt (secondItem.updatedAt)
       )
     }
 
@@ -83,9 +72,7 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach 
       val payloadDetails = expectedResponseEverything
       await(repo.pushNew(payloadDetails, anInstant))
 
-      val repoLater: SecureMessageQueueRepository = repoAtInstant(anInstant.plusMillis(1))
-
-      await(repoLater.pullOutstanding).get should have(
+      await(repo.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )

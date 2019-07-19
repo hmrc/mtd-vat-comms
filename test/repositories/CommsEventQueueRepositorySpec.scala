@@ -16,37 +16,18 @@
 
 package repositories
 
-import base.BaseSpec
 import common.ApiConstants.vatChangeEventModel
+import models.VatChangeEvent
 import org.joda.time.{DateTime, Duration}
 import org.scalatest.BeforeAndAfterEach
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.MongoConnector
 import uk.gov.hmrc.time.DateTimeUtils
-import models.VatChangeEvent
-import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.workitem._
 
-class CommsEventQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
-
+class CommsEventQueueRepositorySpec extends MongoSpec[VatChangeEvent, CommsEventQueueRepository] with BeforeAndAfterEach {
   val anInstant: DateTime = DateTimeUtils.now
-
-  val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
-    override def mongoConnector: MongoConnector = MongoConnector(mockAppConfig.getString("mongodb.uri"))
-  }
-
-  def repoAtInstant(anInstant: DateTime): CommsEventQueueRepository = new CommsEventQueueRepository(
-    mockAppConfig, reactiveMongoComponent) {
-      override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
-      override def now: DateTime                       = anInstant
-  }
-
-  lazy val repo: CommsEventQueueRepository = repoAtInstant(anInstant)
-
-  override protected def beforeEach(): Unit = {
-    await(repo.removeAll())
-  }
+  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
 
   "CommsEventQueue Repository" should {
 
@@ -69,23 +50,30 @@ class CommsEventQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
         'item (vatChangeEvent),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (workItem.updatedAt)
       )
     }
 
     "be able to save the same requests twice" in {
       val payloadDetails = vatChangeEvent
-      await(repo.pushNew(vatChangeEvent, anInstant))
-      await(repo.pushNew(vatChangeEvent, anInstant))
+      val firstItem = await(repo.pushNew(vatChangeEvent, anInstant))
+      val secondItem = await(repo.pushNew(vatChangeEvent, anInstant))
 
       val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
-      every(requests) should have(
+
+      requests(0) should have(
         'item (payloadDetails),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (firstItem.updatedAt)
+      )
+      requests(1) should have(
+        'item (payloadDetails),
+        'status (ToDo),
+        'receivedAt (anInstant),
+        'updatedAt (secondItem.updatedAt)
       )
     }
 
@@ -93,9 +81,7 @@ class CommsEventQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
       val payloadDetails = vatChangeEvent
       await(repo.pushNew(payloadDetails, anInstant))
 
-      val repoLater: CommsEventQueueRepository = repoAtInstant(anInstant.plusMillis(1))
-
-      await(repoLater.pullOutstanding).get should have(
+      await(repo.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )

@@ -17,35 +17,20 @@
 package repositories
 
 import base.BaseSpec
-import org.joda.time.{DateTime, Duration}
+import models.SecureCommsMessageModel
+import org.joda.time.DateTime
 import org.scalatest.BeforeAndAfterEach
-import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.MongoConnector
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-class EmailMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
 
+class EmailMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, EmailMessageQueueRepository] with BeforeAndAfterEach {
   val anInstant: DateTime = DateTimeUtils.now
+  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
 
-  val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
-    override def mongoConnector: MongoConnector = MongoConnector(mockAppConfig.getString("mongodb.uri"))
-  }
-
-  def repoAtInstant(anInstant: DateTime): EmailMessageQueueRepository = new EmailMessageQueueRepository(
-    mockAppConfig, reactiveMongoComponent) {
-    override lazy val inProgressRetryAfter: Duration = Duration.standardHours(1)
-    override def now: DateTime                       = anInstant
-  }
-
-  lazy val repo: EmailMessageQueueRepository = repoAtInstant(anInstant)
-
-  override protected def beforeEach(): Unit = {
-    await(repo.removeAll())
-  }
 
   "EmailMessageQueue Repository" should {
 
@@ -60,32 +45,37 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (workItem.updatedAt)
       )
     }
 
     "be able to save the same item twice" in {
-      await(repo.pushNew(expectedResponseEverything, anInstant))
-      await(repo.pushNew(expectedResponseEverything, anInstant))
+      val firstItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      val secondItem = await(repo.pushNew(expectedResponseEverything, anInstant))
 
       val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
-      every(requests) should have(
+      requests(0) should have(
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),
-        'updatedAt (anInstant)
+        'updatedAt (firstItem.updatedAt)
       )
+      requests(1) should have(
+        'item (expectedResponseEverything),
+        'status (ToDo),
+        'receivedAt (anInstant),
+        'updatedAt (secondItem.updatedAt)
+      )
+
     }
 
     "pull ToDo items" in {
       val payloadDetails = expectedResponseEverything
       await(repo.pushNew(payloadDetails, anInstant))
 
-      val repoLater: EmailMessageQueueRepository = repoAtInstant(anInstant.plusMillis(1))
-
-      await(repoLater.pullOutstanding).get should have(
+      await(repo.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )
