@@ -22,17 +22,17 @@ import org.scalatest.BeforeAndAfterEach
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
+import uk.gov.hmrc.mongo.MongoConnector
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-class SecureMessageQueueRepositorySpec extends BaseSpec with MongoSpecSupport with BeforeAndAfterEach {
+class SecureMessageQueueRepositorySpec extends BaseSpec with BeforeAndAfterEach {
 
   val anInstant: DateTime = DateTimeUtils.now
 
   val reactiveMongoComponent: ReactiveMongoComponent = new ReactiveMongoComponent {
-    override def mongoConnector: MongoConnector = mongoConnectorForTest
+    override def mongoConnector: MongoConnector = MongoConnector(mockAppConfig.getString("mongodb.uri"))
   }
 
   def repoAtInstant(anInstant: DateTime): SecureMessageQueueRepository = new SecureMessageQueueRepository(
