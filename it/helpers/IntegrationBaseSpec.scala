@@ -47,6 +47,7 @@ trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServ
 
   override def afterAll(): Unit = {
     stopWireMock()
+    app.stop()
     super.afterAll()
   }
 

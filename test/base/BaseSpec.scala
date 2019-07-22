@@ -16,27 +16,20 @@
 
 package base
 
-import akka.stream.Materializer
-import mocks.MockAppConfig
-import modules.SchedulerModule
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Application
-import play.api.inject.Injector
-import play.api.inject.guice.GuiceApplicationBuilder
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 import play.api.test.FakeRequest
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
-  implicit override lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
-  val injector: Injector = app.injector
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  val request = FakeRequest()
+trait BaseSpec extends UnitSpec {
+  implicit val actorSystem = ActorSystem("TestActorSystem")
+  implicit val mat = ActorMaterializer()
 
-  implicit val materializer: Materializer = app.materializer
+  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  implicit val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
-
+  val request = FakeRequest()
 }
