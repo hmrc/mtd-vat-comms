@@ -17,25 +17,44 @@
 package services
 
 import base.BaseSpec
-import connectors.SecureCommsServiceConnector
-import models.secureCommsServiceModels._
-import models._
-import org.scalamock.scalatest.MockFactory
-import play.api.i18n.MessagesApi
-import utils.SecureCommsMessageTestData.SendSecureMessageModels._
-import scala.concurrent.ExecutionContext
 import common.Constants.MessageKeys._
+import connectors.SecureCommsServiceConnector
+import mocks.MockAppConfig
+import models._
+import models.secureCommsServiceModels._
+import modules.SchedulerModule
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.BeforeAndAfterAll
+import play.api.Application
+import play.api.i18n.MessagesApi
+import play.api.inject.Injector
+import play.api.inject.guice.GuiceApplicationBuilder
+import utils.SecureCommsMessageTestData.SendSecureMessageModels._
 
-class SecureCommsServiceSpec extends BaseSpec with MockFactory {
+import scala.concurrent.ExecutionContext
+
+class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAfterAll {
 
   val mockConnector: SecureCommsServiceConnector = mock[SecureCommsServiceConnector]
-  implicit lazy val messages: MessagesApi = injector.instanceOf[MessagesApi]
+
+  implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
+  val injector: Injector = app.injector
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+
+  implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+
   val service: SecureCommsService = new SecureCommsService(mockConnector)
 
   val serviceName = "doesn't matter"
   val regNum = "someTypeOfNumberAndLetters"
   val communicationsId = "129480912840912380912"
   val dateToUse: String = "2019-01-01T09:00:00Z"
+
+  override def afterAll(): Unit = {
+    app.stop()
+    super.afterAll()
+  }
+
 
   "getSecureCommsMessage" must {
 

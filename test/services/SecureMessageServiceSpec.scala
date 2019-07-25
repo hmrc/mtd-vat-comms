@@ -18,7 +18,7 @@ package services
 
 import java.net.UnknownHostException
 
-import base.BaseSpec
+import base.{BaseSpec}
 import metrics.QueueMetrics
 import models._
 import org.joda.time.{DateTime, DateTimeZone}

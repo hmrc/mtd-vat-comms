@@ -16,7 +16,6 @@
 
 package repositories
 
-import base.BaseSpec
 import models.SecureCommsMessageModel
 import org.joda.time.DateTime
 import org.scalatest.BeforeAndAfterEach
@@ -30,7 +29,6 @@ import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 class EmailMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, EmailMessageQueueRepository] with BeforeAndAfterEach {
   val anInstant: DateTime = DateTimeUtils.now
   override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
-
 
   "EmailMessageQueue Repository" should {
 
