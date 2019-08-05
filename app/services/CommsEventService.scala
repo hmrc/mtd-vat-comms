@@ -24,7 +24,7 @@ import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
-import utils.LoggerUtil.{logError, logWarn}
+import utils.LoggerUtil.{logDebug, logError, logWarn}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,6 +37,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
                                   implicit ec: ExecutionContext) {
 
   def queueRequest(item: VatChangeEvent): Future[Boolean] = {
+    logDebug(s"[CommsEventService][queueRequest] - Item queued: $item")
     metrics.commsEventEnqueued()
     commsEventQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
   }

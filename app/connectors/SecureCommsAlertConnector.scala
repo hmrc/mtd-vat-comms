@@ -58,7 +58,10 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
 
   private def handleOk(wSResponse: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
     Json.parse(wSResponse.body).validate[SecureCommsResponseModel].asOpt match {
-      case Some(responseModel) => Right(responseModel)
+      case Some(responseModel) =>
+        logDebug("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+          s"Successfully parsed SecureCommsResponseModel: $responseModel")
+        Right(responseModel)
       case None =>
         logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           "Failed to validate response to SecureCommsResponseModel")
