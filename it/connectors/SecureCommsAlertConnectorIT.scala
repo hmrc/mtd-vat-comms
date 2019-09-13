@@ -16,35 +16,30 @@
 
 package connectors
 
-import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
-import play.api.libs.ws.WSClient
 import testutils.WireMockHelper
 import testutils.WireMockStubRequestBodies._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
-  val wsClient: WSClient = app.injector.instanceOf(classOf[WSClient])
-  val appConfig: AppConfig = app.injector.instanceOf(classOf[AppConfig])
-
-  val connector: SecureCommsAlertConnector = new SecureCommsAlertConnector(wsClient, appConfig)
+  val connector: SecureCommsAlertConnector = new SecureCommsAlertConnector(httpClient, appConfig)
 
   val service: String = "value-added-tax"
   val regNum: String = "DD000000000"
   val dateTimeToUser: String = "2019-01-01T09:00:00Z"
 
-  def generateUrl(communicationsId: String): String = {
+  def generateUrl(communicationsId: String): String =
     s"/secure-comms-alert/service/$service/registration-number/$regNum/communications/$communicationsId"
-  }
 
   "getSecureComms" should {
+
     "return a SecureCommsResponseModel" when {
+
       s"an $OK response is received from SecureComms, and the response can be parsed" in {
+
         val communicationId = "123456789011"
 
         stubGetRequest(
@@ -53,17 +48,17 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
           secureCommsValidResponseEDOD(dateTimeToUser)
         )
 
-        val expectedResult = SecureCommsResponseModel(
-          dateTimeToUser,
-          validEDODString
-        )
+        val expectedResult = SecureCommsResponseModel(dateTimeToUser, validEDODString)
 
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe Right(expectedResult)
       }
     }
+
     "return an ErrorModel" when {
+
       s"a $OK response is received from SecureComms, but the response cannot be parsed" in {
+
         val communicationId = "123456789012"
 
         stubGetRequest(
@@ -77,7 +72,9 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
+
       s"a $BAD_REQUEST response is received from SecureComms" in {
+
         val communicationId = "123456789021"
 
         stubGetRequest(
@@ -91,7 +88,9 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
+
       s"a $NOT_FOUND response is received from SecureComms" in {
+
         val communicationId = "123456789021"
 
         stubGetRequest(
@@ -105,7 +104,9 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
+
       "an unexpected response is received from SecureComms" in {
+
         val communicationId = "123456789016"
 
         stubGetRequest(

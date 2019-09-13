@@ -25,8 +25,8 @@ import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.ExecutionContext
 
 trait BaseSpec extends UnitSpec {
-  implicit val actorSystem = ActorSystem("TestActorSystem")
-  implicit val mat = ActorMaterializer()
+  implicit val actorSystem: ActorSystem = ActorSystem("TestActorSystem")
+  implicit val mat: ActorMaterializer = ActorMaterializer()
 
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 

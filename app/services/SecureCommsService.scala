@@ -42,7 +42,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                                   (implicit val messagesApi: MessagesApi, appConfig: AppConfig) extends I18nSupport {
 
   def sendSecureCommsMessage(workItem: SecureCommsMessageModel)
-                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] = {
+                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] =
 
     parseModel(workItem) match {
       case Left(_) => Future(Left(SpecificParsingError))
@@ -56,8 +56,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
             }
         }
     }
-
-  }
 
   private def getRequest(messageModel: MessageModel): Either[ErrorModel, SecureCommsServiceRequestModel] = {
 
@@ -136,16 +134,15 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   }
 
   private def getEmailChangeHtml(emailAddressChangeModel: EmailAddressChangeModel,
-                                 isApproval: Boolean): String = {
+                                 isApproval: Boolean): String =
     if (isApproval) {
       vatEmailApproved(emailAddressChangeModel.customerDetails.customerEmail).toString
     } else {
       vatEmailRejected().toString
     }
-  }
 
   private def getBankDetailsChangeHtml(repaymentsBankAccountChangeModel: RepaymentsBankAccountChangeModel,
-                                       isApproval: Boolean): String = {
+                                       isApproval: Boolean): String =
     if (isApproval) {
       vatBankDetailsApproved(repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountName,
         repaymentsBankAccountChangeModel.bankAccountDetails.bankSortCode,
@@ -154,19 +151,17 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatBankDetailsRejected(repaymentsBankAccountChangeModel.bankAccountDetails.bankAccountName,
         repaymentsBankAccountChangeModel.businessName).toString
     }
-  }
 
   private def getDeregistrationChangeHtml(deRegistrationModel: DeRegistrationModel,
-                                          isApproval: Boolean): String = {
+                                          isApproval: Boolean): String =
     if (isApproval) {
       vatDeregApproved(etmpToFullMonthDateString(deRegistrationModel.effectiveDateOfDeregistration)).toString
     } else {
       vatDeregRejected().toString
     }
-  }
 
   private def getPpobChangeHtml(ppobChangeModel: PPOBChangeModel,
-                                isApproval: Boolean): String = {
+                                isApproval: Boolean): String =
     if (isApproval) {
       vatPPOBApproved(
         VatPPOBViewModel(
@@ -182,28 +177,24 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     } else {
       vatPPOBRejected().toString
     }
-  }
 
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
-                                   isApproval: Boolean): String = {
+                                   isApproval: Boolean): String =
     if (isApproval) {
       vatStaggerApproved(vatStaggerChangeModel.stagger.toUpperCase).toString
     } else {
       vatStaggerRejected().toString
     }
-  }
 
-  private def getOptOutHtml(isTransactor: Boolean): String = {
+  private def getOptOutHtml(isTransactor: Boolean): String =
     if (isTransactor) {
       vatOptOutApprovedRepresented().toString
     } else {
       vatOptOutApproved().toString
     }
-  }
 
   private[services] def getSubjectForBaseKey(baseSubjectKey: String, isApproval: Boolean, isTransactor :Boolean): String = {
     val statusKey = if(isApproval) baseSubjectKey.concat(APPROVED_SUFFIX) else baseSubjectKey.concat(REJECTED_SUFFIX)
     if(isTransactor) messagesApi(statusKey.concat(TITLE_KEY_TRANSACTOR)) else messagesApi(statusKey.concat(TITLE_KEY_CLIENT))
   }
-
 }

@@ -42,7 +42,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
     commsEventQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
   }
 
-  def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[VatChangeEvent]] = {
+  def retrieveWorkItems: Future[Seq[VatChangeEvent]] = {
     val pullWorkItems: Enumerator[WorkItem[VatChangeEvent]] =
       Enumerator.generateM(commsEventQueueRepository.pullOutstanding)
 

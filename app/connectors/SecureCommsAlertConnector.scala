@@ -22,42 +22,48 @@ import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{WSClient, WSResponse}
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.http.logging.Authorization
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import utils.LoggerUtil._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
+class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
                                           appConfig: AppConfig) {
 
-  def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
-                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsResponseModel]] = {
-    lazy val headers: Seq[(String, String)] = HeaderCarrier(
-      Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}"))
-    ).withExtraHeaders("Environment" -> appConfig.desEnvironment).headers
+  type SecureCommsAlertResponse = Either[ErrorModel, SecureCommsResponseModel]
 
-    val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
-    wsClient.url(url).withHeaders(headers: _*).get().map { response =>
-      logWarnEitherError(handleResponse(response))
-    }
-  }
+  implicit object GetSecureCommsMessageReads extends HttpReads[SecureCommsAlertResponse] {
 
-  def handleResponse(response: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
-    response.status match {
-      case OK => handleOk(response)
-      case BAD_REQUEST => handleBadRequest(response)
-      case NOT_FOUND => handleNotFound(response)
-      case status: Int =>
+    override def read(method: String, url: String, response: HttpResponse): SecureCommsAlertResponse =
+      response.status match {
+        case OK => handleOk(response)
+        case BAD_REQUEST => handleBadRequest(response)
+        case NOT_FOUND => handleNotFound(response)
+        case status: Int =>
           logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
             s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
           Left(ErrorModel(s"${response.status}", response.body))
+      }
+  }
+
+  def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
+                           (implicit ec: ExecutionContext): Future[SecureCommsAlertResponse] = {
+
+    implicit val hc: HeaderCarrier = HeaderCarrier(Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}")))
+
+    val requestHeaders: Seq[(String, String)] =
+      hc.withExtraHeaders("Environment" -> appConfig.desEnvironment).headers
+
+    val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
+    httpClient.GET[SecureCommsAlertResponse](url, queryParams = Seq.empty, headers = requestHeaders).map { response =>
+      logWarnEitherError(response)
     }
   }
 
-  private def handleOk(wSResponse: WSResponse): Either[ErrorModel, SecureCommsResponseModel] = {
-    Json.parse(wSResponse.body).validate[SecureCommsResponseModel].asOpt match {
+  private def handleOk(response: HttpResponse): SecureCommsAlertResponse =
+    Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
       case Some(responseModel) =>
         logDebug("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           s"Successfully parsed SecureCommsResponseModel: $responseModel")
@@ -65,19 +71,18 @@ class SecureCommsAlertConnector @Inject()(wsClient: WSClient,
       case None =>
         logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           "Failed to validate response to SecureCommsResponseModel")
-        logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${wSResponse.body}'")
+        logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
         Left(GenericParsingError)
     }
-  }
 
-  private def handleBadRequest(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${wSResponse.body}'")
+  private def handleBadRequest(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
+    logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${response.body}'")
     Left(BadRequest)
   }
 
-  private def handleNotFound(wSResponse: WSResponse): Left[ErrorModel, SecureCommsResponseModel] = {
+  private def handleNotFound(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
     logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-      s"The requested data was not found. Body: '${wSResponse.body}'")
+      s"The requested data was not found. Body: '${response.body}'")
     Left(NotFoundNoMatch)
   }
 }

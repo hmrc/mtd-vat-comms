@@ -28,7 +28,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EmailService @Inject()(emailRendererConnector: EmailConnector) {
 
-  def sendEmailRequest(message: MessageModel)(implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
+  def sendEmailRequest(message: MessageModel)
+                      (implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
     val mappedTemplateId = mapTemplateId(message.getTemplateId)
     toRequest(mappedTemplateId, message) match {
       case Right(request) => emailRendererConnector.sendEmailRequest(request)

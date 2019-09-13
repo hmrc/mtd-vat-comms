@@ -16,20 +16,27 @@
 
 package helpers
 
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import config.AppConfig
+import org.scalatest.BeforeAndAfterAll
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest}
 import play.api.{Application, Environment, Mode}
 import testutils.WireMockHelper
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.test.UnitSpec
 
+import scala.concurrent.ExecutionContext
+
 trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite
-  with BeforeAndAfterEach with BeforeAndAfterAll {
+  with BeforeAndAfterAll {
 
   val mockHost: String = WireMockHelper.host
   val mockPort: String = WireMockHelper.wireMockPort.toString
   val appRouteContext: String = "/mtd-vat-comms"
+  val httpClient: HttpClient = app.injector.instanceOf[HttpClient]
+  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 
   lazy val client: WSClient = app.injector.instanceOf[WSClient]
 
@@ -52,5 +59,4 @@ trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   }
 
   def buildRequest(path: String): WSRequest = client.url(s"http://localhost:$port$appRouteContext$path").withFollowRedirects(false)
-
 }

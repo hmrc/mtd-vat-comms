@@ -37,7 +37,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
     secureMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
   }
 
-  def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[SecureCommsMessageModel]] = {
+  def retrieveWorkItems: Future[Seq[SecureCommsMessageModel]] = {
     val pullWorkItems: Enumerator[WorkItem[SecureCommsMessageModel]] =
       Enumerator.generateM(secureMessageQueueRepository.pullOutstanding)
 
@@ -101,5 +101,4 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
 
     secureMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)
   }
-
 }

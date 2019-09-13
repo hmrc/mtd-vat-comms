@@ -26,7 +26,6 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  ws,
   "uk.gov.hmrc" %% "simple-reactivemongo" % "7.20.0-play-25",
   "uk.gov.hmrc" %% "work-item-repo"       % "6.6.0-play-25",
   "uk.gov.hmrc" %% "bootstrap-play-25"    % "5.0.0",
