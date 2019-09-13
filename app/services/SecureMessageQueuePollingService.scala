@@ -34,9 +34,8 @@ class SecureMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
 
   override def name: String = "SecureMessageQueuePollingService"
 
-  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] = {
+  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] =
     secureMessageService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} secure message events"))
-  }
 
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds

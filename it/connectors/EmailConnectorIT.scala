@@ -16,162 +16,81 @@
 
 package connectors
 
-import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
-import play.api.libs.ws.WSClient
 import testutils.WireMockHelper
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
-  val wsClient: WSClient = app.injector.instanceOf(classOf[WSClient])
-  val appConfig: AppConfig = app.injector.instanceOf(classOf[AppConfig])
-
-  val connector: EmailConnector = new EmailConnector(wsClient, appConfig)
-
+  val connector: EmailConnector = new EmailConnector(httpClient, appConfig)
   val postUrl: String = "/hmrc/email"
+  val postBody = EmailRequestModel(
+    Seq("fusrohdah@whiterun.tam"),
+    "thisIsDefoAnId",
+    Map("FUS" -> "ROH DAHL")
+  )
 
   "sendEmailRequest" should {
+
     "return a EmailRendererResponseModel" when {
-      s"an $ACCEPTED response is received from EmailRenderer" in {
-        val postBody = EmailRequestModel(
-          Seq("fusrohdah@whiterun.tam"),
-          "thisIsDefoAnId",
-          Map(
-            "FUS" -> "ROH DAH"
-          )
-        )
+
+      s"a $ACCEPTED response is received from EmailRenderer" in {
+
         val apiResponse: JsObject = Json.obj()
 
-        stubPostRequest(
-          postUrl,
-          Json.toJson(postBody),
-          ACCEPTED,
-          apiResponse
-        )
+        stubPostRequest(postUrl, Json.toJson(postBody), ACCEPTED, apiResponse)
 
         val expectedResult = Right(EmailRendererResponseModel(ACCEPTED))
-
-        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRequestModel(
-            Seq("fusrohdah@whiterun.tam"),
-            "thisIsDefoAnId",
-            Map(
-              "FUS" -> "ROH DAH"
-            )
-          )
-        ))
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(postBody))
 
         result shouldBe expectedResult
       }
     }
-    "return BadRequest" when {
-      s"a $BAD_REQUEST response is received from EmailRenderer" in {
-        val postBody = EmailRequestModel(
-          Seq("fusrohdah@whiterun.tam"),
-          "thisIsDefoAnId",
-          Map(
-            "FUS" -> "ROH DAHL"
-          )
-        )
-        val apiResponse: JsObject = Json.obj(
-          "body" -> "Bad request"
-        )
 
-        stubPostRequest(
-          postUrl,
-          Json.toJson(postBody),
-          BAD_REQUEST,
-          apiResponse
-        )
+    "return BadRequest" when {
+
+      s"a $BAD_REQUEST response is received from EmailRenderer" in {
+
+        val apiResponse: JsObject = Json.obj("body" -> "Bad request")
+
+        stubPostRequest(postUrl, Json.toJson(postBody), BAD_REQUEST, apiResponse)
 
         val expectedResult = Left(BadRequest)
-
-        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRequestModel(
-            Seq("fusrohdah@whiterun.tam"),
-            "thisIsDefoAnId",
-            Map(
-              "FUS" -> "ROH DAHL"
-            )
-          )
-        ))
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(postBody))
 
         result shouldBe expectedResult
       }
     }
-    "return NotFoundNoMatch" when {
-      s"a $NOT_FOUND response is received from EmailRenderer" in {
-        val postBody = EmailRequestModel(
-          Seq("fusrohdah@whiterun.tam"),
-          "thisIsDefoAnId",
-          Map(
-            "FUS" -> "ROH DAHL"
-          )
-        )
-        val apiResponse: JsObject = Json.obj(
-          "body" -> "Not found"
-        )
 
-        stubPostRequest(
-          postUrl,
-          Json.toJson(postBody),
-          NOT_FOUND,
-          apiResponse
-        )
+    "return NotFoundNoMatch" when {
+
+      s"a $NOT_FOUND response is received from EmailRenderer" in {
+
+        val apiResponse: JsObject = Json.obj("body" -> "Not found")
+
+        stubPostRequest(postUrl, Json.toJson(postBody), NOT_FOUND, apiResponse)
 
         val expectedResult = Left(NotFoundNoMatch)
-
-        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRequestModel(
-            Seq("fusrohdah@whiterun.tam"),
-            "thisIsDefoAnId",
-            Map(
-              "FUS" -> "ROH DAHL"
-            )
-          )
-        ))
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(postBody))
 
         result shouldBe expectedResult
       }
     }
-    "return an ErrorModel" when {
-      s"an unexpected response is received from EmailRenderer" in {
-        val postBody = EmailRequestModel(
-          Seq("fusrohdah@whiterun.tam"),
-          "thisIsDefoAnId",
-          Map(
-            "FUS" -> "ROH DAHL"
-          )
-        )
-        val apiResponse: JsObject = Json.obj(
-          "error" -> "Something weird happened"
-        )
 
-        stubPostRequest(
-          postUrl,
-          Json.toJson(postBody),
-          INTERNAL_SERVER_ERROR,
-          apiResponse
-        )
+    "return an ErrorModel" when {
+
+      s"an unexpected response is received from EmailRenderer" in {
+
+        val apiResponse: JsObject = Json.obj("error" -> "Something weird happened")
+
+        stubPostRequest(postUrl, Json.toJson(postBody), INTERNAL_SERVER_ERROR, apiResponse)
 
         val expectedResult = Left(ErrorModel(INTERNAL_SERVER_ERROR.toString, Json.stringify(apiResponse)))
-
-        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(
-          EmailRequestModel(
-            Seq("fusrohdah@whiterun.tam"),
-            "thisIsDefoAnId",
-            Map(
-              "FUS" -> "ROH DAHL"
-            )
-          )
-        ))
+        val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(postBody))
 
         result shouldBe expectedResult
       }

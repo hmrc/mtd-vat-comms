@@ -21,31 +21,40 @@ import javax.inject.Inject
 import models._
 import models.secureCommsServiceModels.SecureCommsServiceRequestModel
 import play.api.http.Status._
-import play.api.libs.json.Json
-import play.api.libs.ws.{WSClient, WSResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import utils.LoggerUtil.logWarnEitherError
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureCommsServiceConnector @Inject()(wSClient: WSClient, appConfig: AppConfig) {
+class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) {
+
+  type SecureCommsResponse = Either[ErrorModel, Boolean]
+
+  implicit object SendMessageReads extends HttpReads[SecureCommsResponse] {
+
+    override def read(method: String, url: String, response: HttpResponse): SecureCommsResponse = {
+      response.status match {
+        case CREATED => Right(true)
+        case BAD_REQUEST => Left(BadRequest)
+        case NOT_FOUND => Left(handle404Possibilities(response.body))
+        case CONFLICT => Left(ConflictDuplicateMessage)
+        case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))
+      }
+    }
+  }
 
   def sendMessage(request: SecureCommsServiceRequestModel)
-                 (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] =
+                 (implicit ec: ExecutionContext): Future[SecureCommsResponse] = {
 
-    wSClient.url(appConfig.secureCommsServiceUrl)
-      .post(Json.toJson(request))
-      .map {
-        r: WSResponse => logWarnEitherError(handleResponse(r))
-      }
+    implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  private def handleResponse(response: WSResponse) =
-    response.status match {
-      case CREATED => Right(true)
-      case BAD_REQUEST => Left(BadRequest)
-      case NOT_FOUND => Left(handle404Possibilities(response.body))
-      case CONFLICT => Left(ConflictDuplicateMessage)
-      case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))
+    httpClient.POST[SecureCommsServiceRequestModel, SecureCommsResponse](
+      appConfig.secureCommsServiceUrl, request
+    ).map { response =>
+      logWarnEitherError(response)
     }
+  }
 
   private def handle404Possibilities(body: String): ErrorModel =
     (body.contains("Taxpayer not found"), body.contains("Email not verified")) match {

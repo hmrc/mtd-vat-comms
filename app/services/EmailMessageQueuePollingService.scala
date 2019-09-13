@@ -34,9 +34,8 @@ class EmailMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
 
   override def name: String = "EmailMessageQueuePollingService"
 
-  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] = {
+  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] =
     emailMessageService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} email items"))
-  }
 
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds

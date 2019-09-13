@@ -38,7 +38,7 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
     emailMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
   }
 
-  def retrieveWorkItems(implicit ec: ExecutionContext): Future[Seq[SecureCommsMessageModel]] = {
+  def retrieveWorkItems: Future[Seq[SecureCommsMessageModel]] = {
     val pullWorkItems: Enumerator[WorkItem[SecureCommsMessageModel]] =
       Enumerator.generateM(emailMessageQueueRepository.pullOutstanding)
 
@@ -49,7 +49,8 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
     pullWorkItems.run(processWorkItems)
   }
 
-  def processWorkItem(acc: Seq[SecureCommsMessageModel], workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
+  def processWorkItem(acc: Seq[SecureCommsMessageModel],
+                      workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
     try {
       SecureCommsMessageParser.parseModel(workItem.item) match {
         case Right(message) => emailService.sendEmailRequest(message).flatMap {

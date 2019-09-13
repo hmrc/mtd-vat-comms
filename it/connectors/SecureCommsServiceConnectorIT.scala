@@ -16,23 +16,16 @@
 
 package connectors
 
-import config.AppConfig
 import helpers.IntegrationBaseSpec
 import models._
 import models.secureCommsServiceModels._
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
-import play.api.libs.ws.WSClient
 import testutils.WireMockHelper
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
-  val wSClient: WSClient = app.injector.instanceOf(classOf[WSClient])
-  val appConfig: AppConfig = app.injector.instanceOf(classOf[AppConfig])
-
-  val connector: SecureCommsServiceConnector = new SecureCommsServiceConnector(wSClient, appConfig)
+  val connector: SecureCommsServiceConnector = new SecureCommsServiceConnector(httpClient, appConfig)
 
   val requestModel: SecureCommsServiceRequestModel = SecureCommsServiceRequestModel(
     ExternalRefModel("anId"),
@@ -46,14 +39,12 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
   val url : String = "/messages"
 
   "sendMessage" should {
+
     "return a SecureCommsServiceResponseModel if the call is successful" in {
       val requestBody: JsValue = Json.toJson(requestModel)
-      val returnBody: JsValue = Json.obj(
-        "id" -> "i_ajdsjhfkjshdf"
-      )
+      val returnBody: JsValue = Json.obj("id" -> "i_ajdsjhfkjshdf")
 
       stubPostRequest(url, requestBody, CREATED, returnBody)
-
       val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
       result shouldBe Right(true)
@@ -63,9 +54,7 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
       "a TaxpayerNotFound error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "reason" -> "Taxpayer not found"
-        )
+        val returnBody: JsValue = Json.obj("reason" -> "Taxpayer not found")
 
         stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
         val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
@@ -75,9 +64,7 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
       "an EmailNotVerified error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "reason" -> "Email not verified"
-        )
+        val returnBody: JsValue = Json.obj("reason" -> "Email not verified")
 
         stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
         val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
@@ -87,9 +74,7 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
       "a BAD_REQUEST error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "reason" -> "this doesn't matter"
-        )
+        val returnBody: JsValue = Json.obj("reason" -> "this doesn't matter")
 
         stubPostRequest(url, requestBody, BAD_REQUEST, returnBody)
         val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
@@ -99,31 +84,27 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
       "an unexpected response body is returned in the 404" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "poipsaodifpoaispofia" -> "ashfljasdljfaskdj"
-        )
+        val returnBody: JsValue = Json.obj("poipsaodifpoaispofia" -> "ashfljasdljfaskdj")
 
         stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
         val result = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(ErrorModel("NOT_FOUND", s"Unknown error:\n${Json.stringify(returnBody)}"))
       }
+
       "a CONFLICT error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "reason" -> "this doesn't really matter"
-        )
+        val returnBody: JsValue = Json.obj("reason" -> "this doesn't really matter")
 
         stubPostRequest(url, requestBody, CONFLICT, returnBody)
         val result = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(ConflictDuplicateMessage)
       }
+
       "an unexpected response code is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj(
-          "reason" -> "some random reason"
-        )
+        val returnBody: JsValue = Json.obj("reason" -> "some random reason")
 
         stubPostRequest(url, requestBody, NOT_IMPLEMENTED, returnBody)
         val result = await(connector.sendMessage(requestModel))

@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAlertConnector) {
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
-                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsMessageModel]] = {
+                           (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsMessageModel]] =
     secureCommsAlertConnector.getSecureCommsMessage(service, regNumber, communicationId).map {
       case Right(response) => SecureCommsMessageParser.parseMessage(response.secureCommText) match {
         case Right(parsedJson) => parsedJson.validate[SecureCommsMessageModel].asOpt match {
@@ -41,5 +41,4 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
       }
       case Left(error) => Left(error)
     }
-  }
 }

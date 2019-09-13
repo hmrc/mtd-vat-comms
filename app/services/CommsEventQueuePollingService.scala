@@ -35,9 +35,8 @@ class CommsEventQueuePollingService @Inject()(actorSystem: ActorSystem,
 
   override def name: String = "CommsEventQueuePollingService"
 
-  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] = {
+  override def executeInMutex(implicit ec: ExecutionContext): Future[Result] =
     commsEventService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} comms events"))
-  }
 
   lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
   lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds

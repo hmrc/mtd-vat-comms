@@ -50,25 +50,19 @@ trait WireMockHelper {
 
   def resetWireMock(): Unit = WireMock.reset()
 
-  def stubGetRequest(url: String, returnStatus: Int, returnBody: String): StubMapping = {
+  def stubGetRequest(url: String, returnStatus: Int, returnBody: String): StubMapping =
     stubFor(get(url).willReturn(
       aResponse()
         .withStatus(returnStatus)
-        .withBody(
-          returnBody
-        )
+        .withBody(returnBody)
     ))
-  }
 
-  def stubPostRequest(url: String, postBody: JsValue, returnStatus: Int, returnBody: JsValue): StubMapping = {
-    stubFor(
-      post(url)
-        .withRequestBody(equalToJson(Json.stringify(postBody)))
-        .willReturn(
-          aResponse()
-            .withStatus(returnStatus)
-            .withBody(Json.stringify(returnBody))
-        )
-    )
-  }
+  def stubPostRequest(url: String, postBody: JsValue, returnStatus: Int, returnBody: JsValue): StubMapping =
+    stubFor(post(url).withRequestBody(
+      equalToJson(Json.stringify(postBody))
+    ).willReturn(
+      aResponse()
+        .withStatus(returnStatus)
+        .withBody(Json.stringify(returnBody))
+    ))
 }

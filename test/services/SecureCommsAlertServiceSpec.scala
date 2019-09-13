@@ -20,7 +20,6 @@ import base.BaseSpec
 import connectors.SecureCommsAlertConnector
 import models.{ErrorModel, GenericParsingError, JsonParsingError}
 import models.responseModels.SecureCommsResponseModel
-import org.joda.time.DateTime
 import org.scalamock.scalatest.MockFactory
 import utils.SecureCommsMessageBodyStrings
 import utils.SecureCommsMessageTestData.Responses.expectedResponseDeRegistration

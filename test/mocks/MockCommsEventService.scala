@@ -18,13 +18,12 @@ package mocks
 
 import base.BaseSpec
 import models.VatChangeEvent
-import org.scalamock.handlers.{CallHandler1, CallHandler2}
+import org.scalamock.handlers.{CallHandler0, CallHandler1, CallHandler2}
 import org.scalamock.scalatest.MockFactory
 import services.CommsEventService
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.workitem.WorkItem
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 trait MockCommsEventService extends BaseSpec with MockFactory {
 
@@ -36,9 +35,9 @@ trait MockCommsEventService extends BaseSpec with MockFactory {
       .expects(data)
       .returning(response)
 
-  def mockRetrieveWorkItems(response: Future[Seq[VatChangeEvent]]): CallHandler1[ExecutionContext, Future[Seq[VatChangeEvent]]] =
-    (mockCommsEventService.retrieveWorkItems(_: ExecutionContext))
-      .expects(*)
+  def mockRetrieveWorkItems(response: Future[Seq[VatChangeEvent]]): CallHandler0[Future[Seq[VatChangeEvent]]] =
+    (mockCommsEventService.retrieveWorkItems _)
+      .expects()
       .returning(response)
 
   def mockProcessWorkItems(accData: Seq[VatChangeEvent], itemData: WorkItem[VatChangeEvent])
