@@ -51,13 +51,13 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[SecureCommsAlertResponse] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier(Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}")))
-
-    val requestHeaders: Seq[(String, String)] =
-      hc.withExtraHeaders("Environment" -> appConfig.desEnvironment).headers
-
+    implicit val hc: HeaderCarrier = HeaderCarrier(
+      authorization = Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}")),
+      extraHeaders = Seq("Environment" -> appConfig.desEnvironment)
+    )
     val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
-    httpClient.GET[SecureCommsAlertResponse](url, queryParams = Seq.empty, headers = requestHeaders).map { response =>
+
+    httpClient.GET[SecureCommsAlertResponse](url).map { response =>
       logWarnEitherError(response)
     }
   }
