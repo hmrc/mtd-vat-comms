@@ -6,6 +6,14 @@ common.hmrcAddressLine3 = Birch Street
 common.hmrcAddressLine4 = WOLVERHAMPTON
 common.hmrcAddressPostcode = WV1 4JX
 
+staggerApprovedLeaveAA.p1 = By changing your VAT Return dates, you have left the Annual Accounting scheme
+staggerApprovedLeaveAA.p2 = The dates for your Annual Accounting period are
+staggerApprovedLeaveAA.p3 = An additional period will be added to cover the time between the end of your Annual Accounting period and the start of your new tax period. The dates for additional tax period are
+staggerApprovedLeaveAA.p4 = Your new return dates for VAT are:
+staggerApprovedLeaveAA.p5start = Your new return dates will take effect from
+staggerApprovedLeaveAA.p5link = Check what returns are currently due
+staggerApprovedLeaveAA.p5end = to make sure you do not miss any
+
 staggerApproved.title = You have successfully changed your VAT Return dates
 staggerApprovedTransactor.title = Your agent has successfully changed your VAT Return dates
 staggerApproved.p1 = Your new return dates for VAT are
