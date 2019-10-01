@@ -86,25 +86,25 @@ class SecureCommsMessageParserSpec extends BaseSpec {
         effectiveDODR <- Seq(Some("20180121"), None)
         addressDetails <- Seq(Some(AddressDetailsModel("4 NotReal Way", "A Place", "", "", "", "SW42NR", "Fantasy Land")), None)
         bankDetails <- Seq(Some(BankDetailsModel("Bank of Tamriel", "8493483729273", "32-12-22")), None)
-        stagger <- Seq(Some("EE02"), None)
+        staggerDetails <- Seq(Some(StaggerDetailsModel("EE02", "NewStartDate", "NewEndDate", "OldStagger", "OldStartDate" ,"OldEndDate")), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
         mandationStatus <- Seq(Some("3"), None)
       } yield {
-        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, stagger, oEmail, mandationStatus,
+        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, staggerDetails, oEmail, mandationStatus,
           TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
       }).filter { passedForwardModel =>
         Seq(
           passedForwardModel.effectiveDateOfDeregistration,
           passedForwardModel.addressDetails,
           passedForwardModel.bankAccountDetails,
-          passedForwardModel.stagger,
+          passedForwardModel.staggerDetails,
           passedForwardModel.originalEmailAddress,
           passedForwardModel.mandationStatus).count(_.nonEmpty) > 1
       }
 
       allInvalidCombinations.foreach { model =>
         s"the following combination of optional parameters are used: ${model.effectiveDateOfDeregistration}," +
-          s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.stagger}, " +
+          s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.staggerDetails}, " +
           s"${model.originalEmailAddress}, ${model.mandationStatus}" in {
           SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
         }

@@ -67,7 +67,7 @@ object SecureCommsMessageParser {
   private def generateStringFromOptionalFields(input: SecureCommsMessageModel): String =
     input.effectiveDateOfDeregistration.fold("")(_ => "\n- Effective Date of Deregistration") +
     input.addressDetails.fold("")(_ => "\n- Address Details") +
-    input.stagger.fold("")(_ => "\n- Stagger") +
+    input.staggerDetails.fold("")(_ => "\n- Stagger") +
     input.originalEmailAddress.fold("")(_ => "\n- Original Email Address")
 
   private def toGivenModel[T <: MessageModel](model: SecureCommsMessageModel)(implicit ev: OFormat[T]): T = Json.toJson(model).as[T]

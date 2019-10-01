@@ -25,6 +25,7 @@ import common.Constants.EmailStatus.VERIFIED
 import common.Constants.FormatPreferences.TEXT
 import common.Constants.LanguagePreferences.ENGLISH
 import common.Constants.NotificationPreference.EMAIL
+import common.Constants.StaggerExample._
 import common.Constants.SecureCommsMessageFields._
 
 object SecureCommsMessageTestData {
@@ -49,6 +50,11 @@ object SecureCommsMessageTestData {
       ACCOUNT_NUMBER -> "12039831",
       SORT_CODE -> "11-11-11",
       STAGGER -> "12jje7uw",
+      NEW_STAGGER_START_DATE -> newStaggerStartExample,
+      NEW_STAGGER_END_DATE -> newStaggerEndExample,
+      PREVIOUS_STAGGER -> previousStaggerExample,
+      PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
+      PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample,
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
       MANDATION_STATUS -> "3",
       C_EMAIL -> "info@CoCHoldings.co.uk",
@@ -123,6 +129,11 @@ object SecureCommsMessageTestData {
       TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       STAGGER -> "12jje7uw",
+      NEW_STAGGER_START_DATE -> newStaggerStartExample,
+      NEW_STAGGER_END_DATE -> newStaggerEndExample,
+      PREVIOUS_STAGGER -> previousStaggerExample,
+      PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
+      PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample,
       C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
@@ -164,6 +175,7 @@ object SecureCommsMessageTestData {
   }
 
   object Responses {
+
     val expectedResponseEverything = SecureCommsMessageModel(
       "VRT41A_SM1A",
       "100065579",
@@ -172,7 +184,8 @@ object SecureCommsMessageTestData {
       Some("20181227"),
       Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
-      Some("12jje7uw"),
+      Some(StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
       Some("sofia@whiterunstables.co.tam"),
       Some("3"),
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
@@ -236,7 +249,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("12jje7uw"),
+      Some(StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
       None,
       None,
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
@@ -463,7 +477,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("MM"),
+      Some(StaggerDetailsModel("MM", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
       None,
       None,
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
@@ -479,7 +494,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("InvalidStaggerCode"),
+      Some(StaggerDetailsModel("InvalidStaggerCode", "", "", "", "", "")),
       None,
       None,
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
@@ -495,7 +510,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("MC"),
+      Some(StaggerDetailsModel("MC", "", "", "", "", "")),
       None,
       None,
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
@@ -511,7 +526,8 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("MB"),
+      Some(StaggerDetailsModel("MB", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
       None,
       None,
       TransactorModel("", ""),
@@ -527,7 +543,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      Some("12jje7uw"),
+      Some(StaggerDetailsModel("12jje7uw", "", "", "", "", "")),
       None,
       None,
       TransactorModel("", ""),
@@ -689,7 +705,14 @@ object SecureCommsMessageTestData {
         ACCOUNT_NUMBER -> "12039831",
         SORT_CODE -> "11-11-11"
       ),
-      STAGGER -> "12jje7uw",
+      STAGGER_DETAILS -> Json.obj(
+        STAGGER -> "12jje7uw",
+        NEW_STAGGER_START_DATE -> newStaggerStartExample,
+        NEW_STAGGER_END_DATE -> newStaggerEndExample,
+        PREVIOUS_STAGGER -> previousStaggerExample,
+        PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
+        PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample
+      ),
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
       MANDATION_STATUS -> "3",
       CUSTOMER_DETAILS -> Json.obj(
@@ -787,7 +810,14 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      STAGGER -> "12jje7uw",
+      STAGGER_DETAILS -> Json.obj(
+        STAGGER -> "12jje7uw",
+        NEW_STAGGER_START_DATE -> newStaggerStartExample,
+        NEW_STAGGER_END_DATE -> newStaggerEndExample,
+        PREVIOUS_STAGGER -> previousStaggerExample,
+        PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
+        PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample
+      ),
       TRANSACTOR_DETAILS -> Json.obj(
         TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"
@@ -912,7 +942,8 @@ object SecureCommsMessageTestData {
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
-      "12jje7uw"
+      StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)
     )
 
     val expectedResponseEmailChange = EmailAddressChangeModel(

@@ -45,6 +45,14 @@ object Constants {
     val AUDIO = "AUDIO"
   }
 
+  object StaggerExample {
+    val newStaggerStartExample = "NewStartDate"
+    val newStaggerEndExample = "NewEndDate"
+    val previousStaggerExample = "previousStaggerCode"
+    val previousStaggerStartExample = "OldStartDate"
+    val previousStaggerEndExample = "OldEndDate"
+  }
+
   object SecureCommsMessageFields {
     val TEMPLATE_ID = "templateId"
     val VRN = "vrn"
@@ -66,7 +74,15 @@ object Constants {
     val ACCOUNT_NAME = "bankAccountName"
     val ACCOUNT_NUMBER = "bankAccountNumber"
     val SORT_CODE = "bankSortCode"
+    val STAGGER_DETAILS = "staggerDetails"
     val STAGGER = "stagger"
+    val NEW_STAGGER_START_DATE = "newStaggerStartDate"
+    val NEW_STAGGER_END_DATE = "newStaggerPeriodEndDate"
+    val PREVIOUS_STAGGER = "previousStagger"
+    val PREVIOUS_STAGGER_START_DATE = "previousStaggerStartDate"
+    val PREVIOUS_STAGGER_END_DATE = "previousStaggerEndDate"
+
+
     val O_EMAIL_ADDRESS = "originalEmailAddress"
     val MANDATION_STATUS = "mandationStatus"
     val CUSTOMER_DETAILS = "customerDetails"
