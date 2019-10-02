@@ -45,14 +45,6 @@ object Constants {
     val AUDIO = "AUDIO"
   }
 
-  object StaggerExample {
-    val newStaggerStartExample = "NewStartDate"
-    val newStaggerEndExample = "NewEndDate"
-    val previousStaggerExample = "previousStaggerCode"
-    val previousStaggerStartExample = "OldStartDate"
-    val previousStaggerEndExample = "OldEndDate"
-  }
-
   object SecureCommsMessageFields {
     val TEMPLATE_ID = "templateId"
     val VRN = "vrn"

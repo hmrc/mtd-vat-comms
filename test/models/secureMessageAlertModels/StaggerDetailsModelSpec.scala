@@ -16,10 +16,10 @@
 
 package models.secureMessageAlertModels
 
-import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}
+import uk.gov.hmrc.play.test.UnitSpec
 
-class StaggerDetailsModelSpec extends BaseSpec {
+class StaggerDetailsModelSpec extends UnitSpec {
 
   val expectedModelForConfirmation: StaggerDetailsModel = StaggerDetailsModel(
     "stagger",
@@ -40,21 +40,21 @@ class StaggerDetailsModelSpec extends BaseSpec {
   )
 
   val validJsonForConfirmation: JsObject = Json.obj(
-    "stagger"-> "stagger",
+    "stagger" -> "stagger",
     "newStaggerStartDate" -> "newStaggerStartDate",
     "newStaggerPeriodEndDate" -> "newStaggerPeriodEndDate",
     "previousStagger" -> "previousStagger",
-    "previousStaggerStartDate"-> "previousStaggerStartDate",
-    "previousStaggerEndDate"-> "previousStaggerEndDate"
+    "previousStaggerStartDate" -> "previousStaggerStartDate",
+    "previousStaggerEndDate" -> "previousStaggerEndDate"
   )
 
   val validJsonForRejection: JsObject = Json.obj(
-    "stagger"-> "stagger",
+    "stagger" -> "stagger",
     "newStaggerStartDate" -> "",
     "newStaggerPeriodEndDate" -> "",
     "previousStagger" -> "",
-    "previousStaggerStartDate"-> "",
-    "previousStaggerEndDate"-> ""
+    "previousStaggerStartDate" -> "",
+    "previousStaggerEndDate" -> ""
   )
 
   "StaggerDetails model with all fields" should {
@@ -64,8 +64,20 @@ class StaggerDetailsModelSpec extends BaseSpec {
   }
 
   "StaggerDetails model with one field" should {
-  "parse from the correct json structure" in {
-    validJsonForRejection.as[StaggerDetailsModel] shouldBe expectedModelForRejection
+    "parse from the correct json structure" in {
+      validJsonForRejection.as[StaggerDetailsModel] shouldBe expectedModelForRejection
+    }
   }
-}
+
+  "StaggerDetails model wrtites for  " should {
+    "parse from the correct json structure" in {
+      StaggerDetailsModel.formats.writes(expectedModelForConfirmation) shouldBe validJsonForConfirmation
+    }
+  }
+
+  "StaggerDetails model writes" should {
+    "parse from the correct json structure" in {
+      StaggerDetailsModel.formats.writes(expectedModelForRejection) shouldBe validJsonForRejection
+    }
+  }
 }

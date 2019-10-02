@@ -25,10 +25,16 @@ import common.Constants.EmailStatus.VERIFIED
 import common.Constants.FormatPreferences.TEXT
 import common.Constants.LanguagePreferences.ENGLISH
 import common.Constants.NotificationPreference.EMAIL
-import common.Constants.StaggerExample._
 import common.Constants.SecureCommsMessageFields._
 
 object SecureCommsMessageTestData {
+
+  val newStaggerStartExample = "NewStartDate"
+  val newStaggerEndExample = "NewEndDate"
+  val previousStaggerExample = "previousStaggerCode"
+  val previousStaggerStartExample = "OldStartDate"
+  val previousStaggerEndExample = "OldEndDate"
+
 
   object JsonModels {
     val validJsonEverything: JsObject = Json.obj(

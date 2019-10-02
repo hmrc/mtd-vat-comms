@@ -183,8 +183,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     if (isApproval) {
       vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
     }
-    //TODO else if (vatStaggerChangeModel.staggerDetails.previousStagger == "") {
-      //TODO add new view
     else {
       vatStaggerRejected().toString
     }
