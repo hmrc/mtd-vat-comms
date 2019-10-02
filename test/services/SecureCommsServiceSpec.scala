@@ -139,11 +139,29 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       }
     }
 
+    "return a successful response for a transactor stagger approval that had a annual accounting stagger code" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(staggerLeaveAnnualAccountingValidApprovedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
     "return a successful response for a transactor stagger rejection" when {
       "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerValidRejectedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a client stagger approval that had a annual accounting stagger code" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(staggerLeaveAnnualAccountingValidApprovedClientRequest))
         result shouldBe Right(true)
       }
     }
