@@ -25,7 +25,7 @@ class SecureCommsServiceRequestModelSpec extends BaseSpec {
   val jsonModel: JsObject = Json.obj(
     "externalRef" -> Json.obj(
       "id" -> "fusRohID",
-      "source" -> MTDP
+      "source" -> MDTP
     ),
     "recipient" -> Json.obj(
       "taxIdentifier" -> Json.obj(
@@ -45,7 +45,7 @@ class SecureCommsServiceRequestModelSpec extends BaseSpec {
   val model: SecureCommsServiceRequestModel = SecureCommsServiceRequestModel(
     ExternalRefModel(
       "fusRohID",
-      MTDP
+      MDTP
     ),
     RecipientModel(
       TaxIdentifierModel("key", "value"),

@@ -122,7 +122,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                                                   salutation: String,
                                                   isTransactor: Boolean): SecureCommsServiceRequestModel = {
 
-    val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MTDP)
+    val externalRefModel = ExternalRefModel(id = UUID.randomUUID().toString, source = SecureCommsServiceFieldValues.MDTP)
     val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
     val nameModel = NameModel(line1 = salutation)
     val recipientModel = RecipientModel(taxIdentifier = taxIdentifierModel, name = nameModel, email = userEmail)

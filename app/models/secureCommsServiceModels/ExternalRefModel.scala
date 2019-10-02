@@ -17,11 +17,11 @@
 package models.secureCommsServiceModels
 
 import play.api.libs.json.{Json, OFormat}
-import common.Constants.SecureCommsServiceFieldValues.MTDP
+import common.Constants.SecureCommsServiceFieldValues.MDTP
 
 case class ExternalRefModel(
                              id: String,
-                             source: String = MTDP
+                             source: String = MDTP
                            )
 
 object ExternalRefModel {

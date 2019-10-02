@@ -103,6 +103,6 @@ object Constants {
   val TAX_IDENTIFIER_MTDVAT = "HMRC-MTD-VAT"
 
   object SecureCommsServiceFieldValues {
-    val MTDP = "mtdp"
+    val MDTP = "mdtp"
   }
 }

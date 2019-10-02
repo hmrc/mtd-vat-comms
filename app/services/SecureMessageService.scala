@@ -73,7 +73,9 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
         case Left(SpecificParsingError) =>
           metrics.secureMessageSpecificParsingError()
           handleNonRecoverableError(acc, workItem, "SpecificParsingError")
-        case Left(_) =>
+        case Left(errorModel) =>
+          logWarn("[SecureMessageService][processWorkItem] - Unexpected error received - " +
+            s"Code: ${errorModel.code}, Body: ${errorModel.body}")
           metrics.secureMessageQueuedForRetry()
           secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
       }

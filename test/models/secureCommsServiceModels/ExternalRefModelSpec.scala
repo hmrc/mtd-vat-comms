@@ -18,16 +18,16 @@ package models.secureCommsServiceModels
 
 import base.BaseSpec
 import play.api.libs.json.{JsObject, Json}
-import common.Constants.SecureCommsServiceFieldValues.MTDP
+import common.Constants.SecureCommsServiceFieldValues.MDTP
 
 class ExternalRefModelSpec extends BaseSpec {
 
   val jsonModel: JsObject = Json.obj(
     "id" -> "an id of some kind",
-    "source" -> MTDP
+    "source" -> MDTP
   )
 
-  val model: ExternalRefModel = ExternalRefModel("an id of some kind", MTDP)
+  val model: ExternalRefModel = ExternalRefModel("an id of some kind", MDTP)
 
   "nameModel" should {
     "correctly parse to Json" in {
