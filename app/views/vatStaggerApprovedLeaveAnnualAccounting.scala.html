@@ -15,6 +15,8 @@
 *@
 
 @import views.html.templates.displayStagger
+@import views.html.templates.dates.displayDate
+@import views.html.templates.dates.displayDateRange
 
 @(stagger: String, newStaggerStartDate: String, newStaggerEndDate: String, previousStaggerEndDate: String)(implicit messages: MessagesApi)
 
@@ -23,15 +25,20 @@
 
         <p>@messages("staggerApprovedLeaveAA.p1")</p>
 
-        <p>@messages("staggerApprovedLeaveAA.p2") @newStaggerStartDate and @newStaggerEndDate</p>
+        <p>
+            @messages("staggerApprovedLeaveAA.p2")
+            @displayDateRange(newStaggerStartDate ,newStaggerEndDate)@messages("common.fullStop")
+        </p>
 
-        <p>@messages("staggerApprovedLeaveAA.p3") @previousStaggerEndDate and @newStaggerStartDate </p>
+        <p>@messages("staggerApprovedLeaveAA.p3")
+            @displayDateRange(previousStaggerEndDate ,newStaggerStartDate)@messages("common.fullStop")
+        </p>
 
         <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
 
         <p>@messages("staggerApprovedLeaveAA.p4") @displayStagger(stagger)</p>
 
-        <p>@messages("staggerApprovedLeaveAA.p5start") @newStaggerStartDate. <a href="/vat-through-software/vat-overview">@messages("staggerApprovedLeaveAA.p5link")</a> @messages("staggerApprovedLeaveAA.p5end")</p>
+        <p>@messages("staggerApprovedLeaveAA.p5start") @displayDate(newStaggerStartDate)@messages("common.fullStop") <a href="/vat-through-software/vat-overview">@messages("staggerApprovedLeaveAA.p5link")</a> @messages("staggerApprovedLeaveAA.p5end")</p>
 
     </div>
 </div>
