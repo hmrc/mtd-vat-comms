@@ -16,7 +16,7 @@
 
 package models.secureMessageAlertModels.messageTypes
 
-import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
+import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, StaggerDetailsModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
 case class VATStaggerChangeModel(
@@ -27,7 +27,7 @@ case class VATStaggerChangeModel(
                                   transactorDetails: TransactorModel,
                                   customerDetails: CustomerModel,
                                   preferences: PreferencesModel,
-                                  stagger: String
+                                  staggerDetails: StaggerDetailsModel
                                 )
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }

@@ -181,8 +181,9 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
                                    isApproval: Boolean): String =
     if (isApproval) {
-      vatStaggerApproved(vatStaggerChangeModel.stagger.toUpperCase).toString
-    } else {
+      vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
+    }
+    else {
       vatStaggerRejected().toString
     }
 
