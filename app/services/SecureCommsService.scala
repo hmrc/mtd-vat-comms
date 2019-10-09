@@ -178,10 +178,20 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatPPOBRejected().toString
     }
 
+  private val annualAccountLeaveStaggerCodes = List("YA","YB","YC","YD","YE","YF","YG","YH","YI","YJ","YK","YL")
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
                                    isApproval: Boolean): String =
     if (isApproval) {
-      vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
+      if (annualAccountLeaveStaggerCodes.contains(vatStaggerChangeModel.staggerDetails.previousStagger)) {
+        vatStaggerApprovedLeaveAnnualAccounting(
+          vatStaggerChangeModel.staggerDetails.stagger,
+          vatStaggerChangeModel.staggerDetails.newStaggerStartDate,
+          vatStaggerChangeModel.staggerDetails.newStaggerPeriodEndDate,
+          vatStaggerChangeModel.staggerDetails.previousStaggerEndDate
+        ).toString()
+      } else {
+        vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
+      }
     }
     else {
       vatStaggerRejected().toString

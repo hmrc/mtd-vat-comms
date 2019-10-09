@@ -29,11 +29,11 @@ import common.Constants.SecureCommsMessageFields._
 
 object SecureCommsMessageTestData {
 
-  val newStaggerStartExample = "NewStartDate"
-  val newStaggerEndExample = "NewEndDate"
+  val newStaggerStartExample = "20190502"
+  val newStaggerEndExample = "20190423"
   val previousStaggerExample = "previousStaggerCode"
-  val previousStaggerStartExample = "OldStartDate"
-  val previousStaggerEndExample = "OldEndDate"
+  val previousStaggerStartExample = "20180912"
+  val previousStaggerEndExample = "20180411"
 
 
   object JsonModels {
@@ -492,6 +492,23 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
+    val staggerLeaveAnnualAccountingValidApprovedTransactorRequest = SecureCommsMessageModel(
+      "VRT12C_SM5C",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some(StaggerDetailsModel("MM", newStaggerStartExample, newStaggerEndExample,
+        "YA", previousStaggerStartExample, previousStaggerEndExample)),
+      None,
+      None,
+      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
     val staggerinvalidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT12C_SM5C",
       "100065579",
@@ -520,6 +537,23 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val staggerLeaveAnnualAccountingValidApprovedClientRequest = SecureCommsMessageModel(
+      "VRT12A_SM5A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      Some(StaggerDetailsModel("MB", newStaggerStartExample, newStaggerEndExample,
+        "YE", previousStaggerStartExample, previousStaggerEndExample)),
+      None,
+      None,
+      TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )

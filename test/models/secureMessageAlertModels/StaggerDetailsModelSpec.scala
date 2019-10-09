@@ -69,13 +69,13 @@ class StaggerDetailsModelSpec extends UnitSpec {
     }
   }
 
-  "StaggerDetails model wrtites for  " should {
+  "StaggerDetails model writes for a valid confirmation" should {
     "parse from the correct json structure" in {
       StaggerDetailsModel.formats.writes(expectedModelForConfirmation) shouldBe validJsonForConfirmation
     }
   }
 
-  "StaggerDetails model writes" should {
+  "StaggerDetails model writes for a valid rejection" should {
     "parse from the correct json structure" in {
       StaggerDetailsModel.formats.writes(expectedModelForRejection) shouldBe validJsonForRejection
     }
