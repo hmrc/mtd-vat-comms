@@ -92,3 +92,20 @@ optOutApproved.represented.title = Your agent has opted your business out of Mak
 optOutApproved.represented.p1 = Your agent must continue to use software compatible with Making Tax Digital to submit your VAT Returns for your current return period.
 optOutApproved.represented.p2 = Your agent must submit your business’s VAT Returns online from your next return period.
 optOutApproved.represented.p3a = If your taxable turnover goes above £85,000, you or your agent must
+
+websiteApproved.change.title = You have successfully changed your website address for VAT
+websiteApproved.change.title.agent = Your agent has successfully changed your website address for VAT
+websiteApproved.change.p1 = Your new website address for VAT is:
+websiteApproved.remove.title = You have successfully removed your website address for VAT
+websiteApproved.remove.title.agent = Your agent has successfully removed your website address for VAT
+websiteApproved.remove.p1a = You can
+websiteApproved.remove.p1a.agent = You or your agent can
+websiteApproved.remove.p1b = add a website address for VAT
+websiteApproved.remove.p1c = on your business details page.
+
+websiteRejected.change.title = We have rejected your request to change your website address for VAT
+websiteRejected.change.title.agent = We have rejected your agent’s change of website address for VAT
+websiteRejected.change.p1 = We have rejected the change to your website address for VAT.
+websiteRejected.remove.title = We have rejected your request to remove your website address for VAT
+websiteRejected.remove.title.agent = We have rejected your agent’s request to remove your website address for VAT
+websiteRejected.remove.p1 = We have rejected the removal of your website address for VAT.

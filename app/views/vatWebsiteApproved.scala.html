@@ -1,0 +1,43 @@
+@*
+* Copyright 2019 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@(isTransactor: Boolean, website: Option[String])(implicit messages: MessagesApi, appConfig: config.AppConfig)
+
+<div class="grid-row">
+  <div class="column-full">
+    @website match {
+
+      case None => {
+        <p>
+          @if(isTransactor) {
+            @messages("websiteApproved.remove.p1a.agent")
+          } else {
+            @messages("websiteApproved.remove.p1a")
+          }
+          <a href="@appConfig.manageVatSubscriptionUrl">@messages("websiteApproved.remove.p1b")</a>
+          @messages("websiteApproved.remove.p1c")
+        </p>
+      }
+
+      case Some(webAddress) => {
+        <p>
+          @messages("websiteApproved.change.p1")<br>
+          @webAddress
+        </p>
+      }
+    }
+  </div>
+</div>
