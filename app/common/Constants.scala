@@ -77,6 +77,7 @@ object Constants {
 
     val O_EMAIL_ADDRESS = "originalEmailAddress"
     val MANDATION_STATUS = "mandationStatus"
+    val WEBSITE_ADDRESS = "websiteAddress"
     val CUSTOMER_DETAILS = "customerDetails"
     val C_EMAIL = "customerEmail"
     val C_EMAIL_STATUS = "customerEmailStatus"
@@ -94,10 +95,13 @@ object Constants {
     val BANK_DETAILS_BASE_KEY = "bankDetails"
     val STAGGER_BASE_KEY = "stagger"
     val OPT_OUT_BASE_KEY = "optOut"
+    val WEBSITE_BASE_KEY = "website"
     val APPROVED_SUFFIX = "Approved"
     val REJECTED_SUFFIX = "Rejected"
     val TITLE_KEY_CLIENT = ".title"
     val TITLE_KEY_TRANSACTOR = "Transactor.title"
+    val CHANGE_SUFFIX = ".change"
+    val REMOVE_SUFFIX = ".remove"
   }
 
   object TemplateIdReadableNames {

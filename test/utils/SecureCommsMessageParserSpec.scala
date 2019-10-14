@@ -69,7 +69,8 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       Responses.expectedResponseBankRepaymentAccountChange, ResponseAsModel.expectedResponseRepaymentsBankAccountChange),
     ("VAT Stagger", Responses.expectedResponseStagger, ResponseAsModel.expectedResponseStagger),
     ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange),
-    ("Opt Out", Responses.expectedResponseOptOut, ResponseAsModel.expectedResponseOptOut)
+    ("Opt Out", Responses.expectedResponseOptOut, ResponseAsModel.expectedResponseOptOut),
+    ("Web Address Change", Responses.expectedResponseWebAddress, ResponseAsModel.expectedResponseWebAddress)
   )
 
   parsingTest.foreach { case (testName, genericResponse, modelResponse) =>
@@ -89,9 +90,10 @@ class SecureCommsMessageParserSpec extends BaseSpec {
         staggerDetails <- Seq(Some(StaggerDetailsModel("EE02", "NewStartDate", "NewEndDate", "OldStagger", "OldStartDate" ,"OldEndDate")), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
         mandationStatus <- Seq(Some("3"), None)
+        websiteAddress <- Seq(Some("https://www.web-address.co.uk"), None)
       } yield {
-        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, staggerDetails, oEmail, mandationStatus,
-          TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
+        SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, staggerDetails, oEmail,
+          mandationStatus, websiteAddress, TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
       }).filter { passedForwardModel =>
         Seq(
           passedForwardModel.effectiveDateOfDeregistration,
@@ -99,13 +101,14 @@ class SecureCommsMessageParserSpec extends BaseSpec {
           passedForwardModel.bankAccountDetails,
           passedForwardModel.staggerDetails,
           passedForwardModel.originalEmailAddress,
-          passedForwardModel.mandationStatus).count(_.nonEmpty) > 1
+          passedForwardModel.mandationStatus,
+          passedForwardModel.websiteAddress).count(_.nonEmpty) > 1
       }
 
       allInvalidCombinations.foreach { model =>
         s"the following combination of optional parameters are used: ${model.effectiveDateOfDeregistration}," +
           s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.staggerDetails}, " +
-          s"${model.originalEmailAddress}, ${model.mandationStatus}" in {
+          s"${model.originalEmailAddress}, ${model.mandationStatus}, ${model.websiteAddress}" in {
           SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
         }
       }

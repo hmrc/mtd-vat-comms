@@ -35,7 +35,7 @@ class WebAddressController @Inject()(repoAccess: CommsEventService)(implicit val
         repoAccess.queueRequest(workItem) map {
           case true  => NoContent
           case false =>
-            LoggerUtil.logWarn(s"[OptOutController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
+            LoggerUtil.logWarn(s"[WebAddressController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError
         }
 
