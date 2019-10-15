@@ -33,6 +33,7 @@ case class SecureCommsMessageModel(
                                     staggerDetails: Option[StaggerDetailsModel],
                                     originalEmailAddress: Option[String],
                                     mandationStatus: Option[String],
+                                    websiteAddress: Option[String],
                                     transactorDetails: TransactorModel,
                                     customerDetails: CustomerModel,
                                     preferences: PreferencesModel
@@ -74,6 +75,7 @@ object SecureCommsMessageModel {
         tupled) and
       (JsPath \ O_EMAIL_ADDRESS).readNullable[String] and
       (JsPath \ MANDATION_STATUS).readNullable[String] and
+      (JsPath \ WEBSITE_ADDRESS).readNullable[String] and
       ((JsPath \\ TRANSACTOR_EMAIL).read[String] and
         (JsPath \\ TRANSACTOR_NAME).read[String]
         tupled) and
@@ -85,7 +87,7 @@ object SecureCommsMessageModel {
         (JsPath \\ L_PREFS).read[String] and
         (JsPath \\ F_PREFS).read[String]
         tupled)
-    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, staggerDet, oEmail, mandationStatus, tDet, cDet, prefDet) =>
+    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, staggerDet, oEmail, mandationStatus, website, tDet, cDet, prefDet) =>
 
     val addressDetails: Option[AddressDetailsModel] = if (checkTupleForNone(addDet)) {
       Some(AddressDetailsModel(
@@ -135,6 +137,7 @@ object SecureCommsMessageModel {
       staggerDetails,
       oEmail,
       mandationStatus,
+      website,
       TransactorModel(tDet._1, tDet._2),
       CustomerModel(cDet._1, cDet._2),
       PreferencesModel(prefDet._1, prefDet._2, prefDet._3, prefDet._4)

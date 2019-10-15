@@ -256,6 +256,42 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       }
     }
 
+    "return a successful response for a client website rejection" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(websiteValidRejectedClientRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a client website approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(websiteValidApprovedClientRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a transactor website rejection" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(websiteValidRejectedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a transactor website approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(websiteValidApprovedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
     "return an error when there is an invalid template id" when {
       "the response can be correctly parsed into a SecureCommsMessageModel" in {
         val result = await(service.sendSecureCommsMessage(messageModelDeRegistrationInvalidTemplate))
@@ -413,6 +449,56 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       "it is for a represented user" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "Your agent has opted your business out of Making Tax Digital for VAT"
+      }
+    }
+
+    "return the expected subject for a website change secure message" when {
+      "the change has been approved" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true)
+          result shouldBe "Your agent has successfully changed your website address for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false)
+          result shouldBe "You have successfully changed your website address for VAT"
+        }
+      }
+
+      "the change has been rejected" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true)
+          result shouldBe "We have rejected your agent’s change of website address for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false)
+          result shouldBe "We have rejected your request to change your website address for VAT"
+        }
+      }
+
+      "the removal has been approved" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true, isRemoval = true)
+          result shouldBe "Your agent has successfully removed your website address for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false, isRemoval = true)
+          result shouldBe "You have successfully removed your website address for VAT"
+        }
+      }
+
+      "the removal has been rejected" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true, isRemoval = true)
+          result shouldBe "We have rejected your agent’s request to remove your website address for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false, isRemoval = true)
+          result shouldBe "We have rejected your request to remove your website address for VAT"
+        }
       }
     }
   }

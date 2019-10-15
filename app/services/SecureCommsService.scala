@@ -112,6 +112,13 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         buildSecureCommsServiceRequestModel(
           html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
+      case websiteModel: WebAddressChangeModel =>
+        val isRemoval: Boolean = websiteModel.websiteAddress.isEmpty
+        val webAddressOpt: Option[String] = Option(websiteModel.websiteAddress).filter(_.nonEmpty)
+        val html = getWebAddressChangeHtml(isTransactor, webAddressOpt, isApproval)
+        val subject = getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval, isTransactor, isRemoval)
+        buildSecureCommsServiceRequestModel(html, websiteModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        )
     }
   }
 
@@ -126,7 +133,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     val taxIdentifierModel = TaxIdentifierModel(name = TAX_IDENTIFIER_MTDVAT, value = vrn)
     val nameModel = NameModel(line1 = salutation)
     val recipientModel = RecipientModel(taxIdentifier = taxIdentifierModel, name = nameModel, email = userEmail)
-    val templateId = if(isTransactor) CLIENT_NOTIFICATION_AGENT_CHANGE else CLIENT_NOTIFICATION_SELF_CHANGE
+    val templateId = if (isTransactor) CLIENT_NOTIFICATION_AGENT_CHANGE else CLIENT_NOTIFICATION_SELF_CHANGE
 
     SecureCommsServiceRequestModel(
       externalRefModel, recipientModel, templateId, subject, encode(htmlContent)
@@ -178,7 +185,8 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatPPOBRejected().toString
     }
 
-  private val annualAccountLeaveStaggerCodes = List("YA","YB","YC","YD","YE","YF","YG","YH","YI","YJ","YK","YL")
+  private val annualAccountLeaveStaggerCodes = List("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
+
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
                                    isApproval: Boolean): String =
     if (isApproval) {
@@ -204,8 +212,28 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatOptOutApproved().toString
     }
 
-  private[services] def getSubjectForBaseKey(baseSubjectKey: String, isApproval: Boolean, isTransactor :Boolean): String = {
-    val statusKey = if(isApproval) baseSubjectKey.concat(APPROVED_SUFFIX) else baseSubjectKey.concat(REJECTED_SUFFIX)
-    if(isTransactor) messagesApi(statusKey.concat(TITLE_KEY_TRANSACTOR)) else messagesApi(statusKey.concat(TITLE_KEY_CLIENT))
+  private def getWebAddressChangeHtml(isTransactor: Boolean, websiteAddress: Option[String],
+                                      isApproval: Boolean): String =
+    if (isApproval) {
+      vatWebsiteApproved(isTransactor, websiteAddress).toString
+    } else {
+      vatWebsiteRejected(websiteAddress.isEmpty).toString()
+    }
+
+  private[services] def getSubjectForBaseKey(baseSubjectKey: String, isApproval: Boolean,
+                                             isTransactor: Boolean, isRemoval: Boolean = false): String = {
+
+    val statusKey = if (isApproval) baseSubjectKey.concat(APPROVED_SUFFIX) else baseSubjectKey.concat(REJECTED_SUFFIX)
+    val transactorSubmitted = if (isTransactor) {
+      statusKey.concat(TITLE_KEY_TRANSACTOR)
+    } else {
+      statusKey.concat(TITLE_KEY_CLIENT)
+    }
+
+    (baseSubjectKey, isRemoval) match {
+      case (WEBSITE_BASE_KEY, true) =>  messagesApi(transactorSubmitted.concat(REMOVE_SUFFIX))
+      case (WEBSITE_BASE_KEY, false) => messagesApi(transactorSubmitted.concat(CHANGE_SUFFIX))
+      case _ => messagesApi(transactorSubmitted)
+    }
   }
 }
