@@ -114,8 +114,8 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         )
       case websiteModel: WebAddressChangeModel =>
         val isRemoval: Boolean = websiteModel.websiteAddress.isEmpty
-        val webAddressOpt: Option[String] = if(isRemoval) None else Some(websiteModel.websiteAddress)
-        val html = getWebAddressChangeHtml(isTransactor, webAddressOpt, isApproval, isRemoval)
+        val webAddressOpt: Option[String] = Option(websiteModel.websiteAddress).filter(_.nonEmpty)
+        val html = getWebAddressChangeHtml(isTransactor, webAddressOpt, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval, isTransactor, isRemoval)
         buildSecureCommsServiceRequestModel(html, websiteModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
@@ -213,11 +213,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     }
 
   private def getWebAddressChangeHtml(isTransactor: Boolean, websiteAddress: Option[String],
-                                      isApproval: Boolean, isRemoval: Boolean): String =
+                                      isApproval: Boolean): String =
     if (isApproval) {
       vatWebsiteApproved(isTransactor, websiteAddress).toString
     } else {
-      vatWebsiteRejected(isRemoval).toString()
+      vatWebsiteRejected(websiteAddress.isEmpty).toString()
     }
 
   private[services] def getSubjectForBaseKey(baseSubjectKey: String, isApproval: Boolean,
@@ -225,9 +225,9 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
     val statusKey = if (isApproval) baseSubjectKey.concat(APPROVED_SUFFIX) else baseSubjectKey.concat(REJECTED_SUFFIX)
     val transactorSubmitted = if (isTransactor) {
-      messagesApi(statusKey.concat(TITLE_KEY_TRANSACTOR))
+      statusKey.concat(TITLE_KEY_TRANSACTOR)
     } else {
-      messagesApi(statusKey.concat(TITLE_KEY_CLIENT))
+      statusKey.concat(TITLE_KEY_CLIENT)
     }
 
     (baseSubjectKey, isRemoval) match {

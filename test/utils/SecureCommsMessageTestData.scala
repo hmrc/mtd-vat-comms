@@ -212,7 +212,7 @@ object SecureCommsMessageTestData {
       Some("sofia@whiterunstables.co.tam"),
       Some("3"),
       Some("https://www.web-address.co.uk"),
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -229,7 +229,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -246,7 +246,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -263,7 +263,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -281,7 +281,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -315,7 +315,7 @@ object SecureCommsMessageTestData {
       None,
       Some("3"),
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -332,7 +332,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("https://www.web-address.co.uk"),
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -349,7 +349,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -386,7 +386,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -403,7 +403,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -420,7 +420,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -471,7 +471,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -488,7 +488,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -540,7 +540,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -558,7 +558,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -575,7 +575,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -592,7 +592,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -662,7 +662,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -679,7 +679,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -1040,7 +1040,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       "20181227"
@@ -1051,7 +1051,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")
@@ -1062,7 +1062,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")
@@ -1073,7 +1073,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
@@ -1096,7 +1096,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "Companions Guild",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
@@ -1106,7 +1106,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       "3",
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -1117,7 +1117,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "Some Company Limited",
-      TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule"),
+      transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       "https://www.web-address.co.uk",
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
