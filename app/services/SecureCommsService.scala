@@ -190,18 +190,24 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   private def getStaggerChangeHtml(vatStaggerChangeModel: VATStaggerChangeModel,
                                    isApproval: Boolean): String =
     if (isApproval) {
-      if (annualAccountLeaveStaggerCodes.contains(vatStaggerChangeModel.staggerDetails.previousStagger)) {
-        vatStaggerApprovedLeaveAnnualAccounting(
-          vatStaggerChangeModel.staggerDetails.stagger,
-          vatStaggerChangeModel.staggerDetails.newStaggerStartDate,
-          vatStaggerChangeModel.staggerDetails.newStaggerPeriodEndDate,
-          vatStaggerChangeModel.staggerDetails.previousStaggerEndDate
-        ).toString()
-      } else {
-        vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
+      try {
+        if (annualAccountLeaveStaggerCodes.contains(vatStaggerChangeModel.staggerDetails.previousStagger)) {
+          vatStaggerApprovedLeaveAnnualAccounting(
+            vatStaggerChangeModel.staggerDetails.stagger,
+            vatStaggerChangeModel.staggerDetails.newStaggerStartDate,
+            vatStaggerChangeModel.staggerDetails.newStaggerPeriodEndDate,
+            vatStaggerChangeModel.staggerDetails.previousStaggerEndDate
+          ).toString()
+        } else {
+          vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
+        }
+      } catch {
+        case exception: Exception =>
+          logWarn("[SecureCommsService][getStaggerChangeHtml] - " +
+            s"Unrecognised stagger code: ${vatStaggerChangeModel.staggerDetails.stagger.toUpperCase}")
+          throw exception
       }
-    }
-    else {
+    } else {
       vatStaggerRejected().toString
     }
 

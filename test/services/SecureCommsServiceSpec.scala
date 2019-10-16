@@ -303,12 +303,17 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       "an exception is encountered" in {
         (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
           .expects(*, *)
-          .returns(
-            Left(BadRequest)
-          )
+          .returns(Left(BadRequest))
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
         result shouldBe Left(BadRequest)
+      }
+    }
+
+    "throw an exception" when {
+
+      "an invalid stagger code is provided" in {
+        intercept[MatchError](await(service.sendSecureCommsMessage(staggerinvalidApprovedTransactorRequest)))
       }
     }
 
