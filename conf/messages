@@ -77,21 +77,21 @@ emailApproved.p1 = Your new email address for VAT is: {0}
 emailRejected.title = We have rejected the change of email address for VAT
 emailRejected.p1 = You cannot use the email address supplied.
 
-optOutApproved.title = You''ve opted out of Making Tax Digital for VAT
-optOutApproved.p1 = You must continue to use software compatible with Making Tax Digital to submit your VAT Return for your current return period.
-optOutApproved.p2a = You must submit your VAT Returns using
-optOutApproved.p2b = your online VAT account
-optOutApproved.p2c = from your next return period.
-optOutApproved.p3a = If your taxable turnover goes above £85,000, you must
-optOutApproved.p3b = contact us
-optOutApproved.p3c = to sign up again for Making Tax Digital.
-optOutApproved.p4 = By opting out you will not be cancelling your VAT registration.
+optOutApproved.title = You have opted out of Making Tax Digital for VAT
+optOutApproved.p1 = This does not cancel your VAT registration.
+optOutApproved.p2 = For your current return period, you must continue to submit your VAT Returns using software compatible with Making Tax Digital.
+optOutApproved.p3a = Future VAT Returns must be submitted using your
+optOutApproved.p3b = online VAT account
+optOutApproved.p3c = , starting from your next return period. This change can take 2 days to come into effect.
+optOutApproved.p4a = If your taxable turnover goes above £85,000, you must
+optOutApproved.p4b = contact us
+optOutApproved.p4c = to sign up again for Making Tax Digital.
 
 optOutApprovedTransactor.title = Your agent has opted your business out of Making Tax Digital for VAT
 optOutApproved.represented.title = Your agent has opted your business out of Making Tax Digital for VAT
-optOutApproved.represented.p1 = Your agent must continue to use software compatible with Making Tax Digital to submit your VAT Returns for your current return period.
-optOutApproved.represented.p2 = Your agent must submit your business’s VAT Returns online from your next return period.
-optOutApproved.represented.p3a = If your taxable turnover goes above £85,000, you or your agent must
+optOutApproved.represented.p2 = For your current return period, your agent must continue to submit your VAT Returns using software compatible with Making Tax Digital.
+optOutApproved.represented.p3 = Future VAT Returns must be submitted using your online VAT account, starting from your next return period. This change can take 2 days to come into effect.
+optOutApproved.represented.p4a = If your taxable turnover goes above £85,000, you or your agent must
 
 websiteApproved.title.change = You have successfully changed your website address for VAT
 websiteApprovedTransactor.title.change = Your agent has successfully changed your website address for VAT
