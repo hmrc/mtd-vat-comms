@@ -446,7 +446,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
     "return the expected subject for an opt out secure message" when {
       "it is for a non-represented user" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = false)
-        result shouldBe "You've opted out of Making Tax Digital for VAT"
+        result shouldBe "You have opted out of Making Tax Digital for VAT"
       }
     }
 
