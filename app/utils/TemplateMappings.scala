@@ -67,7 +67,15 @@ object TemplateMappings {
     // website client approved
     "VRT12A_SM14A" -> true,
     // website client rejected
-    "VRT14A_SM15A" -> false
+    "VRT14A_SM15A" -> false,
+    //contact numbers agent approved
+    "VRT12C_SM12C" -> true,
+    //contact numbers agent rejected
+    "VRT14C_SM13C" -> false,
+    //contact numbers client approved
+    "VRT12A_SM12A" -> true,
+    //contact numbers client rejected
+    "VRT14A_SM13A" -> false
   )
 
   def isTemplateIdApproval(templateId: String): Option[Boolean] =

@@ -91,9 +91,10 @@ class SecureCommsMessageParserSpec extends BaseSpec {
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
         mandationStatus <- Seq(Some("3"), None)
         websiteAddress <- Seq(Some("https://www.web-address.co.uk"), None)
+        contactNumbers <- Seq(Some(ContactNumbersModel("01225654321", "YES", "07571234567", "NO")), None)
       } yield {
         SecureCommsMessageModel("", "", "", "", effectiveDODR, addressDetails, bankDetails, staggerDetails, oEmail,
-          mandationStatus, websiteAddress, TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
+          mandationStatus, websiteAddress, contactNumbers, TransactorModel("", ""), CustomerModel("", ""), PreferencesModel("", "", "", ""))
       }).filter { passedForwardModel =>
         Seq(
           passedForwardModel.effectiveDateOfDeregistration,
@@ -108,7 +109,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       allInvalidCombinations.foreach { model =>
         s"the following combination of optional parameters are used: ${model.effectiveDateOfDeregistration}," +
           s"${model.addressDetails}, ${model.bankAccountDetails}, ${model.staggerDetails}, " +
-          s"${model.originalEmailAddress}, ${model.mandationStatus}, ${model.websiteAddress}" in {
+          s"${model.originalEmailAddress}, ${model.mandationStatus}, ${model.websiteAddress}, ${model.contactNumbers}" in {
           SecureCommsMessageParser.parseModel(model) shouldBe Left(SpecificParsingError)
         }
       }

@@ -292,6 +292,42 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       }
     }
 
+    "return a successful response for a client contact numbers rejection" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(contactNumbersValidRejectedClientRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a client contact numbers approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(contactNumbersValidApprovedClientRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a transactor contact numbers rejection" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(contactNumbersValidRejectedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
+    "return a successful response for a transactor contact numbers approval" when {
+      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+        setupSuccessResponse
+
+        val result = await(service.sendSecureCommsMessage(contactNumbersValidApprovedTransactorRequest))
+        result shouldBe Right(true)
+      }
+    }
+
     "return an error when there is an invalid template id" when {
       "the response can be correctly parsed into a SecureCommsMessageModel" in {
         val result = await(service.sendSecureCommsMessage(messageModelDeRegistrationInvalidTemplate))
