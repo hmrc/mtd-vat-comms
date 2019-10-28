@@ -108,3 +108,10 @@ websiteRejected.change.p1 = We have rejected the change to your website address 
 websiteRejected.title.remove = We have rejected your request to remove your website address for VAT
 websiteRejectedTransactor.title.remove = We have rejected your agent’s request to remove your website address for VAT
 websiteRejected.remove.p1 = We have rejected the removal of your website address for VAT.
+
+contactNumbersApproved.title = You have successfully changed your contact details for VAT
+contactNumbersRejected.title = We have rejected your request to remove your website address for VAT
+contactNumbersApprovedTransactor.title = Your agent has successfully changed your contact details for VAT
+contactNumbersRejectedTransactor.title = We have rejected your agent's request to change your contact details for VAT
+contactNumbersApproved.p1 = View your updated contact details
+contactNumbersRejected.p1 = The request to change your contact details for VAT has been rejected.
