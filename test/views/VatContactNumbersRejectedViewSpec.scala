@@ -21,9 +21,9 @@ import org.jsoup.nodes.Document
 
 class VatContactNumbersRejectedViewSpec extends ViewBaseSpec {
 
-  "The website rejected message" when {
+  "The contact number rejected message" when {
 
-    "the user has attempted to change their website" should {
+    "the user has attempted to change their landline or mobile number" should {
 
       lazy val view = views.html.vatContactNumbersRejected()
       lazy implicit val document: Document = Jsoup.parse(view.body)
