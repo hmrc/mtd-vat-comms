@@ -120,7 +120,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         buildSecureCommsServiceRequestModel(html, websiteModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case contactNumbersModel: ContactNumbersChangeModel =>
-        val html = getEmailChangeHtml(contactNumbersModel, isApproval)
+        val html = getContactNumbersChangeHtml(isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, contactNumbersModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
@@ -232,12 +232,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatWebsiteRejected(websiteAddress.isEmpty).toString()
     }
 
-  private def getContactNumbersChangeHtml(isTransactor: Boolean, contactNumbers: ContactNumbersChangeModel,
-                                      isApproval: Boolean): String =
+  private def getContactNumbersChangeHtml(isApproval: Boolean): String =
     if (isApproval) {
-      vatContactNumberApproved(isTransactor).toString
+      vatContactNumbersApproved().toString
     } else {
-      vatContactNumberRejected().toString()
+      vatContactNumbersRejected().toString()
     }
 
   private[services] def getSubjectForBaseKey(baseSubjectKey: String, isApproval: Boolean,
