@@ -542,6 +542,32 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         }
       }
     }
+
+    "return the expected subject for a contact numbers secure message" when {
+      "the change has been approved" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = true, isTransactor = true)
+          result shouldBe "Your agent has successfully changed your contact details for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = true, isTransactor = false)
+          result shouldBe "You have successfully changed your contact details for VAT"
+        }
+      }
+
+      "the change has been rejected" when {
+        "it is for a represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = false, isTransactor = true)
+          result shouldBe "We have rejected your agent’s request to change your contact details for VAT"
+        }
+
+        "it is for a non-represented user" in {
+          val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = false, isTransactor = false)
+          result shouldBe "We have rejected your request to change your contact details for VAT"
+        }
+      }
+    }
   }
 
   private def setupSuccessResponse = {
