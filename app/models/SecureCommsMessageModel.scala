@@ -34,6 +34,7 @@ case class SecureCommsMessageModel(
                                     originalEmailAddress: Option[String],
                                     mandationStatus: Option[String],
                                     websiteAddress: Option[String],
+                                    contactNumbers: Option[ContactNumbersModel],
                                     transactorDetails: TransactorModel,
                                     customerDetails: CustomerModel,
                                     preferences: PreferencesModel
@@ -76,6 +77,11 @@ object SecureCommsMessageModel {
       (JsPath \ O_EMAIL_ADDRESS).readNullable[String] and
       (JsPath \ MANDATION_STATUS).readNullable[String] and
       (JsPath \ WEBSITE_ADDRESS).readNullable[String] and
+      ((JsPath \\ PRIMARY_PHONENUMBER).readNullable[String] and
+        (JsPath \\ PRIMARY_PHONENUMBER_CHANGED).readNullable[String] and
+        (JsPath \\ MOBILE_NUMBER).readNullable[String] and
+        (JsPath \\ MOBILE_NUMBER_CHANGED).readNullable[String]
+        tupled) and
       ((JsPath \\ TRANSACTOR_EMAIL).read[String] and
         (JsPath \\ TRANSACTOR_NAME).read[String]
         tupled) and
@@ -87,7 +93,7 @@ object SecureCommsMessageModel {
         (JsPath \\ L_PREFS).read[String] and
         (JsPath \\ F_PREFS).read[String]
         tupled)
-    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, staggerDet, oEmail, mandationStatus, website, tDet, cDet, prefDet) =>
+    ) { (tId, vrn, fbr, bs, edod, addDet, bankDet, staggerDet, oEmail, mandationStatus, website, conNums, tDet, cDet, prefDet) =>
 
     val addressDetails: Option[AddressDetailsModel] = if (checkTupleForNone(addDet)) {
       Some(AddressDetailsModel(
@@ -126,6 +132,17 @@ object SecureCommsMessageModel {
       None
     }
 
+    val contactNumbers: Option[ContactNumbersModel] = if (checkTupleForNone(conNums)) {
+      Some(ContactNumbersModel(
+        conNums._1.getOrElse(""),
+        conNums._2.getOrElse(""),
+        conNums._3.getOrElse(""),
+        conNums._4.getOrElse("")
+      ))
+    } else {
+      None
+    }
+
     SecureCommsMessageModel.apply(
       tId,
       vrn,
@@ -138,6 +155,7 @@ object SecureCommsMessageModel {
       oEmail,
       mandationStatus,
       website,
+      contactNumbers,
       TransactorModel(tDet._1, tDet._2),
       CustomerModel(cDet._1, cDet._2),
       PreferencesModel(prefDet._1, prefDet._2, prefDet._3, prefDet._4)

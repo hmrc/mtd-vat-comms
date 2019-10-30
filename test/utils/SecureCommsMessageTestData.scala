@@ -65,6 +65,10 @@ object SecureCommsMessageTestData {
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
       MANDATION_STATUS -> "3",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
+      PRIMARY_PHONENUMBER -> "01225123456",
+      PRIMARY_PHONENUMBER_CHANGED -> "YES",
+      MOBILE_NUMBER -> "07578123456",
+      MOBILE_NUMBER_CHANGED -> "NO",
       C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
@@ -181,10 +185,30 @@ object SecureCommsMessageTestData {
       F_PREFS -> TEXT
     )
 
+    val validJsonContactNumbersChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT12A_SM12A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
+      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+      TRANSACTOR_NAME -> "Pack Mule",
+      C_EMAIL -> "info@CoCHoldings.co.uk",
+      C_EMAIL_STATUS -> VERIFIED,
+      PRIMARY_PHONENUMBER -> "01225123456",
+      PRIMARY_PHONENUMBER_CHANGED -> "YES",
+      MOBILE_NUMBER -> "07578123456",
+      MOBILE_NUMBER_CHANGED -> "NO",
+      N_PREFS -> EMAIL,
+      C_PREFS -> PAPER,
+      L_PREFS -> ENGLISH,
+      F_PREFS -> TEXT
+    )
+
     val validJsonWebAddressChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT12A_SM14A",
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
       TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
@@ -212,6 +236,7 @@ object SecureCommsMessageTestData {
       Some("sofia@whiterunstables.co.tam"),
       Some("3"),
       Some("https://www.web-address.co.uk"),
+      Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -223,6 +248,7 @@ object SecureCommsMessageTestData {
       "092000003080",
       "CoC Company Holdings Ltd",
       Some("20181227"),
+      None,
       None,
       None,
       None,
@@ -246,6 +272,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -259,6 +286,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
       None,
       None,
       None,
@@ -281,6 +309,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -296,6 +325,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("dragonborn@winterhold.tam"),
+      None,
       None,
       None,
       TransactorModel("", ""),
@@ -315,6 +345,7 @@ object SecureCommsMessageTestData {
       None,
       Some("3"),
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -332,6 +363,25 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("https://www.web-address.co.uk"),
+      None,
+      transactorModel,
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val expectedResponseContactNumbers = SecureCommsMessageModel(
+      "VRT12A_SM12A",
+      "100065579",
+      "092000003080",
+      "Some Company Limited",
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -349,6 +399,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -359,6 +410,7 @@ object SecureCommsMessageTestData {
       "100065579",
       "092000003080",
       "CoC Company Holdings Ltd",
+      None,
       None,
       None,
       None,
@@ -386,6 +438,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -397,6 +450,7 @@ object SecureCommsMessageTestData {
       "092000003080",
       "CoC Company Holdings Ltd",
       Some("20181227"),
+      None,
       None,
       None,
       None,
@@ -420,6 +474,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -431,6 +486,7 @@ object SecureCommsMessageTestData {
       "092000003080",
       "CoC Company Holdings Ltd",
       Some("20181227"),
+      None,
       None,
       None,
       None,
@@ -454,6 +510,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -467,6 +524,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
       None,
       None,
       None,
@@ -488,6 +546,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -505,6 +564,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -518,6 +578,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      None,
       None,
       None,
       None,
@@ -540,6 +601,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -555,6 +617,7 @@ object SecureCommsMessageTestData {
       None,
       Some(StaggerDetailsModel("MM", newStaggerStartExample, newStaggerEndExample,
         "YA", previousStaggerStartExample, previousStaggerEndExample)),
+      None,
       None,
       None,
       None,
@@ -575,6 +638,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -589,6 +653,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some(StaggerDetailsModel("MC", "", "", "", "", "")),
+      None,
       None,
       None,
       None,
@@ -610,6 +675,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -625,6 +691,7 @@ object SecureCommsMessageTestData {
       None,
       Some(StaggerDetailsModel("MB", newStaggerStartExample, newStaggerEndExample,
         previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
+      None,
       None,
       None,
       None,
@@ -645,6 +712,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -657,6 +725,7 @@ object SecureCommsMessageTestData {
       "CoC Company Holdings Ltd",
       None,
       Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
       None,
       None,
       None,
@@ -679,6 +748,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -691,6 +761,7 @@ object SecureCommsMessageTestData {
       "CoC Company Holdings Ltd",
       None,
       Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      None,
       None,
       None,
       None,
@@ -713,6 +784,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -728,6 +800,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("dragonborn@winterhold.tam"),
+      None,
       None,
       None,
       TransactorModel("", ""),
@@ -747,6 +820,7 @@ object SecureCommsMessageTestData {
       None,
       Some("3"),
       None,
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -764,6 +838,7 @@ object SecureCommsMessageTestData {
       None,
       Some("3"),
       None,
+      None,
       TransactorModel("agent@CoCHoldings.co.uk", "CoC Agent"),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -779,6 +854,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("dragonborn@winterhold.tam"),
+      None,
       None,
       None,
       TransactorModel("", ""),
@@ -798,6 +874,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       Some("http://www.web-address.co.uk"),
+      None,
       TransactorModel("", ""),
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -811,6 +888,33 @@ object SecureCommsMessageTestData {
 
     val websiteValidRejectedTransactorRequest: SecureCommsMessageModel = websiteValidRejectedClientRequest.copy(
       templateId = "VRT14C_SM15C", transactorDetails = transactorModel, websiteAddress = Some(""))
+
+    val contactNumbersValidRejectedClientRequest = SecureCommsMessageModel(
+      "VRT14A_SM13A",
+      "100065579",
+      "092000003080",
+      "CoC Company Holdings Ltd",
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
+      TransactorModel("", ""),
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val contactNumbersValidApprovedClientRequest: SecureCommsMessageModel = contactNumbersValidRejectedClientRequest.copy(
+      templateId = "VRT12A_SM12A")
+
+    val contactNumbersValidApprovedTransactorRequest: SecureCommsMessageModel = contactNumbersValidRejectedClientRequest.copy(
+      templateId = "VRT12C_SM12C", transactorDetails = transactorModel)
+
+    val contactNumbersValidRejectedTransactorRequest: SecureCommsMessageModel = contactNumbersValidRejectedClientRequest.copy(
+      templateId = "VRT14C_SM13C", transactorDetails = transactorModel, contactNumbers = Some(ContactNumbersModel("01225654321", "YES", "07578654321", "NO")))
   }
 
   object JsonModelForModels {
@@ -820,10 +924,6 @@ object SecureCommsMessageTestData {
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "CoC Company Holdings Ltd",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
-      ),
       ADDRESS_DETAILS -> Json.obj(
         AL1 -> "4 Cloud District",
         AL2 -> "Whiterun",
@@ -849,6 +949,16 @@ object SecureCommsMessageTestData {
       O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
       MANDATION_STATUS -> "3",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
+      CONTACT_NUMBERS -> Json.obj(
+        PRIMARY_PHONENUMBER -> "01225123456",
+        PRIMARY_PHONENUMBER_CHANGED -> "YES",
+        MOBILE_NUMBER -> "07578123456",
+        MOBILE_NUMBER_CHANGED -> "NO"
+      ),
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
       CUSTOMER_DETAILS -> Json.obj(
         C_EMAIL -> "info@CoCHoldings.co.uk",
         C_EMAIL_STATUS -> VERIFIED
@@ -995,6 +1105,55 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "Companions Guild",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelWebAddressChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT12A_SM14A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
+      WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelContactNumbersChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT12A_SM12A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
+      CONTACT_NUMBERS -> Json.obj(
+        PRIMARY_PHONENUMBER -> "01225123456",
+        PRIMARY_PHONENUMBER_CHANGED -> "YES",
+        MOBILE_NUMBER -> "07578123456",
+        MOBILE_NUMBER_CHANGED -> "NO"
+      ),
       TRANSACTOR_DETAILS -> Json.obj(
         TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"

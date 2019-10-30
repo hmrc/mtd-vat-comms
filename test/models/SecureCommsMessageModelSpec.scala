@@ -54,6 +54,14 @@ class SecureCommsMessageModelSpec extends BaseSpec {
       "correctly parse when optional fields are missing - Business Name Change" in {
         validJsonBusinessNameChange.as[SecureCommsMessageModel] shouldBe expectedResponseBusinessNameChange
       }
+
+      "correctly parse when optional fields are missing - Web Address Change" in {
+        validJsonWebAddressChange.as[SecureCommsMessageModel] shouldBe expectedResponseWebAddress
+      }
+
+      "correctly parse when optional fields are missing - Contact Numbers Change" in {
+        validJsonContactNumbersChange.as[SecureCommsMessageModel] shouldBe expectedResponseContactNumbers
+      }
     }
 
     "serializing to JSON" should {
@@ -84,6 +92,14 @@ class SecureCommsMessageModelSpec extends BaseSpec {
 
       "correctly parse when optional fields are missing - Business Name Change" in {
         Json.toJson(expectedResponseBusinessNameChange) shouldBe validJsonForModelBusinessNameChange
+      }
+
+      "correctly parse when optional fields are missing - Web Address Change" in {
+        Json.toJson(expectedResponseWebAddress) shouldBe validJsonForModelWebAddressChange
+      }
+
+      "correctly parse when optional fields are missing - Contact Numbers Change" in {
+        Json.toJson(expectedResponseContactNumbers) shouldBe validJsonForModelContactNumbersChange
       }
     }
   }
