@@ -103,7 +103,8 @@ class SecureCommsMessageParserSpec extends BaseSpec {
           passedForwardModel.staggerDetails,
           passedForwardModel.originalEmailAddress,
           passedForwardModel.mandationStatus,
-          passedForwardModel.websiteAddress).count(_.nonEmpty) > 1
+          passedForwardModel.websiteAddress,
+          passedForwardModel.contactNumbers).count(_.nonEmpty) > 1
       }
 
       allInvalidCombinations.foreach { model =>

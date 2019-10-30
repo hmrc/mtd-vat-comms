@@ -56,271 +56,213 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
   }
 
 
-  "getSecureCommsMessage" must {
+  "getSecureCommsMessage" when {
 
-    "return a successful response for a transactor approved deRegistration" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+    "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" should {
+      "return a successful response for a transactor approved deRegistration" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(deRegistrationValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor rejected deRegistration" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor rejected deRegistration" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(deRegistrationValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client approved deRegistration" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client approved deRegistration" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(deRegistrationValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client rejected deRegistration" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client rejected deRegistration" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(deRegistrationValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor bank details approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor bank details approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(bankDetailsValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor bank details rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor bank details rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(bankDetailsValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client bank details approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client bank details approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(bankDetailsValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client bank details rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client bank details rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(bankDetailsValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor stagger approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor stagger approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor stagger approval that had a annual accounting stagger code" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor stagger approval that had a annual accounting stagger code" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerLeaveAnnualAccountingValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor stagger rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor stagger rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client stagger approval that had a annual accounting stagger code" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client stagger approval that had a annual accounting stagger code" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerLeaveAnnualAccountingValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client stagger approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client stagger approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client stagger rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client stagger rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(staggerValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor ppob approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor ppob approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(ppobValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor ppob rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor ppob rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(ppobValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor's opt out approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor's opt out approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(optOutRequestRepresented))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client ppob approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client ppob approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(ppobValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client ppob rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client ppob rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(ppobValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client email approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client email approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(emailValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client email rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client email rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a non represented user's opt out approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a non represented user's opt out approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(optOutRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client website rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client website rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(websiteValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client website approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client website approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(websiteValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor website rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor website rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(websiteValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor website approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor website approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(websiteValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client contact numbers rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client contact numbers rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(contactNumbersValidRejectedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a client contact numbers approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a client contact numbers approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(contactNumbersValidApprovedClientRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor contact numbers rejection" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor contact numbers rejection" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(contactNumbersValidRejectedTransactorRequest))
         result shouldBe Right(true)
       }
-    }
 
-    "return a successful response for a transactor contact numbers approval" when {
-      "the request can be correctly parsed into a SecureCommsMessageModel and the send succeeds" in {
+      "return a successful response for a transactor contact numbers approval" in {
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(contactNumbersValidApprovedTransactorRequest))
@@ -358,9 +300,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "You have successfully changed your email address for VAT"
       }
-    }
 
-    "return the expected subject for an email secure message" when {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change of email address for VAT"
@@ -372,23 +312,17 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "Your agent has successfully changed your principal place of business for VAT"
       }
-    }
 
-    "return the expected subject for an ppob secure message" when {
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval = false, isTransactor = true)
         result shouldBe "We have rejected your agent’s change to your principal place of business for VAT"
       }
-    }
 
-    "return the expected subject for an ppob secure message" when {
       "it is for a client approved change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "You have successfully changed your principal place of business for VAT"
       }
-    }
 
-    "return the expected subject for an ppob secure message" when {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change to your principal place of business for VAT"
@@ -400,23 +334,17 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "Your agent has successfully changed your VAT Return dates"
       }
-    }
 
-    "return the expected subject for a stagger secure message" when {
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval = false, isTransactor = true)
         result shouldBe "We have rejected your agent’s change to your business VAT Return dates"
       }
-    }
 
-    "return the expected subject for a stagger secure message" when {
       "it is for a client approved change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "You have successfully changed your VAT Return dates"
       }
-    }
 
-    "return the expected subject for a stagger secure message" when {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change to your business VAT Return dates"
@@ -428,23 +356,17 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "We have accepted your agent’s request to deregister from VAT"
       }
-    }
 
-    "return the expected subject for a deregister secure message" when {
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval = false, isTransactor = true)
         result shouldBe "We have rejected your agent’s request to deregister your business from VAT"
       }
-    }
 
-    "return the expected subject for an deregister secure message" when {
       "it is for a client approved change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "We have accepted your request to deregister from VAT"
       }
-    }
 
-    "return the expected subject for an deregister secure message" when {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected your request to deregister from VAT"
@@ -456,23 +378,17 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "Your agent has successfully changed your bank details for VAT repayments"
       }
-    }
 
-    "return the expected subject for a bank details secure message" when {
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = false, isTransactor = true)
         result shouldBe "We have rejected your agent’s change to your bank details for VAT repayments"
       }
-    }
 
-    "return the expected subject for an bank details secure message" when {
       "it is for a client approved change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "You have successfully changed your bank details for VAT repayments"
       }
-    }
 
-    "return the expected subject for an bank details secure message" when {
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change to your bank details for VAT repayments"
@@ -484,9 +400,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = false)
         result shouldBe "You have opted out of Making Tax Digital for VAT"
       }
-    }
 
-    "return the expected subject for an opt out secure message" when {
       "it is for a represented user" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = true)
         result shouldBe "Your agent has opted your business out of Making Tax Digital for VAT"
@@ -494,79 +408,67 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
     }
 
     "return the expected subject for a website change secure message" when {
-      "the change has been approved" when {
-        "it is for a represented user" in {
+        "it is for a transactor approved changed" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true)
           result shouldBe "Your agent has successfully changed your website address for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client approved change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false)
           result shouldBe "You have successfully changed your website address for VAT"
         }
-      }
 
-      "the change has been rejected" when {
-        "it is for a represented user" in {
+        "it is for a transactor rejected change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true)
           result shouldBe "We have rejected your agent’s change of website address for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client rejected change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false)
           result shouldBe "We have rejected your request to change your website address for VAT"
         }
-      }
 
-      "the removal has been approved" when {
-        "it is for a represented user" in {
+        "it is for a transactor approved removal" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true, isRemoval = true)
           result shouldBe "Your agent has successfully removed your website address for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client approved removal" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false, isRemoval = true)
           result shouldBe "You have successfully removed your website address for VAT"
         }
-      }
 
-      "the removal has been rejected" when {
-        "it is for a represented user" in {
+        "it is for a transactor rejected removal" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true, isRemoval = true)
           result shouldBe "We have rejected your agent’s request to remove your website address for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client rejected removal" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false, isRemoval = true)
           result shouldBe "We have rejected your request to remove your website address for VAT"
         }
-      }
     }
 
     "return the expected subject for a contact numbers secure message" when {
-      "the change has been approved" when {
-        "it is for a represented user" in {
+        "it is for a transactor approved change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = true, isTransactor = true)
           result shouldBe "Your agent has successfully changed your contact details for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client approved change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = true, isTransactor = false)
           result shouldBe "You have successfully changed your contact details for VAT"
         }
-      }
 
-      "the change has been rejected" when {
-        "it is for a represented user" in {
+        "it is for a transactor rejected change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = false, isTransactor = true)
           result shouldBe "We have rejected your agent’s request to change your contact details for VAT"
         }
 
-        "it is for a non-represented user" in {
+        "it is for a client rejected change" in {
           val result = service.getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval = false, isTransactor = false)
           result shouldBe "We have rejected your request to change your contact details for VAT"
         }
-      }
     }
   }
 

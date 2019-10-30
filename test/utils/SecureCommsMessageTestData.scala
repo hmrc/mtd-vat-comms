@@ -186,14 +186,18 @@ object SecureCommsMessageTestData {
     )
 
     val validJsonContactNumbersChange: JsObject = Json.obj(
-      TEMPLATE_ID -> "VRT12C_SM12C",
+      TEMPLATE_ID -> "VRT12A_SM12A",
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Companions Guild",
+      BUSINESS_NAME -> "Some Company Limited",
       TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
       C_EMAIL -> "info@CoCHoldings.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
+      PRIMARY_PHONENUMBER -> "01225123456",
+      PRIMARY_PHONENUMBER_CHANGED -> "YES",
+      MOBILE_NUMBER -> "07578123456",
+      MOBILE_NUMBER_CHANGED -> "NO",
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
       L_PREFS -> ENGLISH,
@@ -204,6 +208,7 @@ object SecureCommsMessageTestData {
       TEMPLATE_ID -> "VRT12A_SM14A",
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
       TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
       TRANSACTOR_NAME -> "Pack Mule",
@@ -359,6 +364,24 @@ object SecureCommsMessageTestData {
       None,
       Some("https://www.web-address.co.uk"),
       None,
+      transactorModel,
+      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+    )
+
+    val expectedResponseContactNumbers = SecureCommsMessageModel(
+      "VRT12A_SM12A",
+      "100065579",
+      "092000003080",
+      "Some Company Limited",
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
       CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -891,7 +914,7 @@ object SecureCommsMessageTestData {
       templateId = "VRT12C_SM12C", transactorDetails = transactorModel)
 
     val contactNumbersValidRejectedTransactorRequest: SecureCommsMessageModel = contactNumbersValidRejectedClientRequest.copy(
-      templateId = "VRT14C_SM13C", transactorDetails = transactorModel, contactNumbers = Some(ContactNumbersModel("", "", "", "")))
+      templateId = "VRT14C_SM13C", transactorDetails = transactorModel, contactNumbers = Some(ContactNumbersModel("01225654321", "YES", "07578654321", "NO")))
   }
 
   object JsonModelForModels {
@@ -1082,6 +1105,55 @@ object SecureCommsMessageTestData {
       VRN -> "100065579",
       FORM_BUNDLE_REFERENCE -> "092000003080",
       BUSINESS_NAME -> "Companions Guild",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelWebAddressChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT12A_SM14A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
+      WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
+      TRANSACTOR_DETAILS -> Json.obj(
+        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
+        TRANSACTOR_NAME -> "Pack Mule"
+      ),
+      CUSTOMER_DETAILS -> Json.obj(
+        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL_STATUS -> VERIFIED
+      ),
+      PREFS -> Json.obj(
+        N_PREFS -> EMAIL,
+        C_PREFS -> PAPER,
+        L_PREFS -> ENGLISH,
+        F_PREFS -> TEXT
+      )
+    )
+
+    val validJsonForModelContactNumbersChange: JsObject = Json.obj(
+      TEMPLATE_ID -> "VRT12A_SM12A",
+      VRN -> "100065579",
+      FORM_BUNDLE_REFERENCE -> "092000003080",
+      BUSINESS_NAME -> "Some Company Limited",
+      CONTACT_NUMBERS -> Json.obj(
+        PRIMARY_PHONENUMBER -> "01225123456",
+        PRIMARY_PHONENUMBER_CHANGED -> "YES",
+        MOBILE_NUMBER -> "07578123456",
+        MOBILE_NUMBER_CHANGED -> "NO"
+      ),
       TRANSACTOR_DETAILS -> Json.obj(
         TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
         TRANSACTOR_NAME -> "Pack Mule"

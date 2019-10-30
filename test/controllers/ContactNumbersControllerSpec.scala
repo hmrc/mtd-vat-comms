@@ -48,7 +48,7 @@ class ContactNumbersControllerSpec extends BaseSpec with MockCommsEventService {
         }
       }
 
-      "the Web Address Change event was unsuccessfully added to the queue" should {
+      "the Contact Numbers Change event was unsuccessfully added to the queue" should {
 
         "return 500" in {
           mockQueueRequest(testRequestModel)(Future.successful(false))

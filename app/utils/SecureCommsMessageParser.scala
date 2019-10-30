@@ -17,7 +17,6 @@
 package utils
 
 import models._
-import models.secureMessageAlertModels.ContactNumbersModel
 import models.secureMessageAlertModels.messageTypes._
 import play.api.libs.json.{JsValue, Json, OFormat}
 import utils.LoggerUtil._

@@ -27,7 +27,7 @@ class ContactNumbersControllerISpec extends IntegrationBaseSpec {
 
     "return a success response" when {
 
-      "request body json is a web address change" in {
+      "request body json is a contact numbers change" in {
 
         val request: WSRequest = buildRequest("/events/contact-numbers")
 
