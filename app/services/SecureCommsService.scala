@@ -59,7 +59,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
   private def getRequest(messageModel: MessageModel): Either[ErrorModel, SecureCommsServiceRequestModel] = {
 
-    val isTransactor = messageModel.getTransactorDetails.transactorEmail.nonEmpty
+    val isTransactor = messageModel.getTemplateId.endsWith("C")
 
     isTemplateIdApproval(messageModel.getTemplateId) match {
       case None =>
