@@ -46,7 +46,8 @@ trait AppConfig extends ServicesConfig {
   val manageVatSubscriptionUrl: String
 
   val vatSummaryUrl: String
-  val contactUsUrl: String
+
+  def mtdSignUpUrl(vrn: String): String
 }
 
 @Singleton
@@ -89,5 +90,5 @@ class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, e
   override lazy val vatSummaryUrl: String =
     vatSummaryHost + getString(Keys.vatSummaryUri)
 
-  override lazy val contactUsUrl: String = getString(Keys.contactUsUrl)
+  override def mtdSignUpUrl(vrn: String): String = getString(Keys.vatSignUpHost) + getString(Keys.reSignUpUri) + vrn
 }

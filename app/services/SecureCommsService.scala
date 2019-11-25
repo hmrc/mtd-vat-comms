@@ -107,7 +107,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
           html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case optOutModel: OptOutModel =>
-        val html = getOptOutHtml(isTransactor)
+        val html = getOptOutHtml(isTransactor, vrn)
         val subject = getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
@@ -217,11 +217,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       vatStaggerRejected().toString
     }
 
-  private def getOptOutHtml(isTransactor: Boolean): String =
+  private def getOptOutHtml(isTransactor: Boolean, vrn: String): String =
     if (isTransactor) {
-      vatOptOutApprovedRepresented().toString
+      vatOptOutApprovedRepresented(vrn).toString
     } else {
-      vatOptOutApproved().toString
+      vatOptOutApproved(vrn).toString
     }
 
   private def getWebAddressChangeHtml(isTransactor: Boolean, websiteAddress: Option[String],

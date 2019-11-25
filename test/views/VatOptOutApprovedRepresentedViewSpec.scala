@@ -25,7 +25,7 @@ class VatOptOutApprovedRepresentedViewSpec extends ViewBaseSpec {
 
     "a agent entity has requested to opt out the client out of MTD" should {
 
-      lazy val view = views.html.vatOptOutApprovedRepresented()
+      lazy val view = views.html.vatOptOutApprovedRepresented("999999999")
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct first paragraph" in {
@@ -33,19 +33,29 @@ class VatOptOutApprovedRepresentedViewSpec extends ViewBaseSpec {
       }
 
       "have the correct second paragraph" in {
-        elementText("p:nth-child(2)") shouldBe
-          "For your current return period, your agent must continue to submit your VAT Returns using software compatible with Making Tax Digital."
+        elementText("p:nth-child(2)") shouldBe "For your current return period, your agent must continue to submit " +
+          "your VAT Returns using software compatible with Making Tax Digital."
       }
 
       "have the correct third paragraph" in {
         elementText("p:nth-child(3)") shouldBe
-          "Future VAT Returns must be submitted using your online VAT account, " +
-            "starting from your next return period. This change can take 2 days to come into effect."
+          "Future VAT Returns must be submitted using your online VAT account, starting from your next return period."
       }
 
       "have the correct fourth paragraph" in {
         elementText("p:nth-child(4)") shouldBe
-          "If your taxable turnover goes above £85,000, you or your agent must contact us to sign up again for Making Tax Digital."
+          "If your taxable turnover goes above £85,000, you or your agent must sign up again for Making Tax Digital."
+      }
+
+      "have a re-sign-up link" which {
+
+        "has the correct text" in {
+          elementText("a") shouldBe "sign up again"
+        }
+
+        "has the correct href" in {
+          element("a").attr("href") shouldBe mockAppConfig.mtdSignUpUrl("999999999")
+        }
       }
     }
   }
