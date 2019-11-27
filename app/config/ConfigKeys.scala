@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package config
 
 object ConfigKeys {
@@ -39,5 +40,6 @@ object ConfigKeys {
   val vatSummaryHost: String = "vat-summary-frontend.host"
   val vatSummaryUri: String = "vat-summary-frontend.vatOverviewUri"
 
-  val contactUsUrl: String = "govuk.contactUsUrl"
+  val vatSignUpHost: String = "vat-sign-up-frontend.host"
+  val reSignUpUri: String = "vat-sign-up-frontend.reSignUpUri"
 }

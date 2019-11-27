@@ -40,11 +40,12 @@ class MockAppConfig(val runModeConfiguration: Configuration,
   override val secureCommsServiceUrl: String = s"/messages"
 
   override val tribunalUrl: String = "https://www.gov.uk/tax-tribunal/appeal-to-tribunal"
-  override val contactUsUrl: String = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/vat-enquiries"
 
   override val vatSummaryUrl: String = "/vat-through-software/vat-overview"
 
   override val manageVatSubscriptionUrl: String = "/vat-through-software/account/change-business-details"
+
+  override def mtdSignUpUrl(vrn: String): String = s"/sign-up/$vrn"
 
   override val queueItemExpirySeconds: Int = 30
 }

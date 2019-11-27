@@ -16,15 +16,16 @@
 
 @import config.AppConfig
 
-@()(implicit messages: MessagesApi, appConfig: AppConfig)
+@(vrn: String)(implicit messages: MessagesApi, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-full">
         <p>@messages("optOutApproved.p1")</p>
         <p>@messages("optOutApproved.represented.p2")</p>
         <p>@messages("optOutApproved.represented.p3")</p>
-        <p>@messages("optOutApproved.represented.p4a")
-            <a href="@appConfig.contactUsUrl">
+        <p>
+            @messages("optOutApproved.represented.p4a")
+            <a href="@appConfig.mtdSignUpUrl(vrn)">
                 @messages("optOutApproved.p4b")
             </a>
             @messages("optOutApproved.p4c")

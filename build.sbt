@@ -29,7 +29,7 @@ val compile = Seq(
   "uk.gov.hmrc" %% "simple-reactivemongo" % "7.20.0-play-25",
   "uk.gov.hmrc" %% "work-item-repo"       % "6.8.0-play-25",
   "uk.gov.hmrc" %% "bootstrap-play-25"    % "5.1.0",
-  "uk.gov.hmrc" %% "play-scheduling"      % "6.1.0"
+  "uk.gov.hmrc" %% "play-scheduling"      % "7.1.0-play-25"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
