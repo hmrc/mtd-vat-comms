@@ -89,7 +89,6 @@ optOutApproved.p4c = for Making Tax Digital.
 
 optOutApprovedTransactor.title = Your agent has opted your business out of Making Tax Digital for VAT
 optOutApproved.represented.p2 = For your current return period, your agent must continue to submit your VAT Returns using software compatible with Making Tax Digital.
-optOutApproved.represented.p3 = Future VAT Returns must be submitted using your online VAT account, starting from your next return period.
 optOutApproved.represented.p4a = If your taxable turnover goes above £85,000, you or your agent must
 
 websiteApproved.title.change = You have successfully changed your website address for VAT

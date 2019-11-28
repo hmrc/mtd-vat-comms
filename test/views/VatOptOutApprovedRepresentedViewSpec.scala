@@ -42,6 +42,17 @@ class VatOptOutApprovedRepresentedViewSpec extends ViewBaseSpec {
           "Future VAT Returns must be submitted using your online VAT account, starting from your next return period."
       }
 
+      "have a VAT account link" which {
+
+        "has the correct text" in {
+          elementText("p:nth-child(3) > a") shouldBe "your online VAT account"
+        }
+
+        "has the correct href" in {
+          element("p:nth-child(3) > a").attr("href") shouldBe mockAppConfig.vatSummaryUrl
+        }
+      }
+
       "have the correct fourth paragraph" in {
         elementText("p:nth-child(4)") shouldBe
           "If your taxable turnover goes above £85,000, you or your agent must sign up again for Making Tax Digital."
@@ -50,11 +61,11 @@ class VatOptOutApprovedRepresentedViewSpec extends ViewBaseSpec {
       "have a re-sign-up link" which {
 
         "has the correct text" in {
-          elementText("a") shouldBe "sign up again"
+          elementText("p:nth-child(4) > a") shouldBe "sign up again"
         }
 
         "has the correct href" in {
-          element("a").attr("href") shouldBe mockAppConfig.mtdSignUpUrl("999999999")
+          element("p:nth-child(4) > a").attr("href") shouldBe mockAppConfig.mtdSignUpUrl("999999999")
         }
       }
     }

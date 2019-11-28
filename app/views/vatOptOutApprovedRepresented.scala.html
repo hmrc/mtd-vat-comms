@@ -22,7 +22,9 @@
     <div class="column-full">
         <p>@messages("optOutApproved.p1")</p>
         <p>@messages("optOutApproved.represented.p2")</p>
-        <p>@messages("optOutApproved.represented.p3")</p>
+        <p>@messages("optOutApproved.p3a")
+            <a href="@appConfig.vatSummaryUrl">@messages("optOutApproved.p3b")</a>@messages("optOutApproved.p3c")
+        </p>
         <p>
             @messages("optOutApproved.represented.p4a")
             <a href="@appConfig.mtdSignUpUrl(vrn)">
