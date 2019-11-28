@@ -16,6 +16,8 @@
 
 package services
 
+import java.time.format.DateTimeParseException
+
 import base.BaseSpec
 import common.Constants.MessageKeys._
 import connectors.SecureCommsServiceConnector
@@ -291,7 +293,11 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
     "throw an exception" when {
 
       "an invalid stagger code is provided" in {
-        intercept[MatchError](await(service.sendSecureCommsMessage(staggerinvalidApprovedTransactorRequest)))
+        intercept[MatchError](await(service.sendSecureCommsMessage(staggerInvalidCodeRequest)))
+      }
+
+      "an invalid date is provided" in {
+        intercept[DateTimeParseException](await(service.sendSecureCommsMessage(staggerInvalidDatesRequest)))
       }
     }
 

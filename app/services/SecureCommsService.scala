@@ -16,6 +16,7 @@
 
 package services
 
+import java.time.format.DateTimeParseException
 import java.util.UUID
 
 import common.Constants._
@@ -70,6 +71,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     }
   }
 
+  //scalastyle:off method.length
   private[services] def buildResponse(messageModel: MessageModel, isTransactor: Boolean,
                                       isApproval: Boolean): SecureCommsServiceRequestModel = {
 
@@ -127,6 +129,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         )
     }
   }
+  //scalastyle:on method.length
 
   private def buildSecureCommsServiceRequestModel(htmlContent: String,
                                                   userEmail: String,
@@ -208,7 +211,13 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
           vatStaggerApproved(vatStaggerChangeModel.staggerDetails.stagger.toUpperCase).toString
         }
       } catch {
-        case exception: Exception =>
+        case exception: DateTimeParseException =>
+          logWarn(s"[SecureCommsService][getStaggerChangeHtml] - Error parsing one of the provided dates.\n" +
+            s"New stagger start date: ${vatStaggerChangeModel.staggerDetails.newStaggerStartDate}\n" +
+            s"New stagger end date: ${vatStaggerChangeModel.staggerDetails.newStaggerPeriodEndDate}\n" +
+            s"Prev stagger end date: ${vatStaggerChangeModel.staggerDetails.previousStaggerEndDate}")
+          throw exception
+        case exception: MatchError =>
           logWarn("[SecureCommsService][getStaggerChangeHtml] - " +
             s"Unrecognised stagger code: ${vatStaggerChangeModel.staggerDetails.stagger.toUpperCase}")
           throw exception

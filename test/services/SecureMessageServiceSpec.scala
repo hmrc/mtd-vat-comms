@@ -18,7 +18,7 @@ package services
 
 import java.net.UnknownHostException
 
-import base.{BaseSpec}
+import base.BaseSpec
 import metrics.QueueMetrics
 import models._
 import org.joda.time.{DateTime, DateTimeZone}
@@ -152,11 +152,10 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
   trait TestSetup {
     val now: DateTime = new DateTime(0, DateTimeZone.UTC)
     val exampleVatChangeEvent: SecureCommsMessageModel = emailValidApprovedClientRequest
-    val exampleBadVatStaggerEvent: SecureCommsMessageModel = staggerinvalidApprovedTransactorRequest
     val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
       WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
     val exampleBadStaggerWorkItem: WorkItem[SecureCommsMessageModel] =
-      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleBadVatStaggerEvent)
+      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, staggerInvalidCodeRequest)
     val queue: SecureMessageQueueRepository = mock[SecureMessageQueueRepository]
     val secureCommsService: SecureCommsService = mock[SecureCommsService]
     val metrics: QueueMetrics = mock[QueueMetrics]
