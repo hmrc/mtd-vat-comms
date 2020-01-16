@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc" %% "simple-reactivemongo" % "7.20.0-play-25",
-  "uk.gov.hmrc" %% "work-item-repo"       % "6.8.0-play-25",
+  "uk.gov.hmrc" %% "simple-reactivemongo" % "7.22.0-play-25",
+  "uk.gov.hmrc" %% "work-item-repo"       % "6.9.0-play-25",
   "uk.gov.hmrc" %% "bootstrap-play-25"    % "5.1.0",
-  "uk.gov.hmrc" %% "play-scheduling"      % "7.1.0-play-25"
+  "uk.gov.hmrc" %% "play-scheduling"      % "7.2.0-play-25"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
