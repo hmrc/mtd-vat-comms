@@ -16,7 +16,7 @@ class VatDeregApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {
-      elementText("p:nth-child(1)") shouldBe "The business will be deregistered from VAT on 03 October 2018."
+      elementText("p:nth-child(1)") shouldBe "The business’ VAT registration will be cancelled on 03 October 2018."
     }
 
     "have the correct second h2" in {
