@@ -32,12 +32,12 @@ staggerRejected.p2 = If you do not agree with our decision, you can ask for a re
 
 deregApproved.title = We have accepted your request to cancel your VAT registration
 deregApprovedTransactor.title = We have accepted your agent’s request to cancel your VAT registration
-deregApproved.p1 = The business’ VAT registration will be cancelled on {0}.
+deregApproved.p1 = The business’s VAT registration will be cancelled on {0}.
 deregApproved.p2 = Submit any outstanding VAT Returns which cover the period up to {0}.
 deregApproved.p3 = Register for VAT again if your taxable turnover goes above the VAT threshold.
 
 deregRejected.title = We have rejected your request to cancel your VAT registration
-deregRejectedTransactor.title = We have rejected your agent’s request to cancel your business’ VAT registration
+deregRejectedTransactor.title = We have rejected your agent’s request to cancel your business’s VAT registration
 deregRejected.p1 = From the information available to us, we think you are not eligible to cancel your VAT registration and will remain registered.
 deregRejected.p2 = You can apply to cancel your VAT registration again if your turnover falls below the threshold.
 deregRejected.p3a = You also have the option to
