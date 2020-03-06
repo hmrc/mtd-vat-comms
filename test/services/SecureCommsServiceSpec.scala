@@ -365,7 +365,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
 
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval = false, isTransactor = true)
-        result shouldBe "We have rejected your agent’s request to cancel your business’ VAT registration"
+        result shouldBe "We have rejected your agent’s request to cancel your business’s VAT registration"
       }
 
       "it is for a client approved change" in {
