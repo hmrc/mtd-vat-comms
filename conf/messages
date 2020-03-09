@@ -30,16 +30,16 @@ staggerRejectedTransactor.title = We have rejected your agent’s change to your
 staggerRejected.p1 = You must continue to submit to your current deadlines.
 staggerRejected.p2 = If you do not agree with our decision, you can ask for a review by an HMRC officer not previously involved in the matter. If you want a review, you should write to us within 30 days of receiving this message giving the reasons why you do not agree with our decision. Write to:
 
-deregApproved.title = We have accepted your request to deregister from VAT
-deregApprovedTransactor.title = We have accepted your agent’s request to deregister from VAT
-deregApproved.p1 = The business will be deregistered from VAT on {0}.
+deregApproved.title = We have accepted your request to cancel your VAT registration
+deregApprovedTransactor.title = We have accepted your agent’s request to cancel your VAT registration
+deregApproved.p1 = The business’s VAT registration will be cancelled on {0}.
 deregApproved.p2 = Submit any outstanding VAT Returns which cover the period up to {0}.
 deregApproved.p3 = Register for VAT again if your taxable turnover goes above the VAT threshold.
 
-deregRejected.title = We have rejected your request to deregister from VAT
-deregRejectedTransactor.title = We have rejected your agent’s request to deregister your business from VAT
-deregRejected.p1 = From the information available to us, we think you are not eligible to deregister from VAT and will remain registered.
-deregRejected.p2 = You can apply to deregister again if your turnover falls below the threshold.
+deregRejected.title = We have rejected your request to cancel your VAT registration
+deregRejectedTransactor.title = We have rejected your agent’s request to cancel your business’s VAT registration
+deregRejected.p1 = From the information available to us, we think you are not eligible to cancel your VAT registration and will remain registered.
+deregRejected.p2 = You can apply to cancel your VAT registration again if your turnover falls below the threshold.
 deregRejected.p3a = You also have the option to
 deregRejected.p3b = appeal to the tax tribunal
 deregRejected.p3c = to request a review of an HMRC decision.

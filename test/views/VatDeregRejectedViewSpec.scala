@@ -28,7 +28,7 @@ class VatDeregRejectedViewSpec extends ViewBaseSpec {
 
     "have the correct first paragraph" in {
       elementText("p:nth-child(1)") shouldBe "From the information available to us, we think you are not eligible to " +
-        "deregister from VAT and will remain registered."
+        "cancel your VAT registration and will remain registered."
     }
 
     "have the correct h2" in {
@@ -37,7 +37,7 @@ class VatDeregRejectedViewSpec extends ViewBaseSpec {
 
     "have the correct second paragraph" in {
       elementText("p:nth-child(3)") shouldBe
-        "You can apply to deregister again if your turnover falls below the threshold."
+        "You can apply to cancel your VAT registration again if your turnover falls below the threshold."
     }
 
     "have the correct third fifth paragraph" in {
