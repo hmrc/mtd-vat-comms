@@ -32,8 +32,8 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
   val mockConnector: SecureCommsAlertConnector = mock[SecureCommsAlertConnector]
   val service: SecureCommsAlertService = new SecureCommsAlertService(mockConnector)
 
-  val serviceName = "doesn't matter"
-  val regNum = "someTypeOfNumberAndLetters"
+  val serviceName = "testServiceName"
+  val regNum = "testRegNum"
   val communicationsId = "129480912840912380912"
   val dateToUse: String = "2019-01-01T09:00:00Z"
 

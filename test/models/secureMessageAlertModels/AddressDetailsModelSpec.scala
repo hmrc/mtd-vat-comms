@@ -22,23 +22,23 @@ import play.api.libs.json.{JsObject, Json}
 class AddressDetailsModelSpec extends BaseSpec {
 
   val expectedModel: AddressDetailsModel = AddressDetailsModel(
-    "Address Line Een",
-    "Address Line Twee",
-    "Probably a county",
+    "Address Line One",
+    "Address Line Two",
+    "County",
     "",
-    "Not sure why 5",
-    "TF11TT",
-    "England M8"
+    "",
+    "AB12CD",
+    "England"
   )
 
   val validJson: JsObject = Json.obj(
-    "addressLine1" -> "Address Line Een",
-    "addressLine2" -> "Address Line Twee",
-    "addressLine3" -> "Probably a county",
+    "addressLine1" -> "Address Line One",
+    "addressLine2" -> "Address Line Two",
+    "addressLine3" -> "County",
     "addressLine4" -> "",
-    "addressLine5" -> "Not sure why 5",
-    "postCode" -> "TF11TT",
-    "countryName" -> "England M8"
+    "addressLine5" -> "",
+    "postCode" -> "AB12CD",
+    "countryName" -> "England"
   )
 
   "AddressDetails model" should {

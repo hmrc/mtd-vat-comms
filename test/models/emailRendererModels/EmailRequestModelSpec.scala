@@ -22,10 +22,10 @@ import play.api.libs.json.Json
 class EmailRequestModelSpec extends BaseSpec{
 
   val emailToUse = Seq("thisAnEmailYo@sup.sweet.dude")
-  val templateId = "thisBeAnIdMaMan"
+  val templateId = "testTemplateId"
   val params = Map(
-    "num1" -> "aight",
-    "num2" -> "ello"
+    "num1" -> "123",
+    "num2" -> "456"
   )
 
   "EmailRequestModel" should {

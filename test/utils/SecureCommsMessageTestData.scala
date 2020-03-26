@@ -35,25 +35,25 @@ object SecureCommsMessageTestData {
   val previousStaggerStartExample = "20180912"
   val previousStaggerEndExample = "20180411"
 
-  val transactorModel: TransactorModel = TransactorModel("Info_in_FB@CoCHoldingsLtd.co.uk", "Pack Mule")
+  val transactorModel: TransactorModel = TransactorModel("test@email.co.uk", "testTransactorName")
 
   object JsonModels {
     val validJsonEverything: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      AL1 -> "4 Cloud District",
-      AL2 -> "Whiterun",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      AL1 -> "12 Test Street",
+      AL2 -> "testTown",
       AL3 -> "",
       AL4 -> "",
       AL5 -> "",
-      POST_CODE -> "TA11RI",
-      COUNTRY_NAME -> "Skyrim",
-      ACCOUNT_NAME -> "Bank of Tamriel",
+      POST_CODE -> "AB12CD",
+      COUNTRY_NAME -> "England",
+      ACCOUNT_NAME -> "accountName",
       ACCOUNT_NUMBER -> "12039831",
       SORT_CODE -> "11-11-11",
       STAGGER -> "12jje7uw",
@@ -62,14 +62,14 @@ object SecureCommsMessageTestData {
       PREVIOUS_STAGGER -> previousStaggerExample,
       PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
       PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample,
-      O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
+      O_EMAIL_ADDRESS -> "example@email.com",
       MANDATION_STATUS -> "3",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
       PRIMARY_PHONENUMBER -> "01225123456",
       PRIMARY_PHONENUMBER_CHANGED -> "YES",
       MOBILE_NUMBER -> "07578123456",
       MOBILE_NUMBER_CHANGED -> "NO",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -79,13 +79,13 @@ object SecureCommsMessageTestData {
 
     val validJsonDeRegistration: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       EFFECTIVE_DOD -> "20181227",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -95,19 +95,19 @@ object SecureCommsMessageTestData {
 
     val validJsonPPOBChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      AL1 -> "4 Cloud District",
-      AL2 -> "Whiterun",
+      BUSINESS_NAME -> "testBusinessName",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      AL1 -> "12 Test Street",
+      AL2 -> "testTown",
       AL3 -> "",
       AL4 -> "",
       AL5 -> "",
-      POST_CODE -> "TA11RI",
-      COUNTRY_NAME -> "Skyrim",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      POST_CODE -> "AB12CD",
+      COUNTRY_NAME -> "England",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -117,15 +117,15 @@ object SecureCommsMessageTestData {
 
     val validJsonRepaymentBankAccountChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      ACCOUNT_NAME -> "Bank of Tamriel",
+      BUSINESS_NAME -> "testBusinessName",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      ACCOUNT_NAME -> "accountName",
       ACCOUNT_NUMBER -> "12039831",
       SORT_CODE -> "11-11-11",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -135,18 +135,18 @@ object SecureCommsMessageTestData {
 
     val validJsonVatStaggerChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
+      BUSINESS_NAME -> "testBusinessName",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
       STAGGER -> "12jje7uw",
       NEW_STAGGER_START_DATE -> newStaggerStartExample,
       NEW_STAGGER_END_DATE -> newStaggerEndExample,
       PREVIOUS_STAGGER -> previousStaggerExample,
       PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
       PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample,
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -156,13 +156,13 @@ object SecureCommsMessageTestData {
 
     val validJsonEmailChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       TRANSACTOR_EMAIL -> "",
       TRANSACTOR_NAME -> "",
-      O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      O_EMAIL_ADDRESS -> "example@email.com",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -172,12 +172,12 @@ object SecureCommsMessageTestData {
 
     val validJsonBusinessNameChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Companions Guild",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      BUSINESS_NAME -> "businessName",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -187,12 +187,12 @@ object SecureCommsMessageTestData {
 
     val validJsonContactNumbersChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT12A_SM12A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Some Company Limited",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      BUSINESS_NAME -> "businessName",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       PRIMARY_PHONENUMBER -> "01225123456",
       PRIMARY_PHONENUMBER_CHANGED -> "YES",
@@ -206,13 +206,13 @@ object SecureCommsMessageTestData {
 
     val validJsonWebAddressChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT12A_SM14A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Some Company Limited",
+      BUSINESS_NAME -> "businessName",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
-      TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-      TRANSACTOR_NAME -> "Pack Mule",
-      C_EMAIL -> "info@CoCHoldings.co.uk",
+      TRANSACTOR_EMAIL -> "test@email.co.uk",
+      TRANSACTOR_NAME -> "testTransactorName",
+      C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
       C_PREFS -> PAPER,
@@ -225,28 +225,28 @@ object SecureCommsMessageTestData {
 
     val expectedResponseEverything = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
+      Some(BankDetailsModel("accountName", "12039831", "11-11-11")),
       Some(StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
         previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
-      Some("sofia@whiterunstables.co.tam"),
+      Some("example@email.com"),
       Some("3"),
       Some("https://www.web-address.co.uk"),
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseDeRegistration = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -256,17 +256,17 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponsePPOBChange = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
       None,
       None,
       None,
@@ -274,33 +274,33 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseBankRepaymentAccountChange = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(BankDetailsModel("accountName", "12039831", "11-11-11")),
       None,
       None,
       None,
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseStagger = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -311,33 +311,33 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseEmailChange = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
       None,
-      Some("dragonborn@winterhold.tam"),
+      Some("example@email.com"),
       None,
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseOptOut = SecureCommsMessageModel(
       "CC07C_SM11C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -347,15 +347,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseWebAddress = SecureCommsMessageModel(
       "VRT12A_SM14A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "Some Company Limited",
+      "businessName",
       None,
       None,
       None,
@@ -365,15 +365,15 @@ object SecureCommsMessageTestData {
       Some("https://www.web-address.co.uk"),
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseContactNumbers = SecureCommsMessageModel(
       "VRT12A_SM12A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "Some Company Limited",
+      "businessName",
       None,
       None,
       None,
@@ -383,15 +383,15 @@ object SecureCommsMessageTestData {
       None,
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseBusinessNameChange = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "Companions Guild",
+      "businessName",
       None,
       None,
       None,
@@ -401,15 +401,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseNoTransactor = SecureCommsMessageModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -428,9 +428,9 @@ object SecureCommsMessageTestData {
 
     val messageModelDeRegistrationInvalidTemplate = SecureCommsMessageModel(
       "NO SUCH ID",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -440,15 +440,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val deRegistrationValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT23C_SM7C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -458,15 +458,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val deRegistrationValidRejectedTransactorRequest = SecureCommsMessageModel(
       "VRT15C_SM8C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -476,15 +476,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val deRegistrationValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT23A_SM7A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -494,15 +494,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val deRegistrationValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT15A_SM8A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       Some("20181227"),
       None,
       None,
@@ -512,87 +512,87 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val bankDetailsValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT12C_SM3C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(BankDetailsModel("businessName", "12039831", "11-11-11")),
       None,
       None,
       None,
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val bankDetailsValidRejectedTransactorRequest = SecureCommsMessageModel(
       "VRT14C_SM4C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(BankDetailsModel("businessName", "12039831", "11-11-11")),
       None,
       None,
       None,
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val bankDetailsValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT12A_SM3A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(BankDetailsModel("businessName", "12039831", "11-11-11")),
       None,
       None,
       None,
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val bankDetailsValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM4A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
-      Some(BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")),
+      Some(BankDetailsModel("businessName", "12039831", "11-11-11")),
       None,
       None,
       None,
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT12C_SM5C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -603,15 +603,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerLeaveAnnualAccountingValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT12C_SM5C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -622,15 +622,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerValidRejectedTransactorRequest = SecureCommsMessageModel(
       "VRT14C_SM6C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -640,15 +640,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerLeaveAnnualAccountingValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT12A_SM5A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -659,15 +659,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT12A_SM5A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -678,15 +678,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val staggerValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM6A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -696,7 +696,7 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -710,11 +710,11 @@ object SecureCommsMessageTestData {
 
     val ppobValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT12C_SM1C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
       None,
       None,
       None,
@@ -722,17 +722,17 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val ppobValidRejectedTransactorRequest = SecureCommsMessageModel(
       "VRT14C_SM2C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
       None,
       None,
       None,
@@ -740,17 +740,17 @@ object SecureCommsMessageTestData {
       None,
       None,
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val ppobValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT12A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
       None,
       None,
       None,
@@ -758,17 +758,17 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val ppobValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM2A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
-      Some(AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")),
+      Some(AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")),
       None,
       None,
       None,
@@ -776,15 +776,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val emailValidApprovedClientRequest = SecureCommsMessageModel(
       "VRT12A_SM9A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -794,15 +794,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val optOutRequest = SecureCommsMessageModel(
       "CC07A_SM11A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -812,15 +812,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val optOutRequestRepresented = SecureCommsMessageModel(
       "CC07C_SM11C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -830,15 +830,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("agent@CoCHoldings.co.uk", "CoC Agent"),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val emailValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM10A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -848,15 +848,15 @@ object SecureCommsMessageTestData {
       None,
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val websiteValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM15A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -866,7 +866,7 @@ object SecureCommsMessageTestData {
       Some("http://www.web-address.co.uk"),
       None,
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -881,9 +881,9 @@ object SecureCommsMessageTestData {
 
     val contactNumbersValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM13A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       None,
       None,
       None,
@@ -893,7 +893,7 @@ object SecureCommsMessageTestData {
       None,
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
@@ -910,21 +910,21 @@ object SecureCommsMessageTestData {
   object JsonModelForModels {
     val validJsonForModelEverything: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       EFFECTIVE_DOD -> "20181227",
       ADDRESS_DETAILS -> Json.obj(
-        AL1 -> "4 Cloud District",
-        AL2 -> "Whiterun",
+        AL1 -> "12 Test Street",
+        AL2 -> "testTown",
         AL3 -> "",
         AL4 -> "",
         AL5 -> "",
-        POST_CODE -> "TA11RI",
-        COUNTRY_NAME -> "Skyrim"
+        POST_CODE -> "AB12CD",
+        COUNTRY_NAME -> "England"
       ),
       BANK_DETAILS -> Json.obj(
-        ACCOUNT_NAME -> "Bank of Tamriel",
+        ACCOUNT_NAME -> "accountName",
         ACCOUNT_NUMBER -> "12039831",
         SORT_CODE -> "11-11-11"
       ),
@@ -936,7 +936,7 @@ object SecureCommsMessageTestData {
         PREVIOUS_STAGGER_START_DATE -> previousStaggerStartExample,
         PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample
       ),
-      O_EMAIL_ADDRESS -> "sofia@whiterunstables.co.tam",
+      O_EMAIL_ADDRESS -> "example@email.com",
       MANDATION_STATUS -> "3",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
       CONTACT_NUMBERS -> Json.obj(
@@ -946,11 +946,11 @@ object SecureCommsMessageTestData {
         MOBILE_NUMBER_CHANGED -> "NO"
       ),
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -963,16 +963,16 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelDeRegistration: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       EFFECTIVE_DOD -> "20181227",
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -985,24 +985,24 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelPPOBChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       ADDRESS_DETAILS -> Json.obj(
-        AL1 -> "4 Cloud District",
-        AL2 -> "Whiterun",
+        AL1 -> "12 Test Street",
+        AL2 -> "testTown",
         AL3 -> "",
         AL4 -> "",
         AL5 -> "",
-        POST_CODE -> "TA11RI",
-        COUNTRY_NAME -> "Skyrim"
+        POST_CODE -> "AB12CD",
+        COUNTRY_NAME -> "England"
       ),
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1015,20 +1015,20 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelRepaymentsBankAccountChangeModel: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       BANK_DETAILS -> Json.obj(
-        ACCOUNT_NAME -> "Bank of Tamriel",
+        ACCOUNT_NAME -> "accountName",
         ACCOUNT_NUMBER -> "12039831",
         SORT_CODE -> "11-11-11"
       ),
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1041,9 +1041,9 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelVATStaggerChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       STAGGER_DETAILS -> Json.obj(
         STAGGER -> "12jje7uw",
         NEW_STAGGER_START_DATE -> newStaggerStartExample,
@@ -1053,11 +1053,11 @@ object SecureCommsMessageTestData {
         PREVIOUS_STAGGER_END_DATE -> previousStaggerEndExample
       ),
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1070,16 +1070,16 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelEmailAddressChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
-      O_EMAIL_ADDRESS -> "dragonborn@winterhold.tam",
+      BUSINESS_NAME -> "testBusinessName",
+      O_EMAIL_ADDRESS -> "example@email.com",
       TRANSACTOR_DETAILS -> Json.obj(
         TRANSACTOR_EMAIL -> "",
         TRANSACTOR_NAME -> ""
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1092,15 +1092,15 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelBusinessNameChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT41A_SM1A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Companions Guild",
+      BUSINESS_NAME -> "businessName",
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1113,16 +1113,16 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelWebAddressChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT12A_SM14A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Some Company Limited",
+      BUSINESS_NAME -> "businessName",
       WEBSITE_ADDRESS -> "https://www.web-address.co.uk",
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1135,9 +1135,9 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelContactNumbersChange: JsObject = Json.obj(
       TEMPLATE_ID -> "VRT12A_SM12A",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "Some Company Limited",
+      BUSINESS_NAME -> "businessName",
       CONTACT_NUMBERS -> Json.obj(
         PRIMARY_PHONENUMBER -> "01225123456",
         PRIMARY_PHONENUMBER_CHANGED -> "YES",
@@ -1145,11 +1145,11 @@ object SecureCommsMessageTestData {
         MOBILE_NUMBER_CHANGED -> "NO"
       ),
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       PREFS -> Json.obj(
@@ -1162,15 +1162,15 @@ object SecureCommsMessageTestData {
 
     val validJsonForModelOptOut: JsObject = Json.obj(
       TEMPLATE_ID -> "CC07C_SM11C",
-      VRN -> "100065579",
+      VRN -> "123456789",
       FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "CoC Company Holdings Ltd",
+      BUSINESS_NAME -> "testBusinessName",
       TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-        TRANSACTOR_NAME -> "Pack Mule"
+        TRANSACTOR_EMAIL -> "test@email.co.uk",
+        TRANSACTOR_NAME -> "testTransactorName"
       ),
       CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "info@CoCHoldings.co.uk",
+        C_EMAIL -> "testCustomer@email.co.uk",
         C_EMAIL_STATUS -> VERIFIED
       ),
       MANDATION_STATUS -> "3",
@@ -1186,44 +1186,44 @@ object SecureCommsMessageTestData {
   object ResponseAsModel {
     val expectedResponseDeRegistration = DeRegistrationModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       "20181227"
     )
 
     val expectedResponsePPOBChange = PPOBChangeModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
-      AddressDetailsModel("4 Cloud District", "Whiterun", "", "", "", "TA11RI", "Skyrim")
+      AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")
     )
 
     val expectedResponseRepaymentsBankAccountChange = RepaymentsBankAccountChangeModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
-      BankDetailsModel("Bank of Tamriel", "12039831", "11-11-11")
+      BankDetailsModel("accountName", "12039831", "11-11-11")
     )
 
     val expectedResponseStagger = VATStaggerChangeModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
       StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
         previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)
@@ -1231,43 +1231,43 @@ object SecureCommsMessageTestData {
 
     val expectedResponseEmailChange = EmailAddressChangeModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       TransactorModel("", ""),
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
-      "dragonborn@winterhold.tam"
+      "example@email.com"
     )
 
     val expectedResponseBusinessNameChange = BusinessNameChangeModel(
       "VRT41A_SM1A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "Companions Guild",
+      "businessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseOptOut = OptOutModel(
       "CC07C_SM11C",
-      "100065579",
+      "123456789",
       "092000003080",
-      "CoC Company Holdings Ltd",
+      "testBusinessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       "3",
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )
 
     val expectedResponseWebAddress = WebAddressChangeModel(
       "VRT12A_SM14A",
-      "100065579",
+      "123456789",
       "092000003080",
-      "Some Company Limited",
+      "businessName",
       transactorModel,
-      CustomerModel("info@CoCHoldings.co.uk", VERIFIED),
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
       "https://www.web-address.co.uk",
       PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
     )

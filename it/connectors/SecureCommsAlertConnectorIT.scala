@@ -112,10 +112,10 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         stubGetRequest(
           generateUrl(communicationId),
           REQUEST_TIMEOUT,
-          "AN UNKNOWN ERROR WHUT"
+          "AN UNKNOWN ERROR HAS OCCURRED"
         )
 
-        val expectedResult = Left(ErrorModel(s"$REQUEST_TIMEOUT", "AN UNKNOWN ERROR WHUT"))
+        val expectedResult = Left(ErrorModel(s"$REQUEST_TIMEOUT", "AN UNKNOWN ERROR HAS OCCURRED"))
 
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult

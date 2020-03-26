@@ -43,8 +43,8 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
     "VRT12C_SM1C",
     "123123123",
     "AID_32I1",
-    "FUS ROH DAH",
-    TransactorModel("some@thing.ha.ha", "SomeThing"),
+    "testBusinessName",
+    TransactorModel("test@email.com", "test"),
     CustomerModel("cus@tom.e.r", VERIFIED),
     PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
   )
@@ -116,7 +116,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
           "VRT12A_SM9A",
           "1234567890",
           "ALSKDLASKKDLAKS",
-          "FusRohDheli",
+          "testTransactorName",
           TransactorModel("", ""),
           CustomerModel("some@email.co.uk", VERIFIED),
           PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
@@ -133,7 +133,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
           "VRT12C_SM1C",
           "1234567890",
           "ALSKDLASKKDLAKS",
-          "FusRohDheli",
+          "testTransactorName",
           TransactorModel("agent@email.me.no", "Alduin"),
           CustomerModel("some@email.co.uk", VERIFIED),
           PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
@@ -156,7 +156,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
           "VRT12C_SM1C",
           "1234567890",
           "ALSKDLASKKDLAKS",
-          "FusRohDheli",
+          "testTransactorNa",
           TransactorModel("agent@email.me.no", "Alduin"),
           CustomerModel("some@email.co.uk", VERIFIED),
           PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)

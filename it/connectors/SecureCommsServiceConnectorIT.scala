@@ -29,11 +29,11 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
   val requestModel: SecureCommsServiceRequestModel = SecureCommsServiceRequestModel(
     ExternalRefModel("anId"),
-    RecipientModel(TaxIdentifierModel("AA", "06"), NameModel("Fus", Some("Roh"), Some("Dah")),
+    RecipientModel(TaxIdentifierModel("AA", "06"), NameModel("first", Some("middle"), Some("last")),
       "dragon@born.tam"),
-    "NOTICE",
-    "ME",
-    "SENPAI"
+    "testMessageType",
+    "testSubject",
+    "testContent"
   )
 
   val url : String = "/messages"

@@ -27,15 +27,15 @@ class RecipientModelSpec extends BaseSpec {
       "value" -> "value"
     ),
     "name" -> Json.obj(
-      "line1" -> "Lydia"
+      "line1" -> "testName"
     ),
-    "email" -> "swornToCarryYourBurdens@whiterun.tam"
+    "email" -> "test@email.com"
   )
 
   val model: RecipientModel = RecipientModel(
     TaxIdentifierModel("key", "value"),
-    NameModel("Lydia"),
-    "swornToCarryYourBurdens@whiterun.tam"
+    NameModel("testName"),
+    "test@email.com"
   )
 
   "nameModel" should {
