@@ -22,12 +22,12 @@ import play.api.libs.json.{JsObject, Json}
 class NameModelSpec extends BaseSpec {
 
   val jsonModel: JsObject = Json.obj(
-    "line1" -> "Dovah",
-    "line2" -> "Kin",
-    "line3" -> "Dragon Born"
+    "line1" -> "First",
+    "line2" -> "Middle",
+    "line3" -> "Last"
   )
 
-  val model: NameModel = NameModel("Dovah", Some("Kin"), Some("Dragon Born"))
+  val model: NameModel = NameModel("First", Some("Middle"), Some("Last"))
 
   "nameModel" should {
     "correctly parse to Json" in {

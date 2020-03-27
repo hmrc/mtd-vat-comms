@@ -29,9 +29,9 @@ class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
   val connector: EmailConnector = new EmailConnector(httpClient, appConfig)
   val postUrl: String = "/hmrc/email"
   val postBody = EmailRequestModel(
-    Seq("fusrohdah@whiterun.tam"),
-    "thisIsDefoAnId",
-    Map("FUS" -> "ROH DAHL")
+    Seq("test@email.com"),
+    "testId",
+    Map("key" -> "value")
   )
 
   "sendEmailRequest" should {

@@ -20,9 +20,9 @@ import play.api.libs.json.Json
 
 object WireMockStubRequestBodies {
   val validEDODString: String = "<p>TEMPLATE-ID|VRT41A_SM1A</p><p>VRN|100065579</p>" +
-    "<p>FORM BUNDLE REFERENCE|092000003080</p><p>BUSINESS NAME|CoC Company Holdings Ltd</p>" +
-    "<p>EFFECTIVE DATE OF DEREGISTRATION|20181227</p><p>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</p>" +
-    "<p>CUSTOMER EMAIL|info@CoCHoldings.co.uk</p>" +
+    "<p>FORM BUNDLE REFERENCE|092000003080</p><p>BUSINESS NAME|testBusinessName</p>" +
+    "<p>EFFECTIVE DATE OF DEREGISTRATION|20181227</p><p>TRANSACTOR EMAIL|transactor@email.com</p>" +
+    "<p>CUSTOMER EMAIL|customer@email.com</p>" +
     "<p>CUSTOMER EMAIL STATUS|VERIFIED</p><p>NOTIFICATION PREFERENCE|EMAIL</p><p>CHANNEL PREFERENCE|PAPER</p><p>LANGUAGE PREFERENCE|ENGLISH</p>" +
     "<p>FORMAT PREFERENCE|TEXT</p>"
 

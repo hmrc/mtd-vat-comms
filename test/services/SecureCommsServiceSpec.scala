@@ -47,8 +47,8 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
 
   val service: SecureCommsService = new SecureCommsService(mockConnector)
 
-  val serviceName = "doesn't matter"
-  val regNum = "someTypeOfNumberAndLetters"
+  val serviceName = "testServiceName"
+  val regNum = "testRegNum"
   val communicationsId = "129480912840912380912"
   val dateToUse: String = "2019-01-01T09:00:00Z"
 

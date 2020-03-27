@@ -24,7 +24,7 @@ class SecureCommsServiceRequestModelSpec extends BaseSpec {
 
   val jsonModel: JsObject = Json.obj(
     "externalRef" -> Json.obj(
-      "id" -> "fusRohID",
+      "id" -> "testId",
       "source" -> MDTP
     ),
     "recipient" -> Json.obj(
@@ -33,28 +33,28 @@ class SecureCommsServiceRequestModelSpec extends BaseSpec {
         "value" -> "value"
       ),
       "name" -> Json.obj(
-        "line1" -> "Lydia"
+        "line1" -> "testName"
       ),
-      "email" -> "swornToCarryYourBurdens@whiterun.tam"
+      "email" -> "test@email.com"
     ),
-    "messageType" -> "some message type",
-    "subject" -> "WE'RE TELLING YOU SOMETHING",
-    "content" -> "HERE HAVE SOME CONTENT"
+    "messageType" -> "testMessageType",
+    "subject" -> "testSubject",
+    "content" -> "testContent"
   )
 
   val model: SecureCommsServiceRequestModel = SecureCommsServiceRequestModel(
     ExternalRefModel(
-      "fusRohID",
+      "testId",
       MDTP
     ),
     RecipientModel(
       TaxIdentifierModel("key", "value"),
-      NameModel("Lydia"),
-      "swornToCarryYourBurdens@whiterun.tam"
+      NameModel("testName"),
+      "test@email.com"
     ),
-    "some message type",
-    "WE'RE TELLING YOU SOMETHING",
-    "HERE HAVE SOME CONTENT"
+    "testMessageType",
+    "testSubject",
+    "testContent"
   )
 
   "nameModel" should {

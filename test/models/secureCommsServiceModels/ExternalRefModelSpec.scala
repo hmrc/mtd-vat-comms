@@ -23,11 +23,11 @@ import common.Constants.SecureCommsServiceFieldValues.MDTP
 class ExternalRefModelSpec extends BaseSpec {
 
   val jsonModel: JsObject = Json.obj(
-    "id" -> "an id of some kind",
+    "id" -> "testId",
     "source" -> MDTP
   )
 
-  val model: ExternalRefModel = ExternalRefModel("an id of some kind", MDTP)
+  val model: ExternalRefModel = ExternalRefModel("testId", MDTP)
 
   "nameModel" should {
     "correctly parse to Json" in {

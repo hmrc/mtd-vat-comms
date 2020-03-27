@@ -21,12 +21,12 @@ import play.api.libs.json.{JsObject, Json}
 
 class TransactorModelSpec extends BaseSpec {
   val expectedModel: TransactorModel = TransactorModel(
-    "dovah@whiterun.co.uk", "Dovah Kin"
+    "test@email.com", "testTransactorName"
   )
 
   val validJson: JsObject = Json.obj(
-    "transactorEmail" -> "dovah@whiterun.co.uk",
-    "transactorName" -> "Dovah Kin"
+    "transactorEmail" -> "test@email.com",
+    "transactorName" -> "testTransactorName"
   )
 
   "Transactor model" should {

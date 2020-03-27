@@ -30,21 +30,21 @@ import utils.SecureCommsMessageTestData.{ResponseAsModel, Responses}
 
 class SecureCommsMessageParserSpec extends BaseSpec {
 
-  val stringToParse: String = "<![CDATA[<P>TEMPLATE-ID|VRT41A_SM1A</P><P>VRN|100065579</P>" +
-    "<P>FORM BUNDLE REFERENCE|092000003080</P><P>BUSINESS NAME|CoC Company Holdings Ltd</P>" +
-    "<P>EFFECTIVE DATE OF DEREGISTRATION|20181227</P><P>TRANSACTOR EMAIL|Info_in_FB@CoCHoldingsLtd.co.uk</P>" +
-    "<P>CUSTOMER EMAIL|info@CoCHoldings.co.uk</P>" +
+  val stringToParse: String = "<![CDATA[<P>TEMPLATE-ID|VRT41A_SM1A</P><P>VRN|123456789</P>" +
+    "<P>FORM BUNDLE REFERENCE|092000003080</P><P>BUSINESS NAME|testBusinessName</P>" +
+    "<P>EFFECTIVE DATE OF DEREGISTRATION|20181227</P><P>TRANSACTOR EMAIL|test@email.co.uk</P>" +
+    "<P>CUSTOMER EMAIL|testCustomer@email.co.uk</P>" +
     "<P>CUSTOMER EMAIL STATUS|VERIFIED</P><P>NOTIFICATION PREFERENCE|EMAIL</P><P>CHANNEL PREFERENCE|PAPER</P><P>LANGUAGE PREFERENCE|ENGLISH</P>" +
     "<P>FORMAT PREFERENCE|TEXT</P>]]>"
 
   val expectedJson: JsObject = Json.obj(
     "templateId" -> "VRT41A_SM1A",
-    "vrn" -> "100065579",
+    "vrn" -> "123456789",
     "formBundleReference" -> "092000003080",
-    "businessName" -> "CoC Company Holdings Ltd",
+    "businessName" -> "testBusinessName",
     "effectiveDateOfDeregistration" -> "20181227",
-    "transactorEmail" -> "Info_in_FB@CoCHoldingsLtd.co.uk",
-    "customerEmail" -> "info@CoCHoldings.co.uk",
+    "transactorEmail" -> "test@email.co.uk",
+    "customerEmail" -> "testCustomer@email.co.uk",
     "customerEmailStatus" -> VERIFIED,
     "notificationPreference" -> EMAIL,
     "channelPreference" -> PAPER,
@@ -86,7 +86,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       val allInvalidCombinations = (for {
         effectiveDODR <- Seq(Some("20180121"), None)
         addressDetails <- Seq(Some(AddressDetailsModel("4 NotReal Way", "A Place", "", "", "", "SW42NR", "Fantasy Land")), None)
-        bankDetails <- Seq(Some(BankDetailsModel("Bank of Tamriel", "8493483729273", "32-12-22")), None)
+        bankDetails <- Seq(Some(BankDetailsModel("businessName", "8493483729273", "32-12-22")), None)
         staggerDetails <- Seq(Some(StaggerDetailsModel("EE02", "NewStartDate", "NewEndDate", "OldStagger", "OldStartDate" ,"OldEndDate")), None)
         oEmail <- Seq(Some("anOriginalEmail@aproperhost.co.uk"), None)
         mandationStatus <- Seq(Some("3"), None)
