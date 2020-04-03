@@ -29,6 +29,7 @@ import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
+import uk.gov.hmrc.http.GatewayTimeoutException
 import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._
 
@@ -62,6 +63,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
             verify(emailMessageService, times(1)).queueRequest(expectedResponseStagger)
             verify(secureMessageService, times(1)).queueRequest(expectedResponseStagger)
+            verify(metrics, times(1)).commsEventDequeued()
           }
         }
 
@@ -74,7 +76,8 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
             await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(secureMessageService, never()).queueRequest(any())
+            verify(secureMessageService, never).queueRequest(any())
+            verify(metrics, times(1)).commsEventQueuedForRetry()
           }
         }
       }
@@ -91,6 +94,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
           verify(emailMessageService, times(1)).queueRequest(expectedResponseEmailChange)
           verify(secureMessageService, times(1)).queueRequest(expectedResponseEmailChange)
+          verify(metrics, times(1)).commsEventDequeued()
         }
       }
 
@@ -104,7 +108,8 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
           await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
           verify(secureMessageService, times(1)).queueRequest(expectedResponseNoTransactor)
-          verify(emailMessageService, never()).queueRequest(any())
+          verify(emailMessageService, never).queueRequest(any())
+          verify(metrics, times(1)).commsEventDequeued()
         }
       }
     }
@@ -117,6 +122,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
         verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventGenericParsingError()
       }
     }
 
@@ -129,6 +135,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
         verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventJsonParsingError()
       }
     }
 
@@ -141,6 +148,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
         verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventNotFoundError()
       }
     }
 
@@ -153,6 +161,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
         verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventBadRequestError()
       }
     }
 
@@ -164,9 +173,22 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never()).complete(any())(any())
+        verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventQueuedForRetry()
       }
+    }
 
+    "there is a gateway timeout exception" should {
+
+      "mark the item as failed and not remove it from the queue" in new TestSetup {
+        gatewayTimeoutMock()
+        markItemAsFailedMock
+
+        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+        verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventQueuedForRetry()
+      }
     }
 
     "there is an unexpected exception" should {
@@ -177,9 +199,9 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never()).complete(any())(any())
+        verify(queue, never).complete(any())(any())
+        verify(metrics, times(1)).commsEventUnexpectedError()
       }
-
     }
   }
 
@@ -199,10 +221,13 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
           .thenReturn(Future.successful(response))
 
-    def secureCommsAlertExceptionMock():
-    OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
+    def secureCommsAlertExceptionMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
       when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
         .thenReturn(Future.failed(new UnknownHostException("some error")))
+
+    def gatewayTimeoutMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
+      when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
+        .thenReturn(Future.failed(new GatewayTimeoutException("some error")))
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
       when(queue.complete(any())(any())).thenReturn(Future.successful(response))

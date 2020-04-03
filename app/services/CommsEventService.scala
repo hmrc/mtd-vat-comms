@@ -22,6 +22,7 @@ import metrics.QueueMetrics
 import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
+import uk.gov.hmrc.http.GatewayTimeoutException
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
 import utils.LoggerUtil.{logDebug, logError, logWarn}
@@ -83,6 +84,9 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
         handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
     }
   }.recoverWith {
+    case _: GatewayTimeoutException =>
+      metrics.commsEventQueuedForRetry()
+      commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
     case e =>
       metrics.commsEventUnexpectedError()
       handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
