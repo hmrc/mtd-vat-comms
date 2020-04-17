@@ -20,7 +20,7 @@ import models.SecureCommsMessageModel
 import models.secureMessageAlertModels._
 import models.secureMessageAlertModels.messageTypes._
 import play.api.libs.json.{JsObject, Json}
-import common.Constants.ChannelPreferences.PAPER
+import common.Constants.ChannelPreferences._
 import common.Constants.EmailStatus.VERIFIED
 import common.Constants.FormatPreferences.TEXT
 import common.Constants.LanguagePreferences.ENGLISH
@@ -72,7 +72,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -88,7 +88,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -110,7 +110,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -128,7 +128,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -149,7 +149,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -165,7 +165,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -180,7 +180,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -199,7 +199,7 @@ object SecureCommsMessageTestData {
       MOBILE_NUMBER -> "07578123456",
       MOBILE_NUMBER_CHANGED -> "NO",
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -215,7 +215,7 @@ object SecureCommsMessageTestData {
       C_EMAIL -> "testCustomer@email.co.uk",
       C_EMAIL_STATUS -> VERIFIED,
       N_PREFS -> EMAIL,
-      C_PREFS -> PAPER,
+      C_PREFS -> DIGITAL,
       L_PREFS -> ENGLISH,
       F_PREFS -> TEXT
     )
@@ -239,7 +239,7 @@ object SecureCommsMessageTestData {
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseDeRegistration = SecureCommsMessageModel(
@@ -257,7 +257,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponsePPOBChange = SecureCommsMessageModel(
@@ -275,7 +275,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseBankRepaymentAccountChange = SecureCommsMessageModel(
@@ -293,10 +293,29 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseStagger = SecureCommsMessageModel(
+      "VRT41A_SM1A",
+      "123456789",
+      "092000003080",
+      "testBusinessName",
+      None,
+      None,
+      None,
+      Some(StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
+        previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)),
+      None,
+      None,
+      None,
+      None,
+      transactorModel,
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
+    )
+
+    val expectedResponseStaggerPaper = SecureCommsMessageModel(
       "VRT41A_SM1A",
       "123456789",
       "092000003080",
@@ -330,7 +349,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseOptOut = SecureCommsMessageModel(
@@ -348,7 +367,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseWebAddress = SecureCommsMessageModel(
@@ -366,7 +385,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseContactNumbers = SecureCommsMessageModel(
@@ -384,7 +403,7 @@ object SecureCommsMessageTestData {
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseBusinessNameChange = SecureCommsMessageModel(
@@ -402,7 +421,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseNoTransactor = SecureCommsMessageModel(
@@ -420,7 +439,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("dovahkin@riften.tam", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
   }
 
@@ -441,7 +460,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val deRegistrationValidApprovedTransactorRequest = SecureCommsMessageModel(
@@ -459,7 +478,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val deRegistrationValidRejectedTransactorRequest = SecureCommsMessageModel(
@@ -477,7 +496,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val deRegistrationValidApprovedClientRequest = SecureCommsMessageModel(
@@ -495,7 +514,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val deRegistrationValidRejectedClientRequest = SecureCommsMessageModel(
@@ -513,7 +532,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val bankDetailsValidApprovedTransactorRequest = SecureCommsMessageModel(
@@ -531,7 +550,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val bankDetailsValidRejectedTransactorRequest = SecureCommsMessageModel(
@@ -549,7 +568,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val bankDetailsValidApprovedClientRequest = SecureCommsMessageModel(
@@ -567,7 +586,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val bankDetailsValidRejectedClientRequest = SecureCommsMessageModel(
@@ -585,7 +604,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerValidApprovedTransactorRequest = SecureCommsMessageModel(
@@ -604,7 +623,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerLeaveAnnualAccountingValidApprovedTransactorRequest = SecureCommsMessageModel(
@@ -623,7 +642,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerValidRejectedTransactorRequest = SecureCommsMessageModel(
@@ -641,7 +660,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerLeaveAnnualAccountingValidApprovedClientRequest = SecureCommsMessageModel(
@@ -660,7 +679,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerValidApprovedClientRequest = SecureCommsMessageModel(
@@ -679,7 +698,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerValidRejectedClientRequest = SecureCommsMessageModel(
@@ -697,7 +716,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val staggerInvalidCodeRequest: SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
@@ -723,7 +742,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val ppobValidRejectedTransactorRequest = SecureCommsMessageModel(
@@ -741,7 +760,7 @@ object SecureCommsMessageTestData {
       None,
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val ppobValidApprovedClientRequest = SecureCommsMessageModel(
@@ -759,7 +778,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val ppobValidRejectedClientRequest = SecureCommsMessageModel(
@@ -777,7 +796,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val emailValidApprovedClientRequest = SecureCommsMessageModel(
@@ -795,7 +814,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val optOutRequest = SecureCommsMessageModel(
@@ -813,7 +832,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val optOutRequestRepresented = SecureCommsMessageModel(
@@ -831,7 +850,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("agent@CoCHoldings.co.uk", "CoC Agent"),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val emailValidRejectedClientRequest = SecureCommsMessageModel(
@@ -849,7 +868,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val websiteValidRejectedClientRequest = SecureCommsMessageModel(
@@ -867,7 +886,7 @@ object SecureCommsMessageTestData {
       None,
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val websiteValidApprovedClientRequest: SecureCommsMessageModel = websiteValidRejectedClientRequest.copy(
@@ -894,7 +913,7 @@ object SecureCommsMessageTestData {
       Some(ContactNumbersModel("01225123456", "YES", "07578123456", "NO")),
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val contactNumbersValidApprovedClientRequest: SecureCommsMessageModel = contactNumbersValidRejectedClientRequest.copy(
@@ -955,7 +974,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -977,7 +996,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1007,7 +1026,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1033,7 +1052,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1062,7 +1081,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1084,7 +1103,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1105,7 +1124,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1127,7 +1146,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1154,7 +1173,7 @@ object SecureCommsMessageTestData {
       ),
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1176,7 +1195,7 @@ object SecureCommsMessageTestData {
       MANDATION_STATUS -> "3",
       PREFS -> Json.obj(
         N_PREFS -> EMAIL,
-        C_PREFS -> PAPER,
+        C_PREFS -> DIGITAL,
         L_PREFS -> ENGLISH,
         F_PREFS -> TEXT
       )
@@ -1191,7 +1210,7 @@ object SecureCommsMessageTestData {
       "testBusinessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT),
       "20181227"
     )
 
@@ -1202,7 +1221,7 @@ object SecureCommsMessageTestData {
       "testBusinessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT),
       AddressDetailsModel("12 Test Street", "testTown", "", "", "", "AB12CD", "England")
     )
 
@@ -1213,7 +1232,7 @@ object SecureCommsMessageTestData {
       "testBusinessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT),
       BankDetailsModel("accountName", "12039831", "11-11-11")
     )
 
@@ -1224,7 +1243,7 @@ object SecureCommsMessageTestData {
       "testBusinessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT),
       StaggerDetailsModel("12jje7uw", newStaggerStartExample, newStaggerEndExample,
         previousStaggerExample, previousStaggerStartExample, previousStaggerEndExample)
     )
@@ -1236,7 +1255,7 @@ object SecureCommsMessageTestData {
       "testBusinessName",
       TransactorModel("", ""),
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT),
       "example@email.com"
     )
 
@@ -1247,7 +1266,7 @@ object SecureCommsMessageTestData {
       "businessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseOptOut = OptOutModel(
@@ -1258,7 +1277,7 @@ object SecureCommsMessageTestData {
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
       "3",
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
     val expectedResponseWebAddress = WebAddressChangeModel(
@@ -1269,7 +1288,7 @@ object SecureCommsMessageTestData {
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
       "https://www.web-address.co.uk",
-      PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
   }
 
