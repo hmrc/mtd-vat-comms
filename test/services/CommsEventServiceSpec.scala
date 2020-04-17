@@ -53,7 +53,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         "the email queue repository is successfully populated" should {
 
-          "if the preference is DIGITAL also populate the secure message repository" in new TestSetup {
+          "also populate the secure message repository if the preference is DIGITAL " in new TestSetup {
             secureCommsAlertMock(Right(expectedResponseStagger))
             when(emailMessageService.queueRequest(expectedResponseStagger)).thenReturn(Future(true))
             when(secureMessageService.queueRequest(expectedResponseStagger)).thenReturn(Future(true))
@@ -66,7 +66,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
             verify(metrics, times(1)).commsEventDequeued()
           }
 
-          "if the preference is PAPER do not populate the secure message repository" in new TestSetup {
+          "not populate the secure message repository if the preference is PAPER" in new TestSetup {
             secureCommsAlertMock(Right(expectedResponseStaggerPaper))
             when(emailMessageService.queueRequest(expectedResponseStaggerPaper)).thenReturn(Future(true))
             completeItemMock(true)
