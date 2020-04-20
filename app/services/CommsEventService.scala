@@ -17,6 +17,7 @@
 package services
 
 import common.ApiConstants.serviceName
+import common.Constants.ChannelPreferences.DIGITAL
 import javax.inject.{Inject, Singleton}
 import metrics.QueueMetrics
 import models._
@@ -96,7 +97,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
     if (model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
       emailMessageService.queueRequest(model).flatMap {
         case true =>
-          secureMessageService.queueRequest(model)
+          if(model.preferences.channelPreference == DIGITAL) secureMessageService.queueRequest(model)
           metrics.commsEventDequeued()
           commsEventQueueRepository.complete(workItem.id).map(_ => acc)
         case false =>
