@@ -33,6 +33,9 @@ object GenericParsingError extends ErrorModel("ERROR_PARSING", "There has been a
 object JsonParsingError extends ErrorModel("ERROR_PARSING", "Unable to parse SecureCommText string into Json.")
 
 object BadRequest extends ErrorModel("BAD_REQUEST", "Bad request")
+object SecureCommsServiceBadRequest extends ErrorModel("BAD_REQUEST", "Bad request received from secure comms service.")
+object SecureCommsAlertBadRequest extends ErrorModel("BAD_REQUEST", "Bad request received from secure comms alert service.")
+object EmailBadRequest extends ErrorModel("BAD_REQUEST", "Bad request received from the email service.")
 object GenericQueueNoRetryError extends ErrorModel("ERROR_NO_RETRY", "Error. Item should not be processed again from the queue.")
 object NotFoundMissingTaxpayer extends ErrorModel("NOT_FOUND", "Taxpayer not found")
 object NotFoundUnverifiedEmail extends ErrorModel("NOT_FOUND", "Email not verified")

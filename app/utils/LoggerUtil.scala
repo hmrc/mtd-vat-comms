@@ -33,7 +33,7 @@ object LoggerUtil {
   def logWarnEitherError[T](content: Either[ErrorModel, T]): Either[ErrorModel, T] = {
     if(content.isLeft) {
       val leftValue = content.left.get
-      logWarn(s"${leftValue.code} => ${leftValue.body}")
+      logWarn(s"[LoggerUtil][logWarnEitherError] ${leftValue.code}: ${leftValue.body}")
     }
     content
   }

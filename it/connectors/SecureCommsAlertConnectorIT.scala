@@ -83,7 +83,7 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
           secureCommsValidErrorResponse("INVALID_SERVICE", "Submission has not passed validation. Invalid Service")
         )
 
-        val expectedResult = Left(BadRequest)
+        val expectedResult = Left(SecureCommsAlertBadRequest)
 
         val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
