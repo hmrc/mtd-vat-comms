@@ -26,8 +26,11 @@ class VatEmailApprovedViewSpec extends ViewBaseSpec {
     lazy val view = views.html.vatEmailApproved("email@address.com")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "have the correct paragraph" in {
-      elementText("p") shouldBe "Your new email address for VAT is: email@address.com"
+    "have the correct first paragraph" in {
+      elementText("p:nth-child(1)") shouldBe "You want to be contacted by email."
+    }
+    "have the correct second paragraph" in {
+      elementText("p:nth-child(2)") shouldBe "Your new email address for VAT is: email@address.com"
     }
   }
 }
