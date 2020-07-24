@@ -309,7 +309,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
 
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval = false, isTransactor = false)
-        result shouldBe "We have rejected the change of email address for VAT"
+        result shouldBe "We cannot accept your change of contact details for VAT"
       }
     }
 
@@ -321,7 +321,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
 
       "it is for a transactor rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval = false, isTransactor = true)
-        result shouldBe "We have rejected your agent’s change to your principal place of business for VAT"
+        result shouldBe "We cannot accept a change to your principal place of business for VAT"
       }
 
       "it is for a client approved change" in {

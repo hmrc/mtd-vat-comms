@@ -191,7 +191,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         )
       ).toString
     } else {
-      vatPPOBRejected().toString
+      vatPPOBRejected(isTransactor = false).toString
     }
 
   private val annualAccountLeaveStaggerCodes = List("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")

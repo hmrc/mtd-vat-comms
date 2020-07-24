@@ -38,11 +38,15 @@ class VatPPOBApprovedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {
-      elementText("p:nth-child(1)") shouldBe "Your new principal place of business for VAT is:"
+      elementText("p:nth-child(1)") shouldBe "We have not changed how we contact you about VAT."
+    }
+
+    "have the correct second paragraph" in {
+      elementText("p:nth-child(2)") shouldBe "Your new principal place of business for VAT is:"
     }
 
     "have the correct address" in {
-      elementText("p:nth-child(2)") shouldBe "21 Blackjack Street Stirchley Telford Shropshire TF2 5TH United Kingdom"
+      elementText("p:nth-child(3)") shouldBe "21 Blackjack Street Stirchley Telford Shropshire TF2 5TH United Kingdom"
     }
   }
 }

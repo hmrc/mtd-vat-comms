@@ -27,7 +27,7 @@ class VatEmailRejectedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {
-      elementText("p:nth-child(1)") shouldBe "You cannot use the email address supplied."
+      elementText("p:nth-child(1)") shouldBe "We have rejected the email address you gave us. We have not changed how we contact you about VAT."
     }
 
     "have the correct second paragraph" in {

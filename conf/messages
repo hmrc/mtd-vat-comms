@@ -63,19 +63,23 @@ ppobApprovedTransactor.title = Your agent has successfully changed your principa
 ppobApproved.p1 = Your new principal place of business for VAT is:
 
 ppobRejected.title = We have rejected the change to your principal place of business for VAT
-ppobRejectedTransactor.title = We have rejected your agent’s change to your principal place of business for VAT
+ppobRejectedTransactor.title = We cannot accept a change to your principal place of business for VAT
 ppobRejected.p1 = Your principal place of business for VAT cannot be any of these address types:
+ppobRejectedTransactor.p1 = We have rejected your agent’s request to change your principal place of business for VAT. This is because the address cannot be any of these types:
 ppobRejected.bullet1 = the address of a third-party accountant or tax agent
 ppobRejected.bullet2 = a PO box address
 ppobRejected.bullet3 = a ‘care of’ address
 ppobRejected.link = Change your principal place of business
 ppobRejected.p2 = to the address where the business does most of its work. If this is in different locations, use the address where it keeps its business records.
 
+ppobContactPref.p1 = We have not changed how we contact you about VAT.
+
 emailApproved.title = You have successfully changed your email address for VAT
 emailApproved.p1 = Your new email address for VAT is: {0}
+emailApprovedContactPref.p1 = You want to be contacted by email.
 
-emailRejected.title = We have rejected the change of email address for VAT
-emailRejected.p1 = You cannot use the email address supplied.
+emailRejected.title = We cannot accept your change of contact details for VAT
+emailRejected.p1 = We have rejected the email address you gave us. We have not changed how we contact you about VAT.
 
 optOutApproved.title = You have opted out of Making Tax Digital for VAT
 optOutApproved.p1 = This does not cancel your VAT registration.
