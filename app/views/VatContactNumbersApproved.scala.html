@@ -14,23 +14,14 @@
  * limitations under the License.
  *@
 
-@(isRemoval: Boolean)(implicit messages: MessagesApi)
+@this()
+
+@()(implicit messages: Messages, appConfig: config.AppConfig)
 
 <div class="grid-row">
   <div class="column-full">
-    @if(isRemoval) {
-      <p>@messages("websiteRejected.remove.p1")</p>
-    } else {
-      <p>@messages("websiteRejected.change.p1")</p>
-    }
-    <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
-    <p>@messages("common.standardReject")</p>
-    <p>
-      @messages("common.hmrcAddressLine1")<br>
-      @messages("common.hmrcAddressLine2")<br>
-      @messages("common.hmrcAddressLine3")<br>
-      @messages("common.hmrcAddressLine4")<br>
-      @messages("common.hmrcAddressPostcode")
-    </p>
+        <p>
+          <a href="@appConfig.manageVatSubscriptionUrl">@messages("contactNumbersApproved.p1")</a>
+        </p>
   </div>
 </div>

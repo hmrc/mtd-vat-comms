@@ -18,8 +18,8 @@ package services
 
 import base.BaseSpec
 import connectors.SecureCommsAlertConnector
-import models.{ErrorModel, GenericParsingError, JsonParsingError}
 import models.responseModels.SecureCommsResponseModel
+import models.{ErrorModel, GenericParsingError, JsonParsingError}
 import org.scalamock.scalatest.MockFactory
 import utils.SecureCommsMessageBodyStrings
 import utils.SecureCommsMessageTestData.Responses.expectedResponseDeRegistration

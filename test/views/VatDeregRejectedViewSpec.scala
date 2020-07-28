@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatDeregRejected
 
 class VatDeregRejectedViewSpec extends ViewBaseSpec {
 
+  val vatDeregRejected: VatDeregRejected = injector.instanceOf[VatDeregRejected]
+
   "Rendering the VatDeregRejected secure message content" should {
 
-    lazy val view = views.html.vatDeregRejected()
+    lazy val view = vatDeregRejected()
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {

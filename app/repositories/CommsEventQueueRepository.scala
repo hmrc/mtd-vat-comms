@@ -18,13 +18,13 @@ package repositories
 
 import config.{AppConfig, ConfigKeys}
 import javax.inject.{Inject, Singleton}
+import models.VatChangeEvent
 import org.joda.time.DateTime
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
+import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import reactivemongo.play.json.ImplicitBSONHandlers._
-import models.VatChangeEvent
-import reactivemongo.api.indexes.{Index, IndexType}
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._

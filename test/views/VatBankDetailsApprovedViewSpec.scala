@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatBankDetailsApproved
 
 class VatBankDetailsApprovedViewSpec extends ViewBaseSpec {
 
+  val vatBankDetailsApproved: VatBankDetailsApproved = injector.instanceOf[VatBankDetailsApproved]
+
   "Rendering the VatBankDetailsApproved secure message content" should {
 
-    lazy val view = views.html.vatBankDetailsApproved("Mickey Flanagan", "21****", "****3218")
+    lazy val view = vatBankDetailsApproved("Mickey Flanagan", "21****", "****3218")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {

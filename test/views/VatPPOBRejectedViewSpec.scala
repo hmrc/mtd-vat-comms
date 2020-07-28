@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatPPOBRejected
 
 class VatPPOBRejectedViewSpec extends ViewBaseSpec {
 
+  val vatPPOBRejected: VatPPOBRejected = injector.instanceOf[VatPPOBRejected]
+
   "Rendering the VatPPOBRejected secure message content for client making the change" should {
 
-    lazy val view = views.html.vatPPOBRejected(isTransactor = false)
+    lazy val view = vatPPOBRejected(isTransactor = false)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {
@@ -79,7 +82,7 @@ class VatPPOBRejectedViewSpec extends ViewBaseSpec {
 
   "Rendering the VatPPOBRejected secure message content for when an agent has made the change" should {
 
-    lazy val view = views.html.vatPPOBRejected(isTransactor = true)
+    lazy val view = vatPPOBRejected(isTransactor = true)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {

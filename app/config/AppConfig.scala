@@ -17,13 +17,13 @@
 package config
 
 import com.google.inject.ImplementedBy
+import config.{ConfigKeys => Keys}
 import javax.inject.{Inject, Singleton}
 import play.api._
-import uk.gov.hmrc.play.config.ServicesConfig
-import config.{ConfigKeys => Keys}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @ImplementedBy(classOf[MicroserviceAppConfig])
-trait AppConfig extends ServicesConfig {
+trait AppConfig {
   val configuration: Configuration
 
   val retryIntervalMillis: Long
@@ -51,44 +51,44 @@ trait AppConfig extends ServicesConfig {
 }
 
 @Singleton
-class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment)
+class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment,
+                                      implicit val sc: ServicesConfig)
   extends AppConfig {
 
   override val configuration: Configuration = runModeConfiguration
-  override def mode: Mode.Mode = environment.mode
+  protected def mode: Mode = environment.mode
 
-  override lazy val retryIntervalMillis: Long = runModeConfiguration.getMilliseconds(Keys.failureRetryAfterProperty)
-    .getOrElse(throw new RuntimeException(s"retry interval not specified"))
+  override lazy val retryIntervalMillis: Long = runModeConfiguration.getMillis(Keys.failureRetryAfterProperty)
 
-  private lazy val desBase: String = baseUrl(Keys.desBase)
+  private lazy val desBase: String = sc.baseUrl(Keys.desBase)
   override def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =
   s"$desBase/secure-comms-alert/service/$service/registration-number/$regNumber/communications/$communicationId"
-  override val desAuthorisationToken: String = getString(Keys.desAuthorisationToken)
-  override val desEnvironment: String = getString(Keys.desEnvironment)
+  override val desAuthorisationToken: String = sc.getString(Keys.desAuthorisationToken)
+  override val desEnvironment: String = sc.getString(Keys.desEnvironment)
 
-  override lazy val queuePollingWaitTime: Int = getInt(Keys.queuePollingInterval)
+  override lazy val queuePollingWaitTime: Int = sc.getInt(Keys.queuePollingInterval)
 
-  override lazy val initialWaitTime: Int = getInt(Keys.queueInitialWait)
+  override lazy val initialWaitTime: Int = sc.getInt(Keys.queueInitialWait)
 
-  override lazy val queueItemExpirySeconds: Int = getInt(Keys.queueItemExpiry)
+  override lazy val queueItemExpirySeconds: Int = sc.getInt(Keys.queueItemExpiry)
 
-  override lazy val pollingToggle: Boolean = getBoolean(Keys.queueToggleProperty)
+  override lazy val pollingToggle: Boolean = sc.getBoolean(Keys.queueToggleProperty)
 
-  private lazy val emailServiceBase: String = baseUrl(Keys.emailServiceBase)
+  private lazy val emailServiceBase: String = sc.baseUrl(Keys.emailServiceBase)
   override lazy val emailServiceUrl: String = s"$emailServiceBase/hmrc/email"
 
-  private lazy val secureCommsServiceBase: String = baseUrl(Keys.secureCommsServiceBase)
+  private lazy val secureCommsServiceBase: String = sc.baseUrl(Keys.secureCommsServiceBase)
   override lazy val secureCommsServiceUrl: String = s"$secureCommsServiceBase/messages"
 
-  override lazy val tribunalUrl: String = getString(Keys.tribunalUrl)
+  override lazy val tribunalUrl: String = sc.getString(Keys.tribunalUrl)
 
-  private lazy val manageVatSubscriptionHost: String = getString(Keys.manageVatSubscriptionHost)
+  private lazy val manageVatSubscriptionHost: String = sc.getString(Keys.manageVatSubscriptionHost)
   override lazy val manageVatSubscriptionUrl: String =
-    manageVatSubscriptionHost + getString(Keys.manageVatSubscriptionUri)
+    manageVatSubscriptionHost + sc.getString(Keys.manageVatSubscriptionUri)
 
-  private lazy val vatSummaryHost: String = getString(Keys.vatSummaryHost)
+  private lazy val vatSummaryHost: String = sc.getString(Keys.vatSummaryHost)
   override lazy val vatSummaryUrl: String =
-    vatSummaryHost + getString(Keys.vatSummaryUri)
+    vatSummaryHost + sc.getString(Keys.vatSummaryUri)
 
-  override def mtdSignUpUrl(vrn: String): String = getString(Keys.vatSignUpHost) + getString(Keys.reSignUpUri) + vrn
+  override def mtdSignUpUrl(vrn: String): String = sc.getString(Keys.vatSignUpHost) + sc.getString(Keys.reSignUpUri) + vrn
 }

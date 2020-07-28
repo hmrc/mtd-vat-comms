@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatStaggerApproved
 
 class VatStaggerApprovedViewSpec extends ViewBaseSpec {
 
+  val vatStaggerApproved: VatStaggerApproved = injector.instanceOf[VatStaggerApproved]
+
   "Rendering the VatStaggerApproved view for an 'MM' stagger code" should {
 
-    lazy val view = views.html.vatStaggerApproved("MM")
+    lazy val view = vatStaggerApproved("MM")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
@@ -38,7 +41,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
 
   "Rendering the VatStaggerApproved view for an 'MA' stagger code" should {
 
-    lazy val view = views.html.vatStaggerApproved("MA")
+    lazy val view = vatStaggerApproved("MA")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
@@ -53,7 +56,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
 
   "Rendering the VatStaggerApproved view for an 'MB' stagger code" should {
 
-    lazy val view = views.html.vatStaggerApproved("MB")
+    lazy val view = vatStaggerApproved("MB")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {
@@ -68,7 +71,7 @@ class VatStaggerApprovedViewSpec extends ViewBaseSpec {
 
   "Rendering the VatStaggerApproved view for an 'MC' stagger code" should {
 
-    lazy val view = views.html.vatStaggerApproved("MC")
+    lazy val view = vatStaggerApproved("MC")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct new VAT return dates" in {

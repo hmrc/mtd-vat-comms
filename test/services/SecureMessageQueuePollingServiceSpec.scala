@@ -16,7 +16,6 @@
 
 package services
 
-import akka.actor.ActorSystem
 import base.BaseSpec
 import config.AppConfig
 import mocks.MockAppConfig

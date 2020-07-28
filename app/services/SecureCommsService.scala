@@ -17,30 +17,47 @@
 package services
 
 import java.time.format.DateTimeParseException
+import java.util.Locale.ENGLISH
 import java.util.UUID
 
-import common.Constants._
 import common.Constants.MessageKeys._
 import common.Constants.TemplateIdReadableNames._
+import common.Constants._
 import config.AppConfig
 import connectors.SecureCommsServiceConnector
 import javax.inject.Inject
-import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel, SpecificParsingError}
 import models.secureCommsServiceModels.{SecureCommsServiceRequestModel, _}
 import models.secureMessageAlertModels.messageTypes._
 import models.viewModels.VatPPOBViewModel
-import utils.SecureCommsMessageParser._
-import utils.TemplateMappings._
+import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel, SpecificParsingError}
+import play.api.i18n._
+import play.api.mvc.ControllerComponents
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import utils.Base64Encoding._
-import views.html._
-import play.api.i18n.{I18nSupport, MessagesApi}
 import utils.DateFormatter._
 import utils.LoggerUtil.logWarn
+import utils.SecureCommsMessageParser._
+import utils.TemplateMappings._
+import views.html._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServiceConnector)
-                                  (implicit val messagesApi: MessagesApi, appConfig: AppConfig) extends I18nSupport {
+class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServiceConnector, vatEmailApproved: VatEmailApproved,
+                                   vatEmailRejected: VatEmailRejected, vatBankDetailsApproved: VatBankDetailsApproved,
+                                   vatBankDetailsRejected: VatBankDetailsRejected, vatDeregApproved: VatDeregApproved,
+                                   vatDeregRejected: VatDeregRejected, vatPPOBApproved: VatPPOBApproved,
+                                   vatPPOBRejected: VatPPOBRejected, vatStaggerApproved: VatStaggerApproved,
+                                   vatStaggerRejected: VatStaggerRejected,
+                                   vatStaggerApprovedLeaveAnnualAccounting: VatStaggerApprovedLeaveAnnualAccounting,
+                                   vatOptOutApprovedRepresented: VatOptOutApprovedRepresented, vatOptOutApproved: VatOptOutApproved,
+                                   vatContactNumbersApproved: VatContactNumbersApproved, vatContactNumbersRejected: VatContactNumbersRejected,
+                                   vatWebsiteApproved: VatWebsiteApproved, vatWebsiteRejected: VatWebsiteRejected)
+                                  (implicit val appConfig: AppConfig, cc: ControllerComponents, messagesApi: MessagesApi) extends
+  BackendController(cc) with I18nSupport {
+
+  val lang: Lang = new Lang(ENGLISH)
+
+  implicit val messages: Messages = MessagesImpl(lang, messagesApi)
 
   def sendSecureCommsMessage(workItem: SecureCommsMessageModel)
                             (implicit ec: ExecutionContext): Future[Either[ErrorModel, Boolean]] =
@@ -129,7 +146,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         )
     }
   }
-  //scalastyle:on method.length
 
   private def buildSecureCommsServiceRequestModel(htmlContent: String,
                                                   userEmail: String,
@@ -259,9 +275,9 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
     }
 
     (baseSubjectKey, isRemoval) match {
-      case (WEBSITE_BASE_KEY, true) =>  messagesApi(transactorSubmitted.concat(REMOVE_SUFFIX))
-      case (WEBSITE_BASE_KEY, false) => messagesApi(transactorSubmitted.concat(CHANGE_SUFFIX))
-      case _ => messagesApi(transactorSubmitted)
+      case (WEBSITE_BASE_KEY, true) =>  messages(transactorSubmitted.concat(REMOVE_SUFFIX))
+      case (WEBSITE_BASE_KEY, false) => messages(transactorSubmitted.concat(CHANGE_SUFFIX))
+      case _ => messages(transactorSubmitted)
     }
   }
 }

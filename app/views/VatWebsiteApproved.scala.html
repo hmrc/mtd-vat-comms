@@ -14,7 +14,9 @@
  * limitations under the License.
  *@
 
-@(isTransactor: Boolean, website: Option[String])(implicit messages: MessagesApi, appConfig: config.AppConfig)
+@this()
+
+@(isTransactor: Boolean, website: Option[String])(implicit messages: Messages, appConfig: config.AppConfig)
 
 <div class="grid-row">
   <div class="column-full">

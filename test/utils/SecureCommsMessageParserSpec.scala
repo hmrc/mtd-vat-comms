@@ -17,15 +17,15 @@
 package utils
 
 import base.BaseSpec
-import models.secureMessageAlertModels._
-import models.secureMessageAlertModels.messageTypes._
-import models.{SecureCommsMessageModel, SpecificParsingError}
-import play.api.libs.json.{JsObject, JsValue, Json}
 import common.Constants.ChannelPreferences.PAPER
 import common.Constants.EmailStatus.VERIFIED
 import common.Constants.FormatPreferences.TEXT
 import common.Constants.LanguagePreferences.ENGLISH
 import common.Constants.NotificationPreference.EMAIL
+import models.secureMessageAlertModels._
+import models.secureMessageAlertModels.messageTypes._
+import models.{SecureCommsMessageModel, SpecificParsingError}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import utils.SecureCommsMessageTestData.{ResponseAsModel, Responses}
 
 class SecureCommsMessageParserSpec extends BaseSpec {

@@ -19,14 +19,14 @@ package controllers
 import javax.inject.Inject
 import models.VatChangeEvent
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
-import services.CommsEventService
-import utils.LoggerUtil
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 import scala.util.Right
 
-class BusinessNameController @Inject()()(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
+class BusinessNameController @Inject()()(implicit val ec: ExecutionContext, cc: ControllerComponents) extends
+                                        BackendController(cc) with MicroserviceBaseController {
 
   def handleEvent: Action[AnyContent] = Action { implicit request =>
     parseJsonBody[VatChangeEvent] match {

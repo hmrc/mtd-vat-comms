@@ -22,12 +22,12 @@ import base.BaseSpec
 import metrics.QueueMetrics
 import models._
 import org.joda.time.{DateTime, DateTimeZone}
-import repositories.SecureMessageQueueRepository
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
+import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._
 

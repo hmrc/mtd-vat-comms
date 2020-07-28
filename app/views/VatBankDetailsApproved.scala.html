@@ -14,23 +14,17 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
+@this()
 
-@(vrn: String)(implicit messages: MessagesApi, appConfig: AppConfig)
+@(accountName: String, sortCode: String, accountNumber: String)(implicit messages: Messages)
 
 <div class="grid-row">
     <div class="column-full">
-        <p>@messages("optOutApproved.p1")</p>
-        <p>@messages("optOutApproved.p2")</p>
-        <p>@messages("optOutApproved.p3a")
-            <a href="@appConfig.vatSummaryUrl">@messages("optOutApproved.p3b")</a>@messages("optOutApproved.p3c")
-        </p>
+        <p>@messages("bankDetailsApproved.p1")</p>
         <p>
-            @messages("optOutApproved.p4a")
-            <a href="@appConfig.mtdSignUpUrl(vrn)">
-                @messages("optOutApproved.p4b")
-            </a>
-            @messages("optOutApproved.p4c")
+          <span class="bold-small">@messages("bankDetailsApproved.p2")</span> @accountName<br>
+          <span class="bold-small">@messages("bankDetailsApproved.p3")</span> @sortCode<br>
+          <span class="bold-small">@messages("bankDetailsApproved.p4")</span> @accountNumber
         </p>
     </div>
 </div>

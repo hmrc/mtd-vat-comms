@@ -16,7 +16,7 @@
 
 package models.secureMessageAlertModels.messageTypes
 
-import models.secureMessageAlertModels.{PreferencesModel, CustomerModel, TransactorModel}
+import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
 case class OptOutModel(

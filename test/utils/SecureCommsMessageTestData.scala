@@ -16,16 +16,16 @@
 
 package utils
 
-import models.SecureCommsMessageModel
-import models.secureMessageAlertModels._
-import models.secureMessageAlertModels.messageTypes._
-import play.api.libs.json.{JsObject, Json}
 import common.Constants.ChannelPreferences._
 import common.Constants.EmailStatus.VERIFIED
 import common.Constants.FormatPreferences.TEXT
 import common.Constants.LanguagePreferences.ENGLISH
 import common.Constants.NotificationPreference.EMAIL
 import common.Constants.SecureCommsMessageFields._
+import models.SecureCommsMessageModel
+import models.secureMessageAlertModels._
+import models.secureMessageAlertModels.messageTypes._
+import play.api.libs.json.{JsObject, Json}
 
 object SecureCommsMessageTestData {
 

@@ -18,14 +18,17 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatContactNumbersRejected
 
 class VatContactNumbersRejectedViewSpec extends ViewBaseSpec {
+
+  val vatContactNumbersRejected: VatContactNumbersRejected = injector.instanceOf[VatContactNumbersRejected]
 
   "The contact number rejected message" when {
 
     "the user has attempted to change their landline or mobile number" should {
 
-      lazy val view = views.html.vatContactNumbersRejected()
+      lazy val view = vatContactNumbersRejected()
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct first paragraph" in {

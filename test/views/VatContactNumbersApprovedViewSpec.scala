@@ -18,14 +18,17 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatContactNumbersApproved
 
 class VatContactNumbersApprovedViewSpec extends ViewBaseSpec {
+
+  val vatContactNumbersApproved: VatContactNumbersApproved = injector.instanceOf[VatContactNumbersApproved]
 
   "The contact numbers approved message" when {
 
     "a principal entity has requested to change their contact numbers" should {
 
-      lazy val view = views.html.vatContactNumbersApproved()
+      lazy val view = vatContactNumbersApproved()
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a link to the ChoC overview page" which {

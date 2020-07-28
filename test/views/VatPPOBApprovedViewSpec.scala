@@ -19,8 +19,11 @@ package views
 import models.viewModels.VatPPOBViewModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatPPOBApproved
 
 class VatPPOBApprovedViewSpec extends ViewBaseSpec {
+
+  val vatPPOBApproved: VatPPOBApproved = injector.instanceOf[VatPPOBApproved]
 
   "Rendering the VatPPOBApproved secure message content" should {
 
@@ -34,7 +37,7 @@ class VatPPOBApprovedViewSpec extends ViewBaseSpec {
       Some("United Kingdom")
     )
 
-    lazy val view = views.html.vatPPOBApproved(viewModel)
+    lazy val view = vatPPOBApproved(viewModel)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct first paragraph" in {

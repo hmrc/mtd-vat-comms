@@ -18,9 +18,9 @@ package connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
+import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient

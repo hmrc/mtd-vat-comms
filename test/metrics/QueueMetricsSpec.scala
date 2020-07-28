@@ -17,9 +17,9 @@
 package metrics
 
 import base.BaseSpec
-import org.scalatestplus.mockito.MockitoSugar
 import com.codahale.metrics.{Counter, MetricRegistry}
 import com.kenshoo.play.metrics.Metrics
+import org.scalatestplus.mockito.MockitoSugar
 
 
 class QueueMetricsSpec extends BaseSpec with MockitoSugar {

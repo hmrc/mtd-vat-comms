@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatStaggerRejected
 
 class VatStaggerRejectedViewSpec extends ViewBaseSpec {
 
+  val vatStaggerRejected: VatStaggerRejected = injector.instanceOf[VatStaggerRejected]
+
   "Rendering the VatStaggerRejected secure message content" should {
 
-    lazy val view = views.html.vatStaggerRejected()
+    lazy val view = vatStaggerRejected()
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct h2" in {

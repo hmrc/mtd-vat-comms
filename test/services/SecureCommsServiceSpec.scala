@@ -28,10 +28,10 @@ import modules.SchedulerModule
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterAll
 import play.api.Application
-import play.api.i18n.MessagesApi
 import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._
+import utils.SecureCommsServiceViews
 
 import scala.concurrent.ExecutionContext
 
@@ -39,13 +39,18 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
 
   val mockConnector: SecureCommsServiceConnector = mock[SecureCommsServiceConnector]
 
-  implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
-  val injector: Injector = app.injector
+  implicit override lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
+  lazy val injector: Injector = app.injector
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
 
-  implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  val sCSViews: SecureCommsServiceViews = new SecureCommsServiceViews(injector)
 
-  val service: SecureCommsService = new SecureCommsService(mockConnector)
+  val service: SecureCommsService = new SecureCommsService(mockConnector,
+    sCSViews.vatEmailApproved, sCSViews.vatEmailRejected, sCSViews.vatBankDetailsApproved, sCSViews.vatBankDetailsRejected,
+    sCSViews.vatDeregApproved, sCSViews.vatDeregRejected, sCSViews.vatPPOBApproved, sCSViews.vatPPOBRejected, sCSViews.vatStaggerApproved,
+    sCSViews.vatStaggerRejected, sCSViews.vatStaggerApprovedLeaveAnnualAccounting,
+    sCSViews.vatOptOutApprovedRepresented, sCSViews.vatOptOutApproved, sCSViews.vatContactNumberApproved, sCSViews.vatContactNumbersRejected,
+    sCSViews.vatWebsiteApproved, sCSViews.vatWebsiteRejected)
 
   val serviceName = "testServiceName"
   val regNum = "testRegNum"
@@ -425,32 +430,38 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         }
 
         "it is for a transactor rejected change" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true)
           result shouldBe "We have rejected your agent’s change of website address for VAT"
         }
 
         "it is for a client rejected change" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false)
           result shouldBe "We have rejected your request to change your website address for VAT"
         }
 
         "it is for a transactor approved removal" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true, isRemoval = true)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = true, isRemoval = true)
           result shouldBe "Your agent has successfully removed your website address for VAT"
         }
 
         "it is for a client approved removal" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false, isRemoval = true)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = true, isTransactor = false, isRemoval = true)
           result shouldBe "You have successfully removed your website address for VAT"
         }
 
         "it is for a transactor rejected removal" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true, isRemoval = true)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = true, isRemoval = true)
           result shouldBe "We have rejected your agent’s request to remove your website address for VAT"
         }
 
         "it is for a client rejected removal" in {
-          val result = service.getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false, isRemoval = true)
+          val result = service
+            .getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval = false, isTransactor = false, isRemoval = true)
           result shouldBe "We have rejected your request to remove your website address for VAT"
         }
     }

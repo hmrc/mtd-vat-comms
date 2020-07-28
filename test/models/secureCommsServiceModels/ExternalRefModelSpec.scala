@@ -17,8 +17,8 @@
 package models.secureCommsServiceModels
 
 import base.BaseSpec
-import play.api.libs.json.{JsObject, Json}
 import common.Constants.SecureCommsServiceFieldValues.MDTP
+import play.api.libs.json.{JsObject, Json}
 
 class ExternalRefModelSpec extends BaseSpec {
 

@@ -14,26 +14,15 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
+@this()
 
-@()(implicit messages: MessagesApi, appConfig: AppConfig)
+@(deregDate: String)(implicit messages: Messages)
 
 <div class="grid-row">
     <div class="column-full">
-        <p>@messages("deregRejected.p1")</p>
+        <p>@messages("deregApproved.p1", deregDate)</p>
         <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
-        <p>@messages("deregRejected.p2")</p>
-        <p>@messages("common.standardReject")</p>
-        <p>
-            @messages("common.hmrcAddressLine1")<br>
-            @messages("common.hmrcAddressLine2")<br>
-            @messages("common.hmrcAddressLine3")<br>
-            @messages("common.hmrcAddressLine4")<br>
-            @messages("common.hmrcAddressPostcode")
-        </p>
-        <p>
-            @messages("deregRejected.p3a") <a href="@appConfig.tribunalUrl">@messages("deregRejected.p3b")</a>
-            @messages("deregRejected.p3c")
-        </p>
+        <p>@messages("deregApproved.p2", deregDate)</p>
+        <p>@messages("deregApproved.p3")</p>
     </div>
 </div>

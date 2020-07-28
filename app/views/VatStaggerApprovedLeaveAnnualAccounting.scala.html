@@ -14,11 +14,13 @@
  * limitations under the License.
  *@
 
-@import views.html.templates.displayStagger
-@import views.html.templates.dates.displayDate
-@import views.html.templates.dates.displayDateRange
+@import views.html.templates.DisplayStagger
+@import views.html.templates.dates.DisplayDate
+@import views.html.templates.dates.DisplayDateRange
 
-@(stagger: String, newStaggerStartDate: String, newStaggerEndDate: String, previousStaggerEndDate: String)(implicit messages: MessagesApi)
+@this(displayStagger: DisplayStagger, displayDate: DisplayDate, displayDateRange: DisplayDateRange)
+
+@(stagger: String, newStaggerStartDate: String, newStaggerEndDate: String, previousStaggerEndDate: String)(implicit messages: Messages)
 
 <div class="grid-row">
     <div class="column-full">
