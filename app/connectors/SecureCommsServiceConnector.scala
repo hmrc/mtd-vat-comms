@@ -23,7 +23,7 @@ import models.secureCommsServiceModels.SecureCommsServiceRequestModel
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import utils.LoggerUtil.{logWarnEitherError, logWarn}
+import utils.LoggerUtil.{logWarn, logWarnEitherError}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,7 +38,7 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
         case CREATED => Right(true)
         case BAD_REQUEST =>
           logWarn(s"[SendMessageReads][read] - Bad request received from Secure Comms service: ${response.body}")
-          Left(BadRequest)
+          Left(SecureCommsServiceBadRequest)
         case NOT_FOUND => Left(handle404Possibilities(response.body))
         case CONFLICT => Left(ConflictDuplicateMessage)
         case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))

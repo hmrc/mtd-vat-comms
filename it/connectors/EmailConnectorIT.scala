@@ -59,7 +59,7 @@ class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
         stubPostRequest(postUrl, Json.toJson(postBody), BAD_REQUEST, apiResponse)
 
-        val expectedResult = Left(BadRequest)
+        val expectedResult = Left(EmailBadRequest)
         val result: Either[ErrorModel, EmailRendererResponseModel] = await(connector.sendEmailRequest(postBody))
 
         result shouldBe expectedResult

@@ -16,14 +16,14 @@
 
 package connectors
 
-import config.AppConfig
 import com.google.inject.Inject
+import config.AppConfig
 import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.http.logging.Authorization
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import utils.LoggerUtil._
 
@@ -77,7 +77,7 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
 
   private def handleBadRequest(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
     logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${response.body}'")
-    Left(BadRequest)
+    Left(SecureCommsAlertBadRequest)
   }
 
   private def handleNotFound(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {

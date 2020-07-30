@@ -18,9 +18,9 @@ package connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
+import models.{EmailBadRequest, ErrorModel, NotFoundNoMatch}
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -37,7 +37,7 @@ class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) {
     override def read(method: String, url: String, response: HttpResponse): EmailResponse =
       response.status match {
         case ACCEPTED => Right(EmailRendererResponseModel(ACCEPTED))
-        case BAD_REQUEST => Left(BadRequest)
+        case BAD_REQUEST => Left(EmailBadRequest)
         case NOT_FOUND => Left(NotFoundNoMatch)
         case _ => Left(ErrorModel(response.status.toString, response.body))
       }
