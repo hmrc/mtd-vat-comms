@@ -14,9 +14,20 @@
  * limitations under the License.
  *@
 
-@import java.time.LocalDate
+@this()
 
-@(from: String, to: String, useShortMonthFormat: Boolean = false)(implicit messages: MessagesApi)@{
+@()(implicit messages: Messages)
 
-displayDate(from, true, useShortMonthFormat) + " " +  messages("common.dateRangeSeparator") + " " + displayDate(to, true, useShortMonthFormat)
-}
+<div class="grid-row">
+    <div class="column-full">
+        <p>@messages("emailRejected.p1")</p>
+        <p>@messages("common.standardReject")</p>
+        <p>
+            @messages("common.hmrcAddressLine1")<br>
+            @messages("common.hmrcAddressLine2")<br>
+            @messages("common.hmrcAddressLine3")<br>
+            @messages("common.hmrcAddressLine4")<br>
+            @messages("common.hmrcAddressPostcode")
+        </p>
+    </div>
+</div>

@@ -16,8 +16,8 @@
 
 package common
 
-import ApiConstants._
 import base.BaseSpec
+import common.ApiConstants._
 import models.VatChangeEvent
 import play.api.libs.json.Json
 

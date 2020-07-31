@@ -14,19 +14,24 @@
  * limitations under the License.
  *@
 
-@()(implicit messages: MessagesApi)
+@this()
+
+@()(implicit messages: Messages)
 
 <div class="grid-row">
-    <div class="column-full">
-        <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
-        <p>@messages("staggerRejected.p1")</p>
-        <p>@messages("common.standardReject")</p>
-        <p>
-            @messages("common.hmrcAddressLine1")<br>
-            @messages("common.hmrcAddressLine2")<br>
-            @messages("common.hmrcAddressLine3")<br>
-            @messages("common.hmrcAddressLine4")<br>
-            @messages("common.hmrcAddressPostcode")
-        </p>
-    </div>
+  <div class="column-full">
+
+    <p>@messages("contactNumbersRejected.p1")</p>
+
+    <h2 class="heading-small">@messages("common.whatHappensNext")</h2>
+
+    <p>@messages("common.standardReject")</p>
+    <p>
+      @messages("common.hmrcAddressLine1")<br>
+      @messages("common.hmrcAddressLine2")<br>
+      @messages("common.hmrcAddressLine3")<br>
+      @messages("common.hmrcAddressLine4")<br>
+      @messages("common.hmrcAddressPostcode")
+    </p>
+  </div>
 </div>

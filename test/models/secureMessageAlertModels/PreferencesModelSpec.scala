@@ -17,11 +17,11 @@
 package models.secureMessageAlertModels
 
 import base.BaseSpec
-import play.api.libs.json.{JsObject, Json}
-import common.Constants.NotificationPreference._
 import common.Constants.ChannelPreferences._
 import common.Constants.FormatPreferences._
 import common.Constants.LanguagePreferences._
+import common.Constants.NotificationPreference._
+import play.api.libs.json.{JsObject, Json}
 
 class PreferencesModelSpec extends BaseSpec {
   val notificationPrefs: Seq[String] = Seq(EMAIL, SMS)

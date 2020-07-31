@@ -16,8 +16,8 @@
 
 package modules
 
-import services.{CommsEventQueuePollingService, EmailMessageQueuePollingService, SecureMessageQueuePollingService}
 import com.google.inject.AbstractModule
+import services.{CommsEventQueuePollingService, EmailMessageQueuePollingService, SecureMessageQueuePollingService}
 
 class SchedulerModule extends AbstractModule {
   override def configure(): Unit = {

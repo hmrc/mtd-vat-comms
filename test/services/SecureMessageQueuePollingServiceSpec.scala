@@ -16,7 +16,6 @@
 
 package services
 
-import akka.actor.ActorSystem
 import base.BaseSpec
 import config.AppConfig
 import mocks.MockAppConfig
@@ -32,7 +31,7 @@ import scala.concurrent.Future
 class SecureMessageQueuePollingServiceSpec extends BaseSpec with MockitoSugar {
 
   val timeoutForTest: Int = 4000
-  val mockAppConfig = mock[AppConfig]
+  val mockAppConfig: AppConfig = mock[AppConfig]
 
   "SecureMessageQueuePollingService" should {
 

@@ -14,15 +14,34 @@
  * limitations under the License.
  *@
 
-@(accountName: String, sortCode: String, accountNumber: String)(implicit messages: MessagesApi)
+@import models.viewModels.VatPPOBViewModel
+
+@this()
+
+@(model: VatPPOBViewModel)(implicit messages: Messages)
 
 <div class="grid-row">
     <div class="column-full">
-        <p>@messages("bankDetailsApproved.p1")</p>
+        <p>@messages("ppobContactPref.p1")</p>
+        <p>@messages("ppobApproved.p1")</p>
         <p>
-          <span class="bold-small">@messages("bankDetailsApproved.p2")</span> @accountName<br>
-          <span class="bold-small">@messages("bankDetailsApproved.p3")</span> @sortCode<br>
-          <span class="bold-small">@messages("bankDetailsApproved.p4")</span> @accountNumber
+          @model.addressLine1<br>
+          @model.addressLine2
+            @model.addressLine3.map { line =>
+              <br>@line
+            }
+            @model.addressLine4.map { line =>
+              <br>@line
+            }
+            @model.addressLine5.map { line =>
+              <br>@line
+            }
+            @model.postcode.map { line =>
+              <br>@line
+            }
+            @model.country.map { line =>
+              <br>@line
+            }
         </p>
     </div>
 </div>

@@ -16,13 +16,13 @@
 
 package services
 
+import common.Constants.TemplateIdReadableNames._
 import connectors.EmailConnector
 import javax.inject.Inject
 import models.ErrorModel
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, MessageModel}
-import common.Constants.TemplateIdReadableNames._
 
 import scala.concurrent.{ExecutionContext, Future}
 

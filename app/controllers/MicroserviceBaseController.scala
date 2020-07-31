@@ -19,10 +19,10 @@ package controllers
 import models.ErrorModel
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.mvc.{AnyContentAsJson, Request}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
-import utils.LoggerUtil.{logWarn, logDebug}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import utils.LoggerUtil.{logDebug, logWarn}
 
-trait MicroserviceBaseController extends BaseController {
+trait MicroserviceBaseController extends BackendController {
 
   def parseJsonBody[T](implicit request: Request[_], rds: Reads[T]): Either[ErrorModel, T] = request.body match {
     case body: AnyContentAsJson => body.json.validate[T] match {

@@ -16,7 +16,9 @@
 
 @import config.AppConfig
 
-@(isTransactor: Boolean)(implicit messages: MessagesApi, appConfig: AppConfig)
+@this()
+
+@(isTransactor: Boolean)(implicit messages: Messages, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-full">

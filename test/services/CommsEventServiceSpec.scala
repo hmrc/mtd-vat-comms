@@ -23,12 +23,12 @@ import common.ApiConstants.vatChangeEventModel
 import metrics.QueueMetrics
 import models._
 import org.joda.time.{DateTime, DateTimeZone}
-import repositories.CommsEventQueueRepository
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import reactivemongo.bson.BSONObjectID
+import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.GatewayTimeoutException
 import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._

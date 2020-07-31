@@ -18,18 +18,24 @@ package base
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.i18n.MessagesApi
+import play.api.mvc._
 import play.api.test.FakeRequest
+import play.api.test.Helpers.stubControllerComponents
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec {
+trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   implicit val actorSystem: ActorSystem = ActorSystem("TestActorSystem")
   implicit val mat: ActorMaterializer = ActorMaterializer()
 
-  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+  implicit val cc: ControllerComponents = stubControllerComponents()
+  implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val request = FakeRequest()
+  val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 }

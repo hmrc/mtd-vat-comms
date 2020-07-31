@@ -14,13 +14,13 @@
  * limitations under the License.
  *@
 
-@import views.html.templates.displayStagger
+@this()
 
-@(stagger: String)(implicit messages: MessagesApi)
+@(staggerCode: String)(implicit messages: Messages)
 
-<div class="grid-row">
-    <div class="column-full">
-        <p>@messages("staggerApproved.p1") @displayStagger(stagger)</p>
-        <p>@messages("staggerApproved.p2")</p>
-    </div>
-</div>
+@staggerCode match {
+   case "MM" =>  { @messages("staggerApproved.mm") }
+   case "MA" =>  { @messages("staggerApproved.ma") }
+   case "MB" =>  { @messages("staggerApproved.mb") }
+   case "MC" =>  { @messages("staggerApproved.mc") }
+}

@@ -17,6 +17,12 @@
 package services
 
 import base.BaseSpec
+import common.Constants.ChannelPreferences.PAPER
+import common.Constants.EmailStatus.VERIFIED
+import common.Constants.FormatPreferences.TEXT
+import common.Constants.LanguagePreferences.ENGLISH
+import common.Constants.NotificationPreference.EMAIL
+import common.Constants.TemplateIdReadableNames._
 import connectors.EmailConnector
 import models.ErrorModel
 import models.emailRendererModels.EmailRequestModel
@@ -25,12 +31,6 @@ import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, Me
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.ACCEPTED
-import common.Constants.ChannelPreferences.PAPER
-import common.Constants.EmailStatus.VERIFIED
-import common.Constants.FormatPreferences.TEXT
-import common.Constants.LanguagePreferences.ENGLISH
-import common.Constants.NotificationPreference.EMAIL
-import common.Constants.TemplateIdReadableNames._
 
 import scala.concurrent.{ExecutionContext, Future}
 

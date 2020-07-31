@@ -18,8 +18,11 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatWebsiteApproved
 
 class VatWebsiteApprovedViewSpec extends ViewBaseSpec {
+
+  val vatWebsiteApproved: VatWebsiteApproved = injector.instanceOf[VatWebsiteApproved]
 
   val website = "http://www.website.com"
 
@@ -27,7 +30,7 @@ class VatWebsiteApprovedViewSpec extends ViewBaseSpec {
 
     "a principal entity has requested to change their website" should {
 
-      lazy val view = views.html.vatWebsiteApproved(isTransactor = false, Some(website))
+      lazy val view = vatWebsiteApproved(isTransactor = false, Some(website))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct paragraph" in {
@@ -37,7 +40,7 @@ class VatWebsiteApprovedViewSpec extends ViewBaseSpec {
 
     "a principal entity has requested to remove their website" should {
 
-      lazy val view = views.html.vatWebsiteApproved(isTransactor = false, None)
+      lazy val view = vatWebsiteApproved(isTransactor = false, None)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct paragraph" in {
@@ -47,7 +50,7 @@ class VatWebsiteApprovedViewSpec extends ViewBaseSpec {
 
     "an agent has requested to remove their client's website" should {
 
-      lazy val view = views.html.vatWebsiteApproved(isTransactor = true, None)
+      lazy val view = vatWebsiteApproved(isTransactor = true, None)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct paragraph" in {

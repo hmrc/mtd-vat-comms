@@ -16,8 +16,8 @@
 
 package models.secureCommsServiceModels
 
-import play.api.libs.json.{Json, OFormat}
 import common.Constants.SecureCommsServiceFieldValues.MDTP
+import play.api.libs.json.{Json, OFormat}
 
 case class ExternalRefModel(
                              id: String,

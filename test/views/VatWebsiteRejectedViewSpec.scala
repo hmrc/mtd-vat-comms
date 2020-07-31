@@ -18,14 +18,17 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatWebsiteRejected
 
 class VatWebsiteRejectedViewSpec extends ViewBaseSpec {
+
+  val vatWebsiteRejected: VatWebsiteRejected = injector.instanceOf[VatWebsiteRejected]
 
   "The website rejected message" when {
 
     "the user has attempted to change their website" should {
 
-      lazy val view = views.html.vatWebsiteRejected(isRemoval = false)
+      lazy val view = vatWebsiteRejected(isRemoval = false)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct first paragraph" in {
@@ -51,7 +54,7 @@ class VatWebsiteRejectedViewSpec extends ViewBaseSpec {
 
     "the user has attempted to remove their website" should {
 
-      lazy val view = views.html.vatWebsiteRejected(isRemoval = true)
+      lazy val view = vatWebsiteRejected(isRemoval = true)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct first paragraph" in {

@@ -16,7 +16,9 @@
 
 @import config.AppConfig
 
-@(vrn: String)(implicit messages: MessagesApi, appConfig: AppConfig)
+@this()
+
+@(vrn: String)(implicit messages: Messages, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-full">

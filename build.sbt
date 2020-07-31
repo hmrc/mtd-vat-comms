@@ -26,23 +26,23 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc" %% "simple-reactivemongo" % "7.22.0-play-25",
-  "uk.gov.hmrc" %% "work-item-repo"       % "6.9.0-play-25",
-  "uk.gov.hmrc" %% "bootstrap-play-25"    % "5.1.0",
-  "uk.gov.hmrc" %% "play-scheduling"      % "7.2.0-play-25"
+  "uk.gov.hmrc" %% "simple-reactivemongo" % "7.29.0-play-26",
+  "uk.gov.hmrc" %% "work-item-repo"       % "7.6.0-play-26",
+  "uk.gov.hmrc" %% "bootstrap-play-26"    % "1.13.0",
+  "uk.gov.hmrc" %% "play-scheduling"      % "7.4.0-play-26"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "hmrctest"                     % "3.9.0-play-25"     % scope,
-  "org.scalatest"          %% "scalatest"                    % "3.0.6"             % scope,
+  "uk.gov.hmrc"            %% "hmrctest"                     % "3.9.0-play-26"     % scope,
+  "org.scalatest"          %% "scalatest"                    % "3.0.8"             % scope,
   "com.typesafe.play"      %% "play-test"                    % PlayVersion.current % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play"           % "2.0.1"             % scope,
-  "com.github.tomakehurst" %  "wiremock"                     % "2.21.0"            % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play"           % "3.1.0"             % scope,
+  "com.github.tomakehurst" %  "wiremock-jre8"                % "2.27.1"            % scope,
   "org.mockito"            %  "mockito-core"                 % "2.24.5"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.11.3"            % scope
+  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
@@ -86,7 +86,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
-    scalaVersion := "2.11.11",
+    scalaVersion := "2.11.12",
     PlayKeys.playDefaultPort := 9579,
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,

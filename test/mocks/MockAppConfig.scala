@@ -17,7 +17,6 @@
 package mocks
 
 import config.AppConfig
-import play.api.Mode.Mode
 import play.api.{Configuration, Mode}
 
 class MockAppConfig(val runModeConfiguration: Configuration,

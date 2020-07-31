@@ -14,12 +14,25 @@
  * limitations under the License.
  *@
 
-@(email: String)(implicit messages: MessagesApi)
+@import config.AppConfig
+
+@this()
+
+@(vrn: String)(implicit messages: Messages, appConfig: AppConfig)
 
 <div class="grid-row">
     <div class="column-full">
-     <p>@messages("emailApprovedContactPref.p1")</p>
-     <p>@messages("emailApproved.p1", email)</p>
-
+        <p>@messages("optOutApproved.p1")</p>
+        <p>@messages("optOutApproved.p2")</p>
+        <p>@messages("optOutApproved.p3a")
+            <a href="@appConfig.vatSummaryUrl">@messages("optOutApproved.p3b")</a>@messages("optOutApproved.p3c")
+        </p>
+        <p>
+            @messages("optOutApproved.p4a")
+            <a href="@appConfig.mtdSignUpUrl(vrn)">
+                @messages("optOutApproved.p4b")
+            </a>
+            @messages("optOutApproved.p4c")
+        </p>
     </div>
 </div>

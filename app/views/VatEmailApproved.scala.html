@@ -14,12 +14,14 @@
  * limitations under the License.
  *@
 
-@()(implicit messages: MessagesApi, appConfig: config.AppConfig)
+@this()
+
+@(email: String)(implicit messages: Messages)
 
 <div class="grid-row">
-  <div class="column-full">
-        <p>
-          <a href="@appConfig.manageVatSubscriptionUrl">@messages("contactNumbersApproved.p1")</a>
-        </p>
-  </div>
+    <div class="column-full">
+     <p>@messages("emailApprovedContactPref.p1")</p>
+     <p>@messages("emailApproved.p1", email)</p>
+
+    </div>
 </div>

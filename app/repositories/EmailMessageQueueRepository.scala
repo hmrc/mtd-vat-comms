@@ -29,6 +29,7 @@ import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemRepository}
 import utils.LoggerUtil.{logDebug, logError}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 

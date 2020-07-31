@@ -21,7 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
-import play.api.i18n.{Lang, Messages, MessagesApi}
+import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.Injector
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
@@ -34,7 +34,7 @@ trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfter
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   lazy val injector: Injector = app.injector
   implicit val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
+  implicit val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(injector.instanceOf[Configuration])
 
   override def afterAll(): Unit = {

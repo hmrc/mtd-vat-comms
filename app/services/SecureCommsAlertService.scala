@@ -19,8 +19,8 @@ package services
 import connectors.SecureCommsAlertConnector
 import javax.inject.Inject
 import models.{ErrorModel, GenericParsingError, JsonParsingError, SecureCommsMessageModel}
-import utils.SecureCommsMessageParser
 import utils.LoggerUtil.logWarn
+import utils.SecureCommsMessageParser
 
 import scala.concurrent.{ExecutionContext, Future}
 

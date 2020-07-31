@@ -16,17 +16,19 @@
 
 package testOnly.controllers
 
-import controllers.MicroserviceBaseController
 import com.google.inject.Inject
-import play.api.mvc.{Action, AnyContent}
+import controllers.MicroserviceBaseController
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.CommsEventQueueRepository
 import services.CommsEventQueuePollingService
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository,
                                           scheduler: CommsEventQueuePollingService)(
-                                          implicit ec: ExecutionContext) extends MicroserviceBaseController {
+                                          implicit ec: ExecutionContext, cc: ControllerComponents)
+                                          extends BackendController(cc) with MicroserviceBaseController {
 
   def count: Action[AnyContent] = Action.async { implicit request =>
     val result: Future[Int] = repository.count

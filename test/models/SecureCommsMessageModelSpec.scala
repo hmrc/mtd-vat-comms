@@ -18,8 +18,8 @@ package models
 
 import base.BaseSpec
 import play.api.libs.json.Json
-import utils.SecureCommsMessageTestData.JsonModels._
 import utils.SecureCommsMessageTestData.JsonModelForModels._
+import utils.SecureCommsMessageTestData.JsonModels._
 import utils.SecureCommsMessageTestData.Responses._
 
 class SecureCommsMessageModelSpec extends BaseSpec {

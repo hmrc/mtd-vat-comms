@@ -19,14 +19,16 @@ package controllers
 import javax.inject.Inject
 import models.VatChangeEvent
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.CommsEventService
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class StaggerController @Inject()(repoAccess: CommsEventService)(implicit val ec: ExecutionContext) extends MicroserviceBaseController {
+class StaggerController @Inject()(repoAccess: CommsEventService)(implicit val ec: ExecutionContext, cc: ControllerComponents)
+                                                                extends BackendController(cc) with MicroserviceBaseController {
 
   def handleEvent: Action[AnyContent] = Action.async { implicit request =>
 

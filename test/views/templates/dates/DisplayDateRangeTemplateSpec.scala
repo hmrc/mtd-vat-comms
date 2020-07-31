@@ -18,9 +18,12 @@ package views.templates.dates
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.templates.dates.DisplayDateRange
 import views.templates.TemplateBaseSpec
 
 class DisplayDateRangeTemplateSpec extends TemplateBaseSpec {
+
+  val displayDateRange: DisplayDateRange = injector.instanceOf[DisplayDateRange]
 
   "Calling displayDateRange template" when {
 
@@ -30,7 +33,7 @@ class DisplayDateRangeTemplateSpec extends TemplateBaseSpec {
 
       val endDate = "20170401"
 
-      lazy val template = views.html.templates.dates.displayDateRange(startDate, endDate)
+      lazy val template = displayDateRange(startDate, endDate)
       lazy val document: Document = Jsoup.parse(template.body)
 
       "render the correct text" in {
@@ -42,7 +45,7 @@ class DisplayDateRangeTemplateSpec extends TemplateBaseSpec {
 
       val endDate = "20170401"
 
-      lazy val template = views.html.templates.dates.displayDateRange(startDate, endDate, useShortMonthFormat = true)
+      lazy val template = displayDateRange(startDate, endDate, useShortMonthFormat = true)
       lazy val document: Document = Jsoup.parse(template.body)
 
       "render the correct text" in {
@@ -54,7 +57,7 @@ class DisplayDateRangeTemplateSpec extends TemplateBaseSpec {
 
       val endDate = "20180401"
 
-      lazy val template = views.html.templates.dates.displayDateRange(startDate, endDate)
+      lazy val template = displayDateRange(startDate, endDate)
       lazy val document: Document = Jsoup.parse(template.body)
 
       "render the correct text" in {
@@ -66,7 +69,7 @@ class DisplayDateRangeTemplateSpec extends TemplateBaseSpec {
 
       val endDate = "20180401"
 
-      lazy val template = views.html.templates.dates.displayDateRange(startDate, endDate, useShortMonthFormat = true)
+      lazy val template = displayDateRange(startDate, endDate, useShortMonthFormat = true)
       lazy val document: Document = Jsoup.parse(template.body)
 
       "render the correct text" in {

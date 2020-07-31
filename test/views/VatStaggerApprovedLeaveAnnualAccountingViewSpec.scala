@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatStaggerApprovedLeaveAnnualAccounting
 
 class VatStaggerApprovedLeaveAnnualAccountingViewSpec extends ViewBaseSpec {
 
+  val vatStaggerApprovedLeaveAnnualAccounting: VatStaggerApprovedLeaveAnnualAccounting = injector.instanceOf[VatStaggerApprovedLeaveAnnualAccounting]
+
   "Rendering the VatStaggerApprovedLeaveAnnualAccounting view for an 'MA' stagger code" should {
 
-    lazy val view = views.html.vatStaggerApprovedLeaveAnnualAccounting("MA", "20190102","20190202","20180101")
+    lazy val view = vatStaggerApprovedLeaveAnnualAccounting("MA", "20190102","20190202","20180101")
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct leaving annual accounting message " in {

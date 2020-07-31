@@ -16,8 +16,8 @@
 
 package models
 
-import common.ApiConstants._
 import base.BaseSpec
+import common.ApiConstants._
 import play.api.libs.json.{JsResultException, Json}
 
 class VatChangeEventSpec extends BaseSpec {

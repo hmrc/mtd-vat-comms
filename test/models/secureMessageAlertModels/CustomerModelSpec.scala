@@ -17,8 +17,8 @@
 package models.secureMessageAlertModels
 
 import base.BaseSpec
-import play.api.libs.json.{JsObject, Json}
 import common.Constants.EmailStatus._
+import play.api.libs.json.{JsObject, Json}
 
 class CustomerModelSpec extends BaseSpec {
   val expectedModel: CustomerModel = CustomerModel(

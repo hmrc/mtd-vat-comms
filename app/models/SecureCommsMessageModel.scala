@@ -16,11 +16,11 @@
 
 package models
 
+import common.Constants.SecureCommsMessageFields._
 import models.secureMessageAlertModels._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import common.Constants.SecureCommsMessageFields._
 
 case class SecureCommsMessageModel(
                                     templateId: String,

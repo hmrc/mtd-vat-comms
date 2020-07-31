@@ -18,14 +18,17 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.VatOptOutApprovedRepresented
 
 class VatOptOutApprovedRepresentedViewSpec extends ViewBaseSpec {
+
+  val vatOptOutApprovedRepresented: VatOptOutApprovedRepresented = injector.instanceOf[VatOptOutApprovedRepresented]
 
   "The opt out approved message" when {
 
     "a agent entity has requested to opt out the client out of MTD" should {
 
-      lazy val view = views.html.vatOptOutApprovedRepresented("999999999")
+      lazy val view = vatOptOutApprovedRepresented("999999999")
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct first paragraph" in {
