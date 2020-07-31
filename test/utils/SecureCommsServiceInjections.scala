@@ -19,7 +19,7 @@ package utils
 import play.api.inject.Injector
 import views.html._
 
-class SecureCommsServiceViews (injector: Injector) {
+class SecureCommsServiceInjections (injector: Injector) {
   val vatEmailApproved: VatEmailApproved = injector.instanceOf[VatEmailApproved]
   val vatEmailRejected: VatEmailRejected = injector.instanceOf[VatEmailRejected]
   val vatBankDetailsApproved: VatBankDetailsApproved = injector.instanceOf[VatBankDetailsApproved]

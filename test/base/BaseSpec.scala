@@ -36,19 +36,6 @@ trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   implicit val cc: ControllerComponents = stubControllerComponents()
   implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
 
-//  private lazy val messagesActionBuilder: MessagesActionBuilder =
-//    new DefaultMessagesActionBuilderImpl(stubBodyParser[AnyContent](), stubMessagesApi())
-
-//  implicit lazy val mcc: MessagesControllerComponents = DefaultMessagesControllerComponents(
-//    messagesActionBuilder,
-//    DefaultActionBuilder(stubBodyParser[AnyContent]()),
-//    cc.parsers,
-//    fakeApplication.injector.instanceOf[MessagesApi],
-//    cc.langs,
-//    cc.fileMimeTypes,
-//    ExecutionContext.global
-//  )
-
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 }

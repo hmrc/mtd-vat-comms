@@ -31,7 +31,7 @@ import scala.concurrent.Future
 class SecureMessageQueuePollingServiceSpec extends BaseSpec with MockitoSugar {
 
   val timeoutForTest: Int = 4000
-  val mockAppConfig = mock[AppConfig]
+  val mockAppConfig: AppConfig = mock[AppConfig]
 
   "SecureMessageQueuePollingService" should {
 

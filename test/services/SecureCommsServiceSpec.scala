@@ -31,7 +31,7 @@ import play.api.Application
 import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._
-import utils.SecureCommsServiceViews
+import utils.SecureCommsServiceInjections
 
 import scala.concurrent.ExecutionContext
 
@@ -43,7 +43,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
   lazy val injector: Injector = app.injector
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
 
-  val sCSViews: SecureCommsServiceViews = new SecureCommsServiceViews(injector)
+  val sCSViews: SecureCommsServiceInjections = new SecureCommsServiceInjections(injector)
 
   val service: SecureCommsService = new SecureCommsService(mockConnector,
     sCSViews.vatEmailApproved, sCSViews.vatEmailRejected, sCSViews.vatBankDetailsApproved, sCSViews.vatBankDetailsRejected,
