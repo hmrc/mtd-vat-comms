@@ -40,7 +40,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
   "The queueRequest function" should {
 
     "add an item to the repository" in new TestSetup {
-      when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
+      when(queue.pushNew(any(), any())).thenReturn(Future(exampleWorkItem))
       await(emailMessageService.queueRequest(exampleSecureCommsModel)) shouldBe true
     }
   }
@@ -57,7 +57,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, times(1)).complete(any())(any())
+          verify(queue, times(1)).complete(any())
         }
       }
 
@@ -69,7 +69,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, never).complete(any())(any())
+          verify(queue, never).complete(any())
         }
       }
 
@@ -81,7 +81,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, never).complete(any())(any())
+          verify(queue, never).complete(any())
         }
       }
 
@@ -93,7 +93,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, never()).complete(any())(any())
+          verify(queue, never()).complete(any())
         }
       }
 
@@ -106,7 +106,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-          verify(queue, never()).complete(any())(any())
+          verify(queue, never()).complete(any())
         }
 
       }
@@ -121,7 +121,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
         await(emailMessageService.processWorkItem(Seq.empty, failureWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
       }
     }
   }
@@ -136,7 +136,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
     val metrics: QueueMetrics = mock[QueueMetrics]
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
-      when(queue.complete(any())(any())).thenReturn(Future.successful(response))
+      when(queue.complete(any())).thenReturn(Future.successful(response))
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))

@@ -16,11 +16,11 @@
 
 @import java.time.LocalDate
 @import java.time.format.{DateTimeFormatter, ResolverStyle}
-@import play.api.i18n.Messages
+
 
 @this()
 
-@(stringDate: String, showYear: Boolean = true, useShortMonthFormat: Boolean = false)(implicit messages: Messages) @{
+@(stringDate: String, showYear: Boolean = true, useShortMonthFormat: Boolean = false) @{
 
     val pattern = DateTimeFormatter.ofPattern("yyyyMMdd")
     val date = LocalDate.parse(stringDate,pattern)

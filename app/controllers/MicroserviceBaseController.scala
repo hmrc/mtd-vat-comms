@@ -19,7 +19,7 @@ package controllers
 import models.ErrorModel
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.mvc.{AnyContentAsJson, Request}
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.LoggerUtil.{logDebug, logWarn}
 
 trait MicroserviceBaseController extends BackendController {

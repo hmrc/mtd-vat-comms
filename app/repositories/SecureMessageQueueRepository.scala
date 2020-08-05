@@ -31,7 +31,7 @@ import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemR
 import utils.LoggerUtil.{logDebug, logError}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 @Singleton
 class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
@@ -75,16 +75,16 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
     }
   }
 
-  override def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
-                      (implicit ec: ExecutionContext): Future[WorkItem[SecureCommsMessageModel]] =
+  def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
+                      : Future[WorkItem[SecureCommsMessageModel]] =
     super.pushNew(item, receivedAt)
 
   override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
-  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[SecureCommsMessageModel]]] =
+  def pullOutstanding: Future[Option[WorkItem[SecureCommsMessageModel]]] =
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
 
-  def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
+  def complete(id: BSONObjectID): Future[Boolean] = {
     val selector = JsObject(
       Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
     collection.delete().one(selector).map(_.n > 0)
