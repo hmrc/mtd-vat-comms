@@ -61,7 +61,8 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "testOnly.*",
     ".*feedback*.*",
     "views.html.*",
-    "partials.*"
+    "partials.*",
+    "controllers..*Reverse.*"
   )
 
   Seq(
