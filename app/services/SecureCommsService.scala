@@ -32,7 +32,7 @@ import models.viewModels.VatPPOBViewModel
 import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel, SpecificParsingError}
 import play.api.i18n._
 import play.api.mvc.ControllerComponents
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.Base64Encoding._
 import utils.DateFormatter._
 import utils.LoggerUtil.logWarn

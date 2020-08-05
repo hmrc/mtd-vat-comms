@@ -31,7 +31,7 @@ import uk.gov.hmrc.workitem._
 import utils.LoggerUtil.{logDebug, logError}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 @Singleton
 class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
@@ -75,14 +75,14 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     }
   }
 
-  override def pushNew(item: VatChangeEvent, receivedAt: DateTime)(implicit ec: ExecutionContext):
+  def pushNew(item: VatChangeEvent, receivedAt: DateTime):
   Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
 
-  def pullOutstanding(implicit ec: ExecutionContext): Future[Option[WorkItem[VatChangeEvent]]] = {
+  def pullOutstanding: Future[Option[WorkItem[VatChangeEvent]]] = {
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
   }
 
-  def complete(id: BSONObjectID)(implicit ec: ExecutionContext): Future[Boolean] = {
+  def complete(id: BSONObjectID): Future[Boolean] = {
     val selector = JsObject(
       Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
     collection.delete().one(selector).map(_.n > 0)

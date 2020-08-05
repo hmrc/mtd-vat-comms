@@ -22,7 +22,7 @@ import models._
 import models.secureCommsServiceModels.SecureCommsServiceRequestModel
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 import utils.LoggerUtil.{logWarn, logWarnEitherError}
 
 import scala.concurrent.{ExecutionContext, Future}

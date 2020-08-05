@@ -25,7 +25,6 @@ import utils.SecureCommsMessageBodyStrings
 import utils.SecureCommsMessageTestData.Responses.expectedResponseDeRegistration
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
 

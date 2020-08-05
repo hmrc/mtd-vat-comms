@@ -40,7 +40,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
   "The queueRequest function" should {
 
     "add an item to the repository" in new TestSetup {
-      when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
+      when(queue.pushNew(any(), any())).thenReturn(Future(exampleWorkItem))
       await(commsEventService.queueRequest(exampleVatChangeEvent)) shouldBe true
     }
   }
@@ -134,7 +134,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         markItemAsPermanentlyFailedMock
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventGenericParsingError()
       }
     }
@@ -147,7 +147,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventJsonParsingError()
       }
     }
@@ -160,7 +160,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventNotFoundError()
       }
     }
@@ -173,7 +173,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventBadRequestError()
       }
     }
@@ -186,7 +186,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventQueuedForRetry()
       }
     }
@@ -199,7 +199,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventQueuedForRetry()
       }
     }
@@ -212,7 +212,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
 
         await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
 
-        verify(queue, never).complete(any())(any())
+        verify(queue, never).complete(any())
         verify(metrics, times(1)).commsEventUnexpectedError()
       }
     }
@@ -243,7 +243,7 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         .thenReturn(Future.failed(new GatewayTimeoutException("some error")))
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
-      when(queue.complete(any())(any())).thenReturn(Future.successful(response))
+      when(queue.complete(any())).thenReturn(Future.successful(response))
 
     def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))

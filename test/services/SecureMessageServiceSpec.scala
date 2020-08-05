@@ -38,7 +38,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
   "The queueRequest function" should {
 
     "add an item to the repository" in new TestSetup {
-      when(queue.pushNew(any(), any())(any())).thenReturn(Future(exampleWorkItem))
+      when(queue.pushNew(any(), any())).thenReturn(Future(exampleWorkItem))
       await(secureMessageService.queueRequest(exampleVatChangeEvent)) shouldBe true
     }
   }
@@ -52,7 +52,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
             secureCommsMock(Right(true))
             completeItemMock(true)
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
-            verify(queue, times(1)).complete(any())(any())
+            verify(queue, times(1)).complete(any())
           }
         }
 
@@ -63,7 +63,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never()).complete(any())(any())
+            verify(queue, never()).complete(any())
           }
         }
 
@@ -74,7 +74,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never()).complete(any())(any())
+            verify(queue, never()).complete(any())
           }
         }
 
@@ -85,7 +85,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never).complete(any())(any())
+            verify(queue, never).complete(any())
           }
         }
 
@@ -96,7 +96,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never).complete(any())(any())
+            verify(queue, never).complete(any())
           }
         }
 
@@ -107,7 +107,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never).complete(any())(any())
+            verify(queue, never).complete(any())
           }
         }
 
@@ -117,7 +117,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleBadStaggerWorkItem))
 
-            verify(queue, never).complete(any())(any())
+            verify(queue, never).complete(any())
           }
         }
 
@@ -128,7 +128,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never).complete(any())(any())
+            verify(queue, never).complete(any())
           }
         }
 
@@ -140,7 +140,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
 
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
-            verify(queue, never()).complete(any())(any())
+            verify(queue, never()).complete(any())
           }
         }
 
@@ -171,7 +171,7 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
         .thenReturn(Future.failed(new UnknownHostException("some error")))
 
     def completeItemMock(response: Boolean): OngoingStubbing[Future[Boolean]] =
-      when(queue.complete(any())(any())).thenReturn(Future.successful(response))
+      when(queue.complete(any())).thenReturn(Future.successful(response))
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
       when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
