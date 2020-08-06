@@ -15,6 +15,7 @@
  */
 
 import play.core.PlayVersion
+import play.sbt.routes.RoutesKeys
 import sbt.Keys.testGrouping
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
@@ -79,8 +80,11 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
   ))
 }
 
+RoutesKeys.routesImport := Seq.empty
+
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
+  .disablePlugins(JUnitXmlReportPlugin)
   .settings(coverageSettings: _*)
   .settings(scalaSettings: _*)
   .settings(publishingSettings: _*)
