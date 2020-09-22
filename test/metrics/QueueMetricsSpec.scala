@@ -281,19 +281,4 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
       override def getCount: Long = count
     }
 
-    private class MockMetricRegistry extends MetricRegistry {
-      private var counters = Map[String, MockCounter]()
-
-      override def counter(name: String): Counter = {
-        counters.get(name) match {
-          case Some(counter) =>
-            counter
-          case None =>
-            var newCounter = new MockCounter
-            counters + (name -> newCounter)
-            newCounter
-        }
-      }
-    }
-
   }

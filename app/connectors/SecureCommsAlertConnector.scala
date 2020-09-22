@@ -40,7 +40,6 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
       response.status match {
         case OK => handleOk(response)
         case BAD_REQUEST => handleBadRequest(response)
-        case NOT_FOUND => handleNotFound(response)
         case status: Int =>
           logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
             s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
@@ -78,11 +77,5 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
   private def handleBadRequest(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
     logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${response.body}'")
     Left(BadRequest)
-  }
-
-  private def handleNotFound(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
-      s"The requested data was not found. Body: '${response.body}'")
-    Left(NotFoundNoMatch)
   }
 }
