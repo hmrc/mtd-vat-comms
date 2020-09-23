@@ -52,26 +52,6 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
     "return an ErrorModel" when {
 
-      "a TaxpayerNotFound error is returned" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("reason" -> "Taxpayer not found")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(NotFoundMissingTaxpayer)
-      }
-
-      "an EmailNotVerified error is returned" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("reason" -> "Email not verified")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(NotFoundUnverifiedEmail)
-      }
-
       "a BAD_REQUEST error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj("reason" -> "this doesn't matter")

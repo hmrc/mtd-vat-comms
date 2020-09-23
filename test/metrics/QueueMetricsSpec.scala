@@ -199,25 +199,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
         mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount shouldBe countBefore + 1
       }
 
-      "increment the secureMessage.notFoundMissingTaxpayerError count" in new Setup {
-
-        val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount
-
-        queueMetrics.secureMessageNotFoundMissingTaxpayerError()
-
-        mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount shouldBe countBefore + 1
-      }
-
-
-      "increment the secureMessage.notFoundUnverifiedEmailError count" in new Setup {
-
-        val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount
-
-        queueMetrics.secureMessageNotFoundUnverifiedEmailError()
-
-        mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount shouldBe countBefore + 1
-      }
-
       "increment the secureMessage.badRequestError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.badRequestError").getCount
