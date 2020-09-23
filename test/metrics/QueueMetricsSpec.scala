@@ -273,12 +273,4 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
       override def toJson: String = ???
     }
 
-    private class MockCounter extends Counter {
-      private var count: Int = 0
-
-      override def inc(): Unit = count += 1
-
-      override def getCount: Long = count
-    }
-
   }

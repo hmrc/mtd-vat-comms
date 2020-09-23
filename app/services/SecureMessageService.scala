@@ -61,12 +61,6 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
         case Left(GenericQueueNoRetryError) =>
           metrics.secureMessageGenericQueueNoRetryError()
           handleNonRecoverableError(acc, workItem, "GenericQueueNoRetryError")
-        case Left(NotFoundMissingTaxpayer) =>
-          metrics.secureMessageNotFoundMissingTaxpayerError()
-          handleNonRecoverableError(acc, workItem, "NotFoundMissingTaxpayerError")
-        case Left(NotFoundUnverifiedEmail) =>
-          metrics.secureMessageNotFoundUnverifiedEmailError()
-          handleNonRecoverableError(acc, workItem, "NotFoundUnverifiedEmailError")
         case Left(BadRequest) =>
           metrics.secureMessageBadRequestError()
           handleNonRecoverableError(acc, workItem, "BadRequestError")

@@ -89,6 +89,22 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
         result shouldBe expectedResult
       }
 
+      s"a $NOT_FOUND response is received from SecureComms" in {
+
+        val communicationId = "123456789021"
+
+        stubGetRequest(
+          generateUrl(communicationId),
+          NOT_FOUND,
+          secureCommsValidErrorResponse("NOT_FOUND", "The back end has indicated that there is no match found.")
+        )
+
+        val expectedResult = Left(NotFoundNoMatch)
+
+        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        result shouldBe expectedResult
+      }
+
       "an unexpected response is received from SecureComms" in {
 
         val communicationId = "123456789016"
