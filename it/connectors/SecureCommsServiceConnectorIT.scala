@@ -62,16 +62,6 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         result shouldBe Left(BadRequest)
       }
 
-      "an unexpected response body is returned in the 404" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("poipsaodifpoaispofia" -> "ashfljasdljfaskdj")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(ErrorModel("NOT_FOUND", s"Unknown error:\n${Json.stringify(returnBody)}"))
-      }
-
       "a CONFLICT error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj("reason" -> "this doesn't really matter")
