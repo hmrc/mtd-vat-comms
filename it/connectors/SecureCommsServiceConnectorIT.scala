@@ -52,26 +52,6 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
 
     "return an ErrorModel" when {
 
-      "a TaxpayerNotFound error is returned" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("reason" -> "Taxpayer not found")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(NotFoundMissingTaxpayer)
-      }
-
-      "an EmailNotVerified error is returned" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("reason" -> "Email not verified")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(NotFoundUnverifiedEmail)
-      }
-
       "a BAD_REQUEST error is returned" in {
         val requestBody: JsValue = Json.toJson(requestModel)
         val returnBody: JsValue = Json.obj("reason" -> "this doesn't matter")
@@ -80,16 +60,6 @@ class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHel
         val result: Either[ErrorModel, Boolean] = await(connector.sendMessage(requestModel))
 
         result shouldBe Left(BadRequest)
-      }
-
-      "an unexpected response body is returned in the 404" in {
-        val requestBody: JsValue = Json.toJson(requestModel)
-        val returnBody: JsValue = Json.obj("poipsaodifpoaispofia" -> "ashfljasdljfaskdj")
-
-        stubPostRequest(url, requestBody, NOT_FOUND, returnBody)
-        val result = await(connector.sendMessage(requestModel))
-
-        result shouldBe Left(ErrorModel("NOT_FOUND", s"Unknown error:\n${Json.stringify(returnBody)}"))
       }
 
       "a CONFLICT error is returned" in {

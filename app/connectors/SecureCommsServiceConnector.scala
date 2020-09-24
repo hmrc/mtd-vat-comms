@@ -39,7 +39,6 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
         case BAD_REQUEST =>
           logWarn(s"[SendMessageReads][read] - Bad request received from Secure Comms service: ${response.body}")
           Left(BadRequest)
-        case NOT_FOUND => Left(handle404Possibilities(response.body))
         case CONFLICT => Left(ConflictDuplicateMessage)
         case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))
       }
@@ -57,11 +56,4 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
       logWarnEitherError(response)
     }
   }
-
-  private def handle404Possibilities(body: String): ErrorModel =
-    (body.contains("Taxpayer not found"), body.contains("Email not verified")) match {
-      case (true, _) => NotFoundMissingTaxpayer
-      case (_, true) => NotFoundUnverifiedEmail
-      case (_, _) => ErrorModel("NOT_FOUND", s"Unknown error:\n$body")
-    }
 }

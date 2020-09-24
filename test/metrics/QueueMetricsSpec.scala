@@ -199,25 +199,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
         mockedRegistry.counter("secureMessage.genericQueueNoRetryError").getCount shouldBe countBefore + 1
       }
 
-      "increment the secureMessage.notFoundMissingTaxpayerError count" in new Setup {
-
-        val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount
-
-        queueMetrics.secureMessageNotFoundMissingTaxpayerError()
-
-        mockedRegistry.counter("secureMessage.notFoundMissingTaxpayerError").getCount shouldBe countBefore + 1
-      }
-
-
-      "increment the secureMessage.notFoundUnverifiedEmailError count" in new Setup {
-
-        val countBefore: Long = mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount
-
-        queueMetrics.secureMessageNotFoundUnverifiedEmailError()
-
-        mockedRegistry.counter("secureMessage.notFoundUnverifiedEmailError").getCount shouldBe countBefore + 1
-      }
-
       "increment the secureMessage.badRequestError count" in new Setup {
 
         val countBefore: Long = mockedRegistry.counter("secureMessage.badRequestError").getCount
@@ -271,29 +252,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
       override def defaultRegistry: MetricRegistry = mockedRegistry
 
       override def toJson: String = ???
-    }
-
-    private class MockCounter extends Counter {
-      private var count: Int = 0
-
-      override def inc(): Unit = count += 1
-
-      override def getCount: Long = count
-    }
-
-    private class MockMetricRegistry extends MetricRegistry {
-      private var counters = Map[String, MockCounter]()
-
-      override def counter(name: String): Counter = {
-        counters.get(name) match {
-          case Some(counter) =>
-            counter
-          case None =>
-            var newCounter = new MockCounter
-            counters + (name -> newCounter)
-            newCounter
-        }
-      }
     }
 
   }
