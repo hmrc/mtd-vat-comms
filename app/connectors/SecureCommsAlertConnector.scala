@@ -22,9 +22,7 @@ import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.logging.Authorization
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
 import utils.LoggerUtil._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -51,13 +49,13 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[SecureCommsAlertResponse] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier(
-      authorization = Some(Authorization(s"Bearer ${appConfig.desAuthorisationToken}")),
-      extraHeaders = Seq("Environment" -> appConfig.desEnvironment)
-    )
+    val desHeaders = Seq("Authorization" -> s"Bearer ${appConfig.desAuthorisationToken}", "Environment" -> appConfig.desEnvironment)
+
+    implicit val hc: HeaderCarrier = HeaderCarrier(authorization = None)
+
     val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
 
-    httpClient.GET[SecureCommsAlertResponse](url).map { response =>
+    httpClient.GET[SecureCommsAlertResponse](url,headers = desHeaders).map { response =>
       logWarnEitherError(response)
     }
   }
