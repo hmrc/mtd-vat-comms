@@ -19,7 +19,6 @@ import play.sbt.routes.RoutesKeys
 import sbt.Keys.testGrouping
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
-import uk.gov.hmrc.SbtArtifactory
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "mtd-vat-comms"
@@ -29,7 +28,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround(
 val compile = Seq(
   "uk.gov.hmrc" %% "simple-reactivemongo" % "7.29.0-play-26",
   "uk.gov.hmrc" %% "work-item-repo"       % "7.6.0-play-26",
-  "uk.gov.hmrc" %% "bootstrap-backend-play-26"    % "2.24.0",
+  "uk.gov.hmrc" %% "bootstrap-backend-play-26"    % "5.3.0",
   "uk.gov.hmrc" %% "play-scheduling"      % "7.4.0-play-26"
 )
 
@@ -83,7 +82,7 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
 RoutesKeys.routesImport := Seq.empty
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
+  .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(coverageSettings: _*)
   .settings(scalaSettings: _*)

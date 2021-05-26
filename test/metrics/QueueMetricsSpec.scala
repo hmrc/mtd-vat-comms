@@ -17,7 +17,7 @@
 package metrics
 
 import base.BaseSpec
-import com.codahale.metrics.{Counter, MetricRegistry}
+import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.Metrics
 import org.scalatestplus.mockito.MockitoSugar
 
