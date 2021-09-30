@@ -19,8 +19,8 @@ package services
 import akka.actor.ActorSystem
 import com.google.inject.{Inject, Singleton}
 import config.AppConfig
-import uk.gov.hmrc.play.scheduling.ExclusiveScheduledJob
-import utils.LoggerUtil._
+import utils.ExclusiveScheduledJob
+import utils.LoggerUtil
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,26 +30,26 @@ import scala.util.{Failure, Success}
 class EmailMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
                                                 appConfig: AppConfig,
                                                 emailMessageService: EmailMessageService)
-                                                (implicit ec: ExecutionContext) extends ExclusiveScheduledJob {
+                                                (implicit ec: ExecutionContext) extends ExclusiveScheduledJob with LoggerUtil {
 
   override def name: String = "EmailMessageQueuePollingService"
 
   override def executeInMutex(implicit ec: ExecutionContext): Future[Result] =
     emailMessageService.retrieveWorkItems.map(items => Result(s"Processed ${items.size} email items"))
 
-  lazy val initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
-  lazy val interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds
+  override def initialDelay: FiniteDuration = appConfig.initialWaitTime.seconds
+  override def interval: FiniteDuration = appConfig.queuePollingWaitTime.seconds
 
-  logInfo(s"Starting email message queue scheduler." +
+  logger.info(s"Starting email message queue scheduler." +
     s"\nInitial delay: $initialDelay" +
     s"\nPolling interval: $interval")
 
   def executor()(implicit ec: ExecutionContext): Unit = {
     execute.onComplete({
-      case Success(Result(_)) =>
-        logInfo(_)
+      case Success(Result(message)) =>
+        logger.info(message)
       case Failure(throwable) =>
-        logError(s"Exception completing work item", throwable)
+        logger.error(s"Exception completing work item", throwable)
     })
   }
 
@@ -57,7 +57,7 @@ class EmailMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
     if (appConfig.pollingToggle) {
       executor()
     } else {
-      logInfo("Polling is toggled off")
+      logger.info("Polling is toggled off")
     }
   }
 }

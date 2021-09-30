@@ -21,6 +21,7 @@ import models._
 import models.secureCommsServiceModels._
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import testutils.WireMockHelper
 
 class SecureCommsServiceConnectorIT extends IntegrationBaseSpec with WireMockHelper {

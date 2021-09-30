@@ -18,15 +18,15 @@ package repositories
 
 import models.SecureCommsMessageModel
 import org.joda.time.DateTime
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-
 class SecureMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, SecureMessageQueueRepository] {
-  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
+
   val anInstant: DateTime = DateTimeUtils.now
 
   "SecureMessageQueue Repository" should {
@@ -54,7 +54,7 @@ class SecureMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel
       requests should have(size(2))
 
 
-      requests(0) should have(
+      requests.head should have(
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),

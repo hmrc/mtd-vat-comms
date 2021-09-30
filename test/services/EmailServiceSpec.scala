@@ -31,6 +31,7 @@ import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, Me
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.ACCEPTED
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -49,7 +50,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
     PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
   )
 
-  val emailRequestModel = EmailRequestModel(
+  val emailRequestModel: EmailRequestModel = EmailRequestModel(
     Seq(messageModel.getTransactorDetails.transactorEmail),
     "newMessageAlert_VRT12B",
     Map(
@@ -59,7 +60,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
     )
   )
 
-  val errorModel = ErrorModel("ERROR_CREATING_REQUEST", "Oh no")
+  val errorModel: ErrorModel = ErrorModel("ERROR_CREATING_REQUEST", "Oh no")
 
   "sendEmailRequest" should {
 

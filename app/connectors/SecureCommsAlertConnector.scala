@@ -23,12 +23,12 @@ import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
-import utils.LoggerUtil._
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
-                                          appConfig: AppConfig) {
+                                          appConfig: AppConfig) extends LoggerUtil {
 
   type SecureCommsAlertResponse = Either[ErrorModel, SecureCommsResponseModel]
 
@@ -40,7 +40,7 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
         case BAD_REQUEST => handleBadRequest(response)
         case NOT_FOUND => handleNotFound(response)
         case status: Int =>
-          logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+          logger.warn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
             s"Unexpected error encountered. Status: '$status', Body: '${response.body}'")
           Left(ErrorModel(s"${response.status}", response.body))
       }
@@ -63,23 +63,23 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
   private def handleOk(response: HttpResponse): SecureCommsAlertResponse =
     Json.parse(response.body).validate[SecureCommsResponseModel].asOpt match {
       case Some(responseModel) =>
-        logDebug("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+        logger.debug("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           s"Successfully parsed SecureCommsResponseModel: $responseModel")
         Right(responseModel)
       case None =>
-        logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+        logger.warn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
           "Failed to validate response to SecureCommsResponseModel")
-        logDebug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
+        logger.debug(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Body: '${response.body}'")
         Left(GenericParsingError)
     }
 
   private def handleBadRequest(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    logWarn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${response.body}'")
+    logger.warn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - Bad request. Body: '${response.body}'")
     Left(BadRequest)
   }
 
   private def handleNotFound(response: HttpResponse): Left[ErrorModel, SecureCommsResponseModel] = {
-    logWarn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
+    logger.warn("[SecureCommsAlertConnector][getSecureCommsMessage] - " +
       s"The requested data was not found. Body: '${response.body}'")
     Left(NotFoundNoMatch)
   }

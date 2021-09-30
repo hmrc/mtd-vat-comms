@@ -20,14 +20,15 @@ import common.ApiConstants.vatChangeEventModel
 import models.VatChangeEvent
 import org.joda.time.{DateTime, Duration}
 import org.scalatest.BeforeAndAfterEach
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 
 class CommsEventQueueRepositorySpec extends MongoSpec[VatChangeEvent, CommsEventQueueRepository] with BeforeAndAfterEach {
+
   val anInstant: DateTime = DateTimeUtils.now
-  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
 
   "CommsEventQueue Repository" should {
 
@@ -63,7 +64,7 @@ class CommsEventQueueRepositorySpec extends MongoSpec[VatChangeEvent, CommsEvent
       requests should have(size(2))
 
 
-      requests(0) should have(
+      requests.head should have(
         'item (payloadDetails),
         'status (ToDo),
         'receivedAt (anInstant),

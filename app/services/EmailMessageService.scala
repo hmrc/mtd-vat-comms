@@ -23,15 +23,14 @@ import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
-import utils.LoggerUtil.{logError, logWarn}
-import utils.SecureCommsMessageParser
+import utils.{LoggerUtil, SecureCommsMessageParser}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository,
                                     emailService: EmailService,
                                     metrics: QueueMetrics)(
-                                    implicit ec: ExecutionContext) {
+                                    implicit ec: ExecutionContext) extends LoggerUtil {
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.emailMessageEnqueued()
@@ -89,8 +88,8 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
       s"${workItem.item.vrn}, form bundle ref: ${workItem.item.formBundleReference} and work item id: ${workItem.id}"
 
     exception match {
-      case Some(error) => logError(message, error)
-      case None => logWarn(message)
+      case Some(error) => logger.error(message, error)
+      case None => logger.warn(message)
     }
 
     emailMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)

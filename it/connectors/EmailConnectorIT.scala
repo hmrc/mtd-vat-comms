@@ -22,13 +22,14 @@ import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import testutils.WireMockHelper
 
 class EmailConnectorIT extends IntegrationBaseSpec with WireMockHelper {
 
   val connector: EmailConnector = new EmailConnector(httpClient, appConfig)
   val postUrl: String = "/hmrc/email"
-  val postBody = EmailRequestModel(
+  val postBody: EmailRequestModel = EmailRequestModel(
     Seq("test@email.com"),
     "testId",
     Map("key" -> "value")

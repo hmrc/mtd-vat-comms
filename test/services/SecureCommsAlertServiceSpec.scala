@@ -21,10 +21,11 @@ import connectors.SecureCommsAlertConnector
 import models.responseModels.SecureCommsResponseModel
 import models.{ErrorModel, GenericParsingError, JsonParsingError}
 import org.scalamock.scalatest.MockFactory
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.SecureCommsMessageBodyStrings
 import utils.SecureCommsMessageTestData.Responses.expectedResponseDeRegistration
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
 
@@ -42,10 +43,10 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
         (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
             .expects(serviceName, regNum, communicationsId, *)
             .returns(
-              Right(SecureCommsResponseModel(
+              Future.successful(Right(SecureCommsResponseModel(
                 dateToUse,
                 SecureCommsMessageBodyStrings.validEDODString
-              ))
+              )))
             )
 
         val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
@@ -57,10 +58,10 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
         (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
           .expects(serviceName, regNum, communicationsId, *)
           .returns(
-            Right(SecureCommsResponseModel(
+            Future.successful(Right(SecureCommsResponseModel(
               dateToUse,
               SecureCommsMessageBodyStrings.invalidEDODString
-            ))
+            )))
           )
 
         val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
@@ -70,10 +71,10 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
         (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
           .expects(serviceName, regNum, communicationsId, *)
           .returns(
-            Right(SecureCommsResponseModel(
+            Future.successful(Right(SecureCommsResponseModel(
               dateToUse,
               SecureCommsMessageBodyStrings.invalidJsonParseString
-            ))
+            )))
           )
 
         val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))
@@ -85,7 +86,7 @@ class SecureCommsAlertServiceSpec extends BaseSpec with MockFactory {
         (mockConnector.getSecureCommsMessage(_: String, _: String, _: String)(_: ExecutionContext))
           .expects(serviceName, regNum, communicationsId, *)
           .returns(
-            Left(modelToReturn)
+            Future.successful(Left(modelToReturn))
           )
 
         val result = await(service.getSecureCommsMessage(serviceName, regNum, communicationsId))

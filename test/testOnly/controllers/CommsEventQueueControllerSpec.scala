@@ -20,6 +20,7 @@ import base.BaseSpec
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
+import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout}
 import repositories.CommsEventQueueRepository
 import services.CommsEventQueuePollingService
 
@@ -29,7 +30,7 @@ class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar {
 
   val repository: CommsEventQueueRepository = mock[CommsEventQueueRepository]
   val scheduler: CommsEventQueuePollingService = mock[CommsEventQueuePollingService]
-  val controller = new CommsEventQueueController(repository, scheduler)
+  val controller = new CommsEventQueueController(repository, scheduler, cc)
   val recordCount = 99
 
   "The count action" should {
@@ -38,7 +39,7 @@ class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar {
       when(repository.count(ec)) thenReturn Future.successful(recordCount)
       lazy val result: Future[Result] = controller.count(request)
 
-      await(bodyOf(result)) shouldBe recordCount.toString
+      contentAsString(result) shouldBe recordCount.toString
     }
   }
 }

@@ -20,13 +20,10 @@ import javax.inject.Inject
 import models.VatChangeEvent
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.ExecutionContext
 import scala.util.Right
 
-class BusinessNameController @Inject()()(implicit val ec: ExecutionContext, cc: ControllerComponents) extends
-                                        BackendController(cc) with MicroserviceBaseController {
+class BusinessNameController @Inject()(cc: ControllerComponents) extends MicroserviceBaseController(cc) {
 
   def handleEvent: Action[AnyContent] = Action { implicit request =>
     parseJsonBody[VatChangeEvent] match {

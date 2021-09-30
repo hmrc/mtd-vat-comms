@@ -17,17 +17,18 @@
 package connectors
 
 import config.AppConfig
+
 import javax.inject.Inject
 import models._
 import models.secureCommsServiceModels.SecureCommsServiceRequestModel
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.http.HttpClient
-import utils.LoggerUtil.{logWarn, logWarnEitherError}
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) {
+class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) extends LoggerUtil {
 
   type SecureCommsResponse = Either[ErrorModel, Boolean]
 
@@ -37,7 +38,7 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
       response.status match {
         case CREATED => Right(true)
         case BAD_REQUEST =>
-          logWarn(s"[SendMessageReads][read] - Bad request received from Secure Comms service: ${response.body}")
+          logger.warn(s"[SendMessageReads][read] - Bad request received from Secure Comms service: ${response.body}")
           Left(BadRequest)
         case CONFLICT => Left(ConflictDuplicateMessage)
         case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))

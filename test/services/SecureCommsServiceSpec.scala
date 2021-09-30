@@ -17,30 +17,24 @@
 package services
 
 import java.time.format.DateTimeParseException
-
 import base.BaseSpec
 import common.Constants.MessageKeys._
 import connectors.SecureCommsServiceConnector
 import mocks.MockAppConfig
 import models._
 import models.secureCommsServiceModels._
-import modules.SchedulerModule
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterAll
-import play.api.Application
-import play.api.inject.Injector
-import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.SecureCommsMessageTestData.SendSecureMessageModels._
 import utils.SecureCommsServiceInjections
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAfterAll {
 
   val mockConnector: SecureCommsServiceConnector = mock[SecureCommsServiceConnector]
 
-  implicit override lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
-  lazy val injector: Injector = app.injector
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
 
   val sCSViews: SecureCommsServiceInjections = new SecureCommsServiceInjections(injector)
@@ -288,7 +282,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       "an exception is encountered" in {
         (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
           .expects(*, *)
-          .returns(Left(BadRequest))
+          .returns(Future.successful(Left(BadRequest)))
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
         result shouldBe Left(BadRequest)
@@ -492,6 +486,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
   private def setupSuccessResponse = {
     (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
       .expects(*, *)
-      .returns(Right(true))
+      .returns(Future.successful(Right(true)))
   }
 }

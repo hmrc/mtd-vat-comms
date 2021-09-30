@@ -19,9 +19,8 @@ package utils
 import models._
 import models.secureMessageAlertModels.messageTypes._
 import play.api.libs.json.{JsValue, Json, OFormat}
-import utils.LoggerUtil._
 
-object SecureCommsMessageParser {
+object SecureCommsMessageParser extends LoggerUtil {
   private def convertToCamelCase(inputString: String): String = {
     val allLowerCase = inputString.toLowerCase
       .replace("-", " ")
@@ -43,7 +42,7 @@ object SecureCommsMessageParser {
       Right(Json.toJson(stringAsMap))
     } catch {
       case _: Throwable =>
-        logError("[SecureCommsMessageParser][parseMessage] Error performing generic parse")
+        logger.error("[SecureCommsMessageParser][parseMessage] Error performing generic parse")
         Left(JsonParsingError)
     }
   }
@@ -67,7 +66,7 @@ object SecureCommsMessageParser {
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, None, None, Some(_), _, _, _) =>
         Right(toGivenModel[ContactNumbersChangeModel](x))
       case x: SecureCommsMessageModel =>
-        logError("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
+        logger.error("[SecureCommsMessageParser][parseModel] Error parsing generic type into specific type\n" +
           "Populated optional fields:" + generateStringFromOptionalFields(x)
         )
         Left(SpecificParsingError)

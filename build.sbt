@@ -26,23 +26,23 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc" %% "simple-reactivemongo" % "7.29.0-play-26",
-  "uk.gov.hmrc" %% "work-item-repo"       % "7.6.0-play-26",
-  "uk.gov.hmrc" %% "bootstrap-backend-play-26"    % "5.3.0",
-  "uk.gov.hmrc" %% "play-scheduling"      % "7.4.0-play-26"
+  "uk.gov.hmrc" %% "simple-reactivemongo"      % "8.0.0-play-28",
+  "uk.gov.hmrc" %% "work-item-repo"            % "8.1.0-play-28",
+  "uk.gov.hmrc" %% "bootstrap-backend-play-28" % "5.14.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "hmrctest"                     % "3.9.0-play-26"     % scope,
-  "org.scalatest"          %% "scalatest"                    % "3.0.8"             % scope,
+  "org.scalatest"          %% "scalatest"                    % "3.1.4"             % scope,
   "com.typesafe.play"      %% "play-test"                    % PlayVersion.current % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play"           % "3.1.0"             % scope,
-  "com.github.tomakehurst" %  "wiremock-jre8"                % "2.27.1"            % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play"           % "5.1.0"             % scope,
+  "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.9.0"           % scope,
+  "com.github.tomakehurst" %  "wiremock-jre8"                % "2.26.3"            % scope,
   "org.mockito"            %  "mockito-core"                 % "2.24.5"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope
+  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope,
+  "com.vladsch.flexmark"   % "flexmark-all"                  % "0.36.8"            % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
@@ -50,24 +50,17 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
   val excludedPackages = Seq(
     "<empty>",
-    "Reverse.*",
-    ".*standardError*.*",
-    ".*govuk_wrapper*.*",
-    ".*main_template*.*",
-    "uk.gov.hmrc.BuildInfo",
+    ".*Reverse.*",
     "app.*",
     "prod.*",
     "config.*",
     "testOnly.*",
-    ".*feedback*.*",
-    "views.html.*",
-    "partials.*",
-    "controllers..*Reverse.*"
+    "views.html.*"
   )
 
   Seq(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimum := 95,
+    ScoverageKeys.coverageMinimumStmtTotal := 95,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true
   )
@@ -90,7 +83,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
-    scalaVersion := "2.12.11",
+    scalaVersion := "2.12.14",
     PlayKeys.playDefaultPort := 9579,
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,

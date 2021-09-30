@@ -17,27 +17,16 @@
 package utils
 
 import models.ErrorModel
-import play.api.Logger
+import org.slf4j.{Logger, LoggerFactory}
+import play.api.LoggerLike
 
-// $COVERAGE-OFF$
-
-object LoggerUtil {
-
-  def logInfo(content: String): Unit = Logger.info(content)
-  def logDebug(content: String): Unit = Logger.debug(content)
-  def logWarn(content: String): Unit = Logger.warn(content)
-  def logWarn(content: String, throwable: Throwable): Unit = Logger.warn(content, throwable)
-  def logError(content: String): Unit = Logger.error(content)
-  def logError(content: String, throwable: Throwable): Unit = Logger.error(content, throwable)
-
+trait LoggerUtil extends LoggerLike {
+  override val logger: Logger = LoggerFactory.getLogger("application")
   def logWarnEitherError[T](content: Either[ErrorModel, T]): Either[ErrorModel, T] = {
     if(content.isLeft) {
       val leftValue = content.left.get
-      logWarn(s"${leftValue.code} => ${leftValue.body}")
+      logger.warn(s"${leftValue.code} => ${leftValue.body}")
     }
     content
   }
-
 }
-
-// $COVERAGE-ON$
