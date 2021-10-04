@@ -27,6 +27,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import reactivemongo.bson.BSONObjectID
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.GatewayTimeoutException

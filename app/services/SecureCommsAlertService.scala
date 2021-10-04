@@ -17,14 +17,14 @@
 package services
 
 import connectors.SecureCommsAlertConnector
+
 import javax.inject.Inject
 import models.{ErrorModel, GenericParsingError, JsonParsingError, SecureCommsMessageModel}
-import utils.LoggerUtil.logWarn
-import utils.SecureCommsMessageParser
+import utils.{LoggerUtil, SecureCommsMessageParser}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAlertConnector) {
+class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAlertConnector) extends LoggerUtil {
 
   def getSecureCommsMessage(service: String, regNumber: String, communicationId: String)
                            (implicit ec: ExecutionContext): Future[Either[ErrorModel, SecureCommsMessageModel]] =
@@ -33,7 +33,7 @@ class SecureCommsAlertService @Inject()(secureCommsAlertConnector: SecureCommsAl
         case Right(parsedJson) => parsedJson.validate[SecureCommsMessageModel].asOpt match {
           case Some(parsedModel) => Right(parsedModel)
           case None =>
-            logWarn(s"[SecureCommsAlertService][getSecureCommsMessage] - " +
+            logger.warn(s"[SecureCommsAlertService][getSecureCommsMessage] - " +
               s"${GenericParsingError.code} => ${GenericParsingError.body}")
             Left(GenericParsingError)
         }

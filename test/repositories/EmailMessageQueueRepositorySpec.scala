@@ -19,16 +19,17 @@ package repositories
 import models.SecureCommsMessageModel
 import org.joda.time.DateTime
 import org.scalatest.BeforeAndAfterEach
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import reactivemongo.api.ReadPreference
 import reactivemongo.bson.BSONObjectID
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
+class EmailMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, EmailMessageQueueRepository] with
+  BeforeAndAfterEach {
 
-class EmailMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, EmailMessageQueueRepository] with BeforeAndAfterEach {
   val anInstant: DateTime = DateTimeUtils.now
-  override implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
 
   "EmailMessageQueue Repository" should {
 
@@ -54,7 +55,7 @@ class EmailMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel,
       val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
 
-      requests(0) should have(
+      requests.head should have(
         'item (expectedResponseEverything),
         'status (ToDo),
         'receivedAt (anInstant),

@@ -17,9 +17,10 @@
 package models.secureMessageAlertModels
 
 import play.api.libs.json.{JsObject, Json}
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class StaggerDetailsModelSpec extends UnitSpec {
+class StaggerDetailsModelSpec extends AnyWordSpecLike with Matchers {
 
   val expectedModelForConfirmation: StaggerDetailsModel = StaggerDetailsModel(
     "stagger",

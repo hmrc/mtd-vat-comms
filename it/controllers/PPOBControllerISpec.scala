@@ -20,6 +20,7 @@ import common.ApiConstants._
 import helpers.IntegrationBaseSpec
 import play.api.http.Status.NO_CONTENT
 import play.api.libs.ws.WSRequest
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 class PPOBControllerISpec extends IntegrationBaseSpec {
 

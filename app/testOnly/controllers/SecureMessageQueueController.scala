@@ -21,14 +21,13 @@ import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.SecureMessageQueueRepository
 import services.SecureMessageQueuePollingService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureMessageQueueController @Inject()(repository: SecureMessageQueueRepository,
-                                             scheduler: SecureMessageQueuePollingService)(
-                                             implicit ec: ExecutionContext, cc: ControllerComponents)
-                                            extends BackendController(cc) with MicroserviceBaseController {
+                                             scheduler: SecureMessageQueuePollingService,
+                                             cc: ControllerComponents)
+                                            (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
   def count: Action[AnyContent] = Action.async {
     val result: Future[Int] = repository.count

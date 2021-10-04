@@ -23,14 +23,14 @@ import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
-import utils.LoggerUtil.{logError, logWarn}
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository,
                                      secureCommsService: SecureCommsService,
                                      metrics: QueueMetrics)(
-                                     implicit ec: ExecutionContext) {
+                                     implicit ec: ExecutionContext) extends LoggerUtil {
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.secureMessageEnqueued()
@@ -68,7 +68,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
           metrics.secureMessageSpecificParsingError()
           handleNonRecoverableError(acc, workItem, "SpecificParsingError")
         case Left(errorModel) =>
-          logWarn("[SecureMessageService][processWorkItem] - Unexpected error received - " +
+          logger.warn("[SecureMessageService][processWorkItem] - Unexpected error received - " +
             s"Code: ${errorModel.code}, Body: ${errorModel.body}")
           metrics.secureMessageQueuedForRetry()
           secureMessageQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
@@ -91,8 +91,8 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
       s"${workItem.item.vrn}, form bundle ref: ${workItem.item.formBundleReference} and work item id: ${workItem.id}"
 
     exception match {
-      case Some(error) => logError(message, error)
-      case None => logWarn(message)
+      case Some(error) => logger.error(message, error)
+      case None => logger.warn(message)
     }
 
     secureMessageQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)

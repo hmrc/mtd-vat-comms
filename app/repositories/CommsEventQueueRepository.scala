@@ -17,10 +17,11 @@
 package repositories
 
 import config.{AppConfig, ConfigKeys}
+
 import javax.inject.{Inject, Singleton}
 import models.VatChangeEvent
 import org.joda.time.DateTime
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsObject, JsString, Json}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
@@ -28,7 +29,7 @@ import reactivemongo.play.json.ImplicitBSONHandlers._
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem._
-import utils.LoggerUtil.{logDebug, logError}
+import utils.LoggerUtil
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,6 +42,8 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     WorkItem.workItemMongoFormat[VatChangeEvent],
     appConfig.configuration.underlying
   ) {
+
+  val appLogger: LoggerUtil = new LoggerUtil{}
 
   lazy override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
@@ -66,11 +69,11 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
     collection.indexesManager.ensure(Index(Seq((field, IndexType.Ascending)), Some(indexName),
       options = BSONDocument(expireAfterSeconds -> ttl))) map {
       result =>
-        logDebug(s"set [$indexName] with value $ttl -> result : $result")
+        appLogger.logger.debug(s"set [$indexName] with value $ttl -> result : $result")
         result
     } recover {
       case e =>
-        logError("Failed to set TTL index", e)
+        appLogger.logger.error("Failed to set TTL index", e)
         false
     }
   }
@@ -84,7 +87,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoCom
 
   def complete(id: BSONObjectID): Future[Boolean] = {
     val selector = JsObject(
-      Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> Json.toJson(InProgress)))
+      Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> JsString(InProgress.name)))
     collection.delete().one(selector).map(_.n > 0)
   }
 }

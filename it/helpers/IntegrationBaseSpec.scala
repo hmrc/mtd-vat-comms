@@ -19,16 +19,17 @@ package helpers
 import config.AppConfig
 import org.scalatest.BeforeAndAfterAll
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest}
 import play.api.{Application, Environment, Mode}
 import testutils.WireMockHelper
 import uk.gov.hmrc.http.HttpClient
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite
+trait IntegrationBaseSpec extends AnyWordSpecLike with Matchers with WireMockHelper with GuiceOneServerPerSuite
   with BeforeAndAfterAll {
 
   val mockHost: String = WireMockHelper.host

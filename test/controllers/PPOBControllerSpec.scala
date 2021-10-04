@@ -24,12 +24,13 @@ import models.VatChangeEvent
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT}
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
+import play.api.test.Helpers.{contentAsJson, defaultAwaitTimeout, status}
 
 import scala.concurrent.Future
 
 class PPOBControllerSpec extends BaseSpec with MockCommsEventService {
 
-  val controller = new PPOBController(mockCommsEventService)
+  val controller = new PPOBController(mockCommsEventService, cc)
 
   val testRequestJson: JsObject        = vatChangeEventJson("PPOB Change")
   val testRequestModel: VatChangeEvent = vatChangeEventModel("PPOB Change")
@@ -42,7 +43,7 @@ class PPOBControllerSpec extends BaseSpec with MockCommsEventService {
 
         "return 204" in {
           mockQueueRequest(testRequestModel)(Future.successful(true))
-          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+          val result: Future[Result] = controller.handleEvent(request.withJsonBody(testRequestJson))
 
           status(result) shouldBe NO_CONTENT
         }
@@ -52,7 +53,7 @@ class PPOBControllerSpec extends BaseSpec with MockCommsEventService {
 
         "return 500" in {
           mockQueueRequest(testRequestModel)(Future.successful(false))
-          val result: Result = controller.handleEvent(request.withJsonBody(testRequestJson))
+          val result: Future[Result] = controller.handleEvent(request.withJsonBody(testRequestJson))
 
           status(result) shouldBe INTERNAL_SERVER_ERROR
         }
@@ -62,26 +63,26 @@ class PPOBControllerSpec extends BaseSpec with MockCommsEventService {
     "invalid JSON is received" should {
 
       "return 400" in {
-        val result: Result = controller.handleEvent(request.withJsonBody(invalidJsonRequest))
+        val result: Future[Result] = controller.handleEvent(request.withJsonBody(invalidJsonRequest))
         status(result) shouldBe BAD_REQUEST
       }
 
       "return JSON describing the error" in {
-        val result: Result = controller.handleEvent(request.withJsonBody(invalidJsonRequest))
-        jsonBodyOf(result) shouldBe invalidJsonResponse
+        val result: Future[Result] = controller.handleEvent(request.withJsonBody(invalidJsonRequest))
+        contentAsJson(result) shouldBe invalidJsonResponse
       }
     }
 
     "something other than JSON is received" should {
 
       "return 400" in {
-        val result: Result = controller.handleEvent(request.withBody(invalidRequestBody))
+        val result: Future[Result] = controller.handleEvent(request.withBody(invalidRequestBody))
         status(result) shouldBe BAD_REQUEST
       }
 
       "return JSON describing the error" in {
-        val result: Result = controller.handleEvent(request.withBody(invalidRequestBody))
-        jsonBodyOf(result) shouldBe invalidFormatResponse
+        val result: Future[Result] = controller.handleEvent(request.withBody(invalidRequestBody))
+        contentAsJson(result) shouldBe invalidFormatResponse
       }
     }
   }

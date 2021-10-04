@@ -21,14 +21,12 @@ import models.VatChangeEvent
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.CommsEventService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class PPOBController @Inject()(repoAccess: CommsEventService)(implicit val ec: ExecutionContext, cc: ControllerComponents) extends
-                                                              BackendController(cc) with MicroserviceBaseController {
+class PPOBController @Inject()(repoAccess: CommsEventService, cc: ControllerComponents)
+                              (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
   def handleEvent: Action[AnyContent] = Action.async { implicit request =>
 
@@ -37,7 +35,7 @@ class PPOBController @Inject()(repoAccess: CommsEventService)(implicit val ec: E
         repoAccess.queueRequest(workItem) map {
           case true  => NoContent
           case false =>
-            LoggerUtil.logWarn(s"[PPOBController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
+            logger.warn(s"[PPOBController][handleEvent] Unable to add WorkItem to Repository: ${workItem.BPContactNumber}")
             InternalServerError
         }
 

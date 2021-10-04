@@ -17,15 +17,16 @@
 package views.templates
 
 import org.jsoup.Jsoup
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.Injector
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.twirl.api.Html
-import uk.gov.hmrc.play.test.UnitSpec
 
-class TemplateBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
+class TemplateBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   lazy val injector: Injector = app.injector

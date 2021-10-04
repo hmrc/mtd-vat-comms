@@ -17,25 +17,29 @@
 package views
 
 import mocks.MockAppConfig
+import modules.SchedulerModule
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Configuration
+import play.api.{Application, Configuration}
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.Injector
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.collection.JavaConverters._
 
-trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterAll {
+trait ViewBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with BeforeAndAfterAll {
 
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
   lazy val injector: Injector = app.injector
-  implicit val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(injector.instanceOf[Configuration])
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.injector.instanceOf[Configuration])
 
   override def afterAll(): Unit = {
     app.stop()

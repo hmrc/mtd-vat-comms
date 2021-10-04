@@ -18,6 +18,7 @@ package services
 
 import common.ApiConstants.serviceName
 import common.Constants.ChannelPreferences.DIGITAL
+
 import javax.inject.{Inject, Singleton}
 import metrics.QueueMetrics
 import models._
@@ -26,7 +27,7 @@ import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.GatewayTimeoutException
 import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
-import utils.LoggerUtil.{logDebug, logError, logWarn}
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,10 +37,10 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
                                   emailMessageService: EmailMessageService,
                                   secureMessageService: SecureMessageService,
                                   metrics: QueueMetrics)(
-                                  implicit ec: ExecutionContext) {
+                                  implicit ec: ExecutionContext) extends LoggerUtil {
 
   def queueRequest(item: VatChangeEvent): Future[Boolean] = {
-    logDebug(s"[CommsEventService][queueRequest] - Item queued: $item")
+    logger.debug(s"[CommsEventService][queueRequest] - Item queued: $item")
     metrics.commsEventEnqueued()
     commsEventQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
   }
@@ -93,7 +94,9 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
       handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
   }
 
-  private def handleItemSuccess(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent], model: SecureCommsMessageModel): Future[Seq[VatChangeEvent]] = {
+  private def handleItemSuccess(acc: Seq[VatChangeEvent],
+                                workItem: WorkItem[VatChangeEvent],
+                                model: SecureCommsMessageModel): Future[Seq[VatChangeEvent]] =
     if (model.transactorDetails.transactorEmail.nonEmpty | model.originalEmailAddress.getOrElse("").nonEmpty) {
       emailMessageService.queueRequest(model).flatMap {
         case true =>
@@ -109,7 +112,6 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
       metrics.commsEventDequeued()
       commsEventQueueRepository.complete(workItem.id).map(_ => acc)
     }
-  }
 
   private def handleNonRecoverableError(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent],
                                         errorTypeName: String, exception: Option[Throwable] = None): Future[Seq[VatChangeEvent]] = {
@@ -118,8 +120,8 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
       s"${workItem.item.vrn}, BPContactNumber: ${workItem.item.BPContactNumber} and work item id: ${workItem.id}"
 
     exception match {
-      case Some(error) => logError(message, error)
-      case None => logWarn(message)
+      case Some(error) => logger.error(message, error)
+      case None => logger.warn(message)
     }
 
     commsEventQueueRepository.markAs(workItem.id, PermanentlyFailed, None).map(_ => acc)

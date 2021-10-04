@@ -31,11 +31,8 @@ import models.secureMessageAlertModels.messageTypes._
 import models.viewModels.VatPPOBViewModel
 import models.{ErrorModel, GenericQueueNoRetryError, SecureCommsMessageModel, SpecificParsingError}
 import play.api.i18n._
-import play.api.mvc.ControllerComponents
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import utils.Base64Encoding._
 import utils.DateFormatter._
-import utils.LoggerUtil.logWarn
 import utils.SecureCommsMessageParser._
 import utils.TemplateMappings._
 import views.html._
@@ -52,8 +49,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                                    vatOptOutApprovedRepresented: VatOptOutApprovedRepresented, vatOptOutApproved: VatOptOutApproved,
                                    vatContactNumbersApproved: VatContactNumbersApproved, vatContactNumbersRejected: VatContactNumbersRejected,
                                    vatWebsiteApproved: VatWebsiteApproved, vatWebsiteRejected: VatWebsiteRejected)
-                                  (implicit val appConfig: AppConfig, cc: ControllerComponents, messagesApi: MessagesApi) extends
-  BackendController(cc) with I18nSupport {
+                                  (implicit val appConfig: AppConfig, val messagesApi: MessagesApi) extends I18nSupport {
 
   val lang: Lang = new Lang(ENGLISH)
 
@@ -81,7 +77,7 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
     isTemplateIdApproval(messageModel.getTemplateId) match {
       case None =>
-        logWarn(content = s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.getTemplateId}")
+        logger.warn(s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.getTemplateId}")
         Left(GenericQueueNoRetryError)
       case Some(isApproval) =>
         Right(buildResponse(messageModel, isTransactor, isApproval))
@@ -228,13 +224,13 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         }
       } catch {
         case exception: DateTimeParseException =>
-          logWarn(s"[SecureCommsService][getStaggerChangeHtml] - Error parsing one of the provided dates.\n" +
+          logger.warn(s"[SecureCommsService][getStaggerChangeHtml] - Error parsing one of the provided dates.\n" +
             s"New stagger start date: ${vatStaggerChangeModel.staggerDetails.newStaggerStartDate}\n" +
             s"New stagger end date: ${vatStaggerChangeModel.staggerDetails.newStaggerPeriodEndDate}\n" +
             s"Prev stagger end date: ${vatStaggerChangeModel.staggerDetails.previousStaggerEndDate}")
           throw exception
         case exception: MatchError =>
-          logWarn("[SecureCommsService][getStaggerChangeHtml] - " +
+          logger.warn("[SecureCommsService][getStaggerChangeHtml] - " +
             s"Unrecognised stagger code: ${vatStaggerChangeModel.staggerDetails.stagger.toUpperCase}")
           throw exception
       }

@@ -21,14 +21,13 @@ import controllers.MicroserviceBaseController
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.CommsEventQueueRepository
 import services.CommsEventQueuePollingService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository,
-                                          scheduler: CommsEventQueuePollingService)(
-                                          implicit ec: ExecutionContext, cc: ControllerComponents)
-                                          extends BackendController(cc) with MicroserviceBaseController {
+                                          scheduler: CommsEventQueuePollingService,
+                                          cc: ControllerComponents)
+                                         (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
   def count: Action[AnyContent] = Action.async {
     val result: Future[Int] = repository.count

@@ -17,6 +17,7 @@
 package connectors
 
 import config.AppConfig
+
 import javax.inject.Inject
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
@@ -24,11 +25,11 @@ import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.http.HttpClient
-import utils.LoggerUtil.logWarnEitherError
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) {
+class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) extends LoggerUtil {
 
   type EmailResponse = Either[ErrorModel, EmailRendererResponseModel]
 

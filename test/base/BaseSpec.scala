@@ -17,25 +17,29 @@
 package base
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import modules.SchedulerModule
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.i18n.MessagesApi
+import play.api.inject.Injector
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.stubControllerComponents
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with GuiceOneAppPerSuite {
+trait BaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit val actorSystem: ActorSystem = ActorSystem("TestActorSystem")
-  implicit val mat: ActorMaterializer = ActorMaterializer()
 
-  implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
-  implicit val cc: ControllerComponents = stubControllerComponents()
-  implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
+  lazy val injector: Injector = app.injector
+  implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
+  implicit lazy val cc: ControllerComponents = injector.instanceOf[ControllerComponents]
+  implicit lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 }

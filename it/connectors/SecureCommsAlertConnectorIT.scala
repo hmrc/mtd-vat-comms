@@ -20,6 +20,7 @@ import helpers.IntegrationBaseSpec
 import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import testutils.WireMockHelper
 import testutils.WireMockStubRequestBodies._
 
@@ -50,7 +51,8 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
         val expectedResult = SecureCommsResponseModel(dateTimeToUser, validEDODString)
 
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        val result: Either[ErrorModel, SecureCommsResponseModel] =
+          await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe Right(expectedResult)
       }
     }
@@ -69,7 +71,8 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
         val expectedResult = Left(GenericParsingError)
 
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        val result: Either[ErrorModel, SecureCommsResponseModel] =
+          await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
 
@@ -85,7 +88,8 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
         val expectedResult = Left(BadRequest)
 
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        val result: Either[ErrorModel, SecureCommsResponseModel] =
+          await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
 
@@ -101,7 +105,8 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
         val expectedResult = Left(NotFoundNoMatch)
 
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        val result: Either[ErrorModel, SecureCommsResponseModel] =
+          await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
 
@@ -117,7 +122,8 @@ class SecureCommsAlertConnectorIT extends IntegrationBaseSpec with WireMockHelpe
 
         val expectedResult = Left(ErrorModel(s"$REQUEST_TIMEOUT", "AN UNKNOWN ERROR HAS OCCURRED"))
 
-        val result: Either[ErrorModel, SecureCommsResponseModel] = await(connector.getSecureCommsMessage(service, regNum, communicationId))
+        val result: Either[ErrorModel, SecureCommsResponseModel] =
+          await(connector.getSecureCommsMessage(service, regNum, communicationId))
         result shouldBe expectedResult
       }
     }
