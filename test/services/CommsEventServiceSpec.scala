@@ -218,16 +218,6 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         verify(metrics, times(1)).commsEventUnexpectedError()
       }
     }
-    "the secure message request is unsuccessfully sent but its a recoverable error" should {
-
-      "mark the item as failed" in new TestSetup {
-        secureCommsAlertMock(Left(ErrorModel("Some general error", "Not of the non recoverable types")))
-        markItemAsFailedMock
-        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
-
-        verify(queue, never()).complete(any())
-      }
-    }
   }
 
   trait TestSetup {
