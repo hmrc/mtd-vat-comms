@@ -27,6 +27,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.UnexpectedException
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import reactivemongo.bson.BSONObjectID
 import repositories.CommsEventQueueRepository
@@ -217,6 +218,16 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         verify(metrics, times(1)).commsEventUnexpectedError()
       }
     }
+    "the secure message request is unsuccessfully sent but its a recoverable error" should {
+
+      "mark the item as failed" in new TestSetup {
+        secureCommsAlertMock(Left(ErrorModel("Some general error", "Not of the non recoverable types")))
+        markItemAsFailedMock
+        await(commsEventService.processWorkItem(Seq.empty, exampleWorkItem))
+
+        verify(queue, never()).complete(any())
+      }
+    }
   }
 
   trait TestSetup {
@@ -235,9 +246,13 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
         when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
           .thenReturn(Future.successful(response))
 
-    def secureCommsAlertExceptionMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
+    def secureCommsAlertExceptionMock() : OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
       when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
         .thenReturn(Future.failed(new UnknownHostException("some error")))
+
+    def secureCommsAlertUnexpectedExceptionMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
+      when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
+        .thenReturn(Future.failed(UnexpectedException(Some("some error"))))
 
     def gatewayTimeoutMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
       when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))

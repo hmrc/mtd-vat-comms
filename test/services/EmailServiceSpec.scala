@@ -50,6 +50,16 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
     PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
   )
 
+  val messageModelError: MessageModel = new MessageModel(
+    "VRT12A_SM9A",
+    "123123123",
+    "AID_32I1",
+    "testBusinessName",
+    TransactorModel("test@email.com", "test"),
+    CustomerModel("cus@tom.e.r", VERIFIED),
+    PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+  )
+
   val emailRequestModel: EmailRequestModel = EmailRequestModel(
     Seq(messageModel.getTransactorDetails.transactorEmail),
     "newMessageAlert_VRT12B",
@@ -61,6 +71,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
   )
 
   val errorModel: ErrorModel = ErrorModel("ERROR_CREATING_REQUEST", "Oh no")
+  val errorModelLeft: ErrorModel = ErrorModel("ERROR_CREATING_REQUEST", "Template ID 'newMessageAlert_VRT1214A' is not supported.")
 
   "sendEmailRequest" should {
 
@@ -72,6 +83,11 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
 
       val result: Either[ErrorModel, EmailRendererResponseModel] = await(service.sendEmailRequest(messageModel))
       result shouldBe Right(EmailRendererResponseModel(ACCEPTED))
+    }
+    "return a Left when an incorrect template id has been passed" in {
+
+      val result: Either[ErrorModel, EmailRendererResponseModel] = await(service.sendEmailRequest(messageModelError))
+      result shouldBe Left(errorModelLeft)
     }
 
     "return an ErrorModel when unsuccessful" in {

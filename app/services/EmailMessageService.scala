@@ -50,7 +50,7 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
 
   def processWorkItem(acc: Seq[SecureCommsMessageModel],
                       workItem: WorkItem[SecureCommsMessageModel]): Future[Seq[SecureCommsMessageModel]] = {
-    try {
+
       SecureCommsMessageParser.parseModel(workItem.item) match {
         case Right(message) => emailService.sendEmailRequest(message).flatMap {
           case Right(_) =>
@@ -70,11 +70,6 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
           metrics.emailMessageParsingError()
           handleNonRecoverableError(acc, workItem, "ParsingError")
       }
-    } catch {
-      case e: Throwable =>
-        metrics.emailMessageUnexpectedError()
-        handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
-    }
   }.recoverWith {
     case e =>
       metrics.emailMessageUnexpectedError()
