@@ -16,6 +16,8 @@
 
 package services
 
+import java.util.NoSuchElementException
+
 import base.BaseSpec
 import common.Constants.ChannelPreferences.PAPER
 import common.Constants.EmailStatus.VERIFIED
@@ -27,7 +29,7 @@ import connectors.EmailConnector
 import models.ErrorModel
 import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
-import models.secureMessageAlertModels.messageTypes.{EmailAddressChangeModel, MessageModel}
+import models.secureMessageAlertModels.messageTypes.{DeRegistrationModel, EmailAddressChangeModel, MessageModel}
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.ACCEPTED
@@ -51,13 +53,24 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
   )
 
   val messageModelError: MessageModel = new MessageModel(
-    "VRT12A_SM9A",
+    "BLAH BLAH",
     "123123123",
     "AID_32I1",
     "testBusinessName",
     TransactorModel("test@email.com", "test"),
     CustomerModel("cus@tom.e.r", VERIFIED),
     PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
+  )
+
+  val deregistrationMessageModelError: MessageModel = new DeRegistrationModel(
+    "VRT12A_SM9A",
+    "123123123",
+    "AID_32I1",
+    "testBusinessName",
+    TransactorModel("test@email.com", "test"),
+    CustomerModel("cus@tom.e.r", VERIFIED),
+    PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
+    effectiveDateOfDeregistration = "2021-02-01"
   )
 
   val emailRequestModel: EmailRequestModel = EmailRequestModel(
@@ -84,10 +97,12 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
       val result: Either[ErrorModel, EmailRendererResponseModel] = await(service.sendEmailRequest(messageModel))
       result shouldBe Right(EmailRendererResponseModel(ACCEPTED))
     }
-    "return a Left when an incorrect template id has been passed" in {
-
-      val result: Either[ErrorModel, EmailRendererResponseModel] = await(service.sendEmailRequest(messageModelError))
+    "return a Left(error) when the combination of the type of the change and the template id are invalid" in {
+      val result: Either[ErrorModel, EmailRendererResponseModel] = await(service.sendEmailRequest(deregistrationMessageModelError))
       result shouldBe Left(errorModelLeft)
+    }
+    "return a NoSuchElementException when an incorrect template id has been passed" in {
+      intercept[NoSuchElementException](await(service.sendEmailRequest(messageModelError)))
     }
 
     "return an ErrorModel when unsuccessful" in {

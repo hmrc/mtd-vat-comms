@@ -463,7 +463,7 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
-    val messageModelDeRegistrationInvalidTemplateNoFields = SecureCommsMessageModel(
+    val messageModelNoFields: SecureCommsMessageModel = SecureCommsMessageModel(
       "NO SUCH ID",
       "123456789",
       "092000003080",
@@ -737,7 +737,7 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
-    val staggerInvalidCodeRequest: SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
+    val staggerInvalidCodeRequest:  SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
       staggerDetails = Some(StaggerDetailsModel("InvalidStaggerCode", "", "", "", "", ""))
     )
 

@@ -240,10 +240,6 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
       when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
         .thenReturn(Future.failed(new UnknownHostException("some error")))
 
-    def secureCommsAlertUnexpectedExceptionMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
-      when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
-        .thenReturn(Future.failed(UnexpectedException(Some("some error"))))
-
     def gatewayTimeoutMock(): OngoingStubbing[Future[Either[ErrorModel, SecureCommsMessageModel]]] =
       when(secureCommsAlertService.getSecureCommsMessage(any(), any(), any())(any()))
         .thenReturn(Future.failed(new GatewayTimeoutException("some error")))

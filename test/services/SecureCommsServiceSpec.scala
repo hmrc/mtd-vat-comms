@@ -270,8 +270,8 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         result shouldBe Right(true)
       }
       "return a specific parsing error" when {
-        "the model can't be parsed" in {
-          val result = await(service.sendSecureCommsMessage(messageModelDeRegistrationInvalidTemplateNoFields))
+        "the model can't be matched to a specific change type" in {
+          val result = await(service.sendSecureCommsMessage(messageModelNoFields))
           result shouldBe Left(SpecificParsingError)
         }
       }
