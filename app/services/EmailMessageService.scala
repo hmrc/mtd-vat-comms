@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository,
                                     emailService: EmailService,
                                     metrics: QueueMetrics)(
-                                    implicit ec: ExecutionContext) extends LoggerUtil {
+                                     implicit ec: ExecutionContext) extends LoggerUtil {
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.emailMessageEnqueued()

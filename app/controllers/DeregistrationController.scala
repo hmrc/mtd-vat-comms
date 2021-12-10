@@ -25,7 +25,7 @@ import services.CommsEventService
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Right
 
-class DeregistrationController @Inject()(repoAccess: CommsEventService, cc: ControllerComponents)
+class  DeregistrationController @Inject()(repoAccess: CommsEventService, cc: ControllerComponents)
                                         (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
   def handleEvent: Action[AnyContent] = Action.async { implicit request =>

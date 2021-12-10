@@ -16,6 +16,7 @@
 
 package services
 
+import java.util.NoSuchElementException
 import common.Constants.TemplateIdReadableNames._
 import connectors.EmailConnector
 import javax.inject.Inject
@@ -28,6 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EmailService @Inject()(emailRendererConnector: EmailConnector) {
 
+  @throws(classOf[NoSuchElementException])
   def sendEmailRequest(message: MessageModel)
                       (implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
     val mappedTemplateId = mapTemplateId(message.getTemplateId)

@@ -269,6 +269,12 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         val result = await(service.sendSecureCommsMessage(contactNumbersValidApprovedTransactorRequest))
         result shouldBe Right(true)
       }
+      "return a specific parsing error" when {
+        "the model can't be matched to a specific change type" in {
+          val result = await(service.sendSecureCommsMessage(messageModelNoFields))
+          result shouldBe Left(SpecificParsingError)
+        }
+      }
     }
 
     "return an error when there is an invalid template id" when {
@@ -277,7 +283,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         result shouldBe Left(GenericQueueNoRetryError)
       }
     }
-
     "return an error" when {
       "an exception is encountered" in {
         (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))

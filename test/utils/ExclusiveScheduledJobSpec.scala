@@ -64,6 +64,7 @@ class ExclusiveScheduledJobSpec extends AnyWordSpec with Matchers with ScalaFutu
       job.continueExecution()
       job.execute.futureValue.message shouldBe "1"
       job.execute.futureValue.message shouldBe "2"
+      job.toString() shouldBe "simpleJob after 1 minute every 1 minute"
     }
 
     "not allow jobs to run in parallel" in {

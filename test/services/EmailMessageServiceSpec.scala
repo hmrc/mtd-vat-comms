@@ -98,12 +98,25 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
         }
       }
 
-      "the email service returns an unexpected exception" should {
+      "the email service returns an future failed unexpected exception" should {
 
         "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
           markItemAsPermanentlyFailedMock
 
           emailServiceExceptionMock()
+
+          await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
+
+          verify(queue, never()).complete(any())
+        }
+
+      }
+      "the email service returns a standard unexpected exception" should {
+
+        "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
+          markItemAsPermanentlyFailedMock
+
+          emailServiceThrowExceptionMock()
 
           await(emailMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
@@ -154,6 +167,11 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
     OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =
       when(emailService.sendEmailRequest(any())(any()))
         .thenReturn(Future.failed(new UnknownHostException("some error")))
+
+    def emailServiceThrowExceptionMock():
+    OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =
+      when(emailService.sendEmailRequest(any())(any()))
+        .thenThrow(new NoSuchElementException("UnexpectedError"))
 
     lazy val emailMessageService = new EmailMessageService(queue, emailService, metrics)
   }

@@ -463,6 +463,24 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
+    val messageModelNoFields: SecureCommsMessageModel = SecureCommsMessageModel(
+      "NO SUCH ID",
+      "123456789",
+      "092000003080",
+      "testBusinessName",
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      transactorModel,
+      CustomerModel("testCustomer@email.co.uk", VERIFIED),
+      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
+    )
+
     val deRegistrationValidApprovedTransactorRequest = SecureCommsMessageModel(
       "VRT23C_SM7C",
       "123456789",
@@ -719,7 +737,7 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
-    val staggerInvalidCodeRequest: SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
+    val staggerInvalidCodeRequest:  SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
       staggerDetails = Some(StaggerDetailsModel("InvalidStaggerCode", "", "", "", "", ""))
     )
 

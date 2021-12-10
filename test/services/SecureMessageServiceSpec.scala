@@ -116,7 +116,6 @@ class SecureMessageServiceSpec extends BaseSpec with MockitoSugar {
           "mark the item as failed" in new TestSetup {
             secureCommsMock(Left(ErrorModel("Some general error", "Not of the non recoverable types")))
             markItemAsFailedMock
-
             await(secureMessageService.processWorkItem(Seq.empty, exampleWorkItem))
 
             verify(queue, never()).complete(any())

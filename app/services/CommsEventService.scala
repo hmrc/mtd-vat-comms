@@ -58,40 +58,34 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
 
   def processWorkItem(acc: Seq[VatChangeEvent], workItem: WorkItem[VatChangeEvent]): Future[Seq[VatChangeEvent]] = {
 
-    try {
-      val secureCommsModel =
-        secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
-      secureCommsModel.flatMap {
-        case Right(model) =>
-          handleItemSuccess(acc, workItem, model)
-        case Left(GenericParsingError) =>
-          metrics.commsEventGenericParsingError()
-          handleNonRecoverableError(acc, workItem, "GenericParsingError")
-        case Left(JsonParsingError) =>
-          metrics.commsEventJsonParsingError()
-          handleNonRecoverableError(acc, workItem, "JsonParsingError")
-        case Left(NotFoundNoMatch) =>
-          metrics.commsEventNotFoundError()
-          handleNonRecoverableError(acc, workItem, "NotFoundError")
-        case Left(BadRequest) =>
-          metrics.commsEventBadRequestError()
-          handleNonRecoverableError(acc, workItem, "BadRequestError")
-        case Left(_) =>
-          metrics.commsEventQueuedForRetry()
-          commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
-      }
-    } catch {
-      case e: Throwable =>
+    val secureCommsModel =
+      secureCommsAlertService.getSecureCommsMessage(serviceName, workItem.item.vrn, workItem.item.BPContactNumber)
+    secureCommsModel.flatMap {
+      case Right(model) =>
+        handleItemSuccess(acc, workItem, model)
+      case Left(GenericParsingError) =>
+        metrics.commsEventGenericParsingError()
+        handleNonRecoverableError(acc, workItem, "GenericParsingError")
+      case Left(JsonParsingError) =>
+        metrics.commsEventJsonParsingError()
+        handleNonRecoverableError(acc, workItem, "JsonParsingError")
+      case Left(NotFoundNoMatch) =>
+        metrics.commsEventNotFoundError()
+        handleNonRecoverableError(acc, workItem, "NotFoundError")
+      case Left(BadRequest) =>
+        metrics.commsEventBadRequestError()
+        handleNonRecoverableError(acc, workItem, "BadRequestError")
+      case Left(_) =>
+        metrics.commsEventQueuedForRetry()
+        commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+    }.recoverWith {
+      case _: GatewayTimeoutException =>
+        metrics.commsEventQueuedForRetry()
+        commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
+      case e =>
         metrics.commsEventUnexpectedError()
-        handleNonRecoverableError(acc, workItem, "UnexpectedError", Some(e))
+        handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
     }
-  }.recoverWith {
-    case _: GatewayTimeoutException =>
-      metrics.commsEventQueuedForRetry()
-      commsEventQueueRepository.markAs(workItem.id, Failed, None).map(_ => acc)
-    case e =>
-      metrics.commsEventUnexpectedError()
-      handleNonRecoverableError(acc, workItem, "UnexpectedError recoverWith", Some(e))
   }
 
   private def handleItemSuccess(acc: Seq[VatChangeEvent],
