@@ -17,8 +17,6 @@
 package services
 
 import java.util.NoSuchElementException
-
-import ch.qos.logback.classic.pattern.ClassOfCallerConverter
 import common.Constants.TemplateIdReadableNames._
 import connectors.EmailConnector
 import javax.inject.Inject
