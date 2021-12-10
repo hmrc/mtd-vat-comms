@@ -38,10 +38,15 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
       response.status match {
         case CREATED => Right(true)
         case BAD_REQUEST =>
-          logger.warn(s"[SendMessageReads][read] - Bad request received from Secure Comms service: ${response.body}")
+          logger.warn(s"[SendMessageReads][read] - Bad request error received from Secure Comms service: ${response.body}")
           Left(BadRequest)
-        case CONFLICT => Left(ConflictDuplicateMessage)
-        case otherStatus => Left(ErrorModel(s"${otherStatus}_RECEIVED_FROM_SERVICE", response.body))
+        case CONFLICT =>
+          logger.warn(s"[SendMessageReads][read] - Conflict error received from Secure Comms service: ${response.body}")
+          Left(ConflictDuplicateMessage)
+        case status =>
+          logger.warn(s"[SendMessageReads][read] - Unexpected error received from Secure Comms service. " +
+            s"Status code: '$status', Body: '${response.body}'")
+          Left(ErrorModel(s"${status}_RECEIVED_FROM_SERVICE", response.body))
       }
     }
   }
@@ -53,8 +58,6 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
 
     httpClient.POST[SecureCommsServiceRequestModel, SecureCommsResponse](
       appConfig.secureCommsServiceUrl, request
-    ).map { response =>
-      logWarnEitherError(response)
-    }
+    )
   }
 }
