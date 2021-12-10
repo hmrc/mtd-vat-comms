@@ -16,17 +16,9 @@
 
 package utils
 
-import models.ErrorModel
 import org.slf4j.{Logger, LoggerFactory}
 import play.api.LoggerLike
 
 trait LoggerUtil extends LoggerLike {
   override val logger: Logger = LoggerFactory.getLogger("application")
-  def logWarnEitherError[T](content: Either[ErrorModel, T]): Either[ErrorModel, T] = {
-    if(content.isLeft) {
-      val leftValue = content.left.get
-      logger.warn(s"${leftValue.code} => ${leftValue.body}")
-    }
-    content
-  }
 }

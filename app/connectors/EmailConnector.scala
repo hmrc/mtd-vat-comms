@@ -38,9 +38,16 @@ class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) ext
     override def read(method: String, url: String, response: HttpResponse): EmailResponse =
       response.status match {
         case ACCEPTED => Right(EmailRendererResponseModel(ACCEPTED))
-        case BAD_REQUEST => Left(BadRequest)
-        case NOT_FOUND => Left(NotFoundNoMatch)
-        case _ => Left(ErrorModel(response.status.toString, response.body))
+        case BAD_REQUEST =>
+          logger.warn(s"[SendEmailRequestHttpReads][read] - Bad request error received from Email service: ${response.body}")
+          Left(BadRequest)
+        case NOT_FOUND =>
+          logger.warn(s"[SendEmailRequestHttpReads][read] - Not found error received from Email service: ${response.body}")
+          Left(NotFoundNoMatch)
+        case status =>
+          logger.warn(s"[SendEmailRequestHttpReads][read] - Unexpected error received from Email service. " +
+           s"Status code: '$status', Body: '${response.body}'")
+          Left(ErrorModel(response.status.toString, response.body))
       }
   }
 
@@ -49,8 +56,6 @@ class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) ext
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    httpClient.POST[EmailRequestModel, EmailResponse](appConfig.emailServiceUrl, input).map { response =>
-      logWarnEitherError(response)
-    }
+    httpClient.POST[EmailRequestModel, EmailResponse](appConfig.emailServiceUrl, input)
   }
 }
