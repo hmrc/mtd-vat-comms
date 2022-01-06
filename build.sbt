@@ -28,7 +28,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround(
 val compile = Seq(
   "uk.gov.hmrc" %% "simple-reactivemongo"      % "8.0.0-play-28",
   "uk.gov.hmrc" %% "work-item-repo"            % "8.1.0-play-28",
-  "uk.gov.hmrc" %% "bootstrap-backend-play-28" % "5.17.0"
+  "uk.gov.hmrc" %% "bootstrap-backend-play-28" % "5.18.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
@@ -36,7 +36,7 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "com.typesafe.play"      %% "play-test"                    % PlayVersion.current % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
   "org.scalatestplus.play" %% "scalatestplus-play"           % "5.1.0"             % scope,
-  "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.9.0"           % scope,
+  "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"           % scope,
   "com.github.tomakehurst" %  "wiremock-jre8"                % "2.26.3"            % scope,
   "org.mockito"            %  "mockito-core"                 % "2.24.5"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
