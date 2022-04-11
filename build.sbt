@@ -25,13 +25,14 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc" %% "simple-reactivemongo"      % "8.0.0-play-28",
-  "uk.gov.hmrc" %% "work-item-repo"            % "8.1.0-play-28",
-  "uk.gov.hmrc" %% "bootstrap-backend-play-28" % "5.20.0"
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"                % "0.62.0",
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.62.0",
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "5.20.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "5.20.0"            % scope,
+  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.62.0"            % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
   "com.github.tomakehurst" %  "wiremock-jre8"                % "2.26.3"            % scope,

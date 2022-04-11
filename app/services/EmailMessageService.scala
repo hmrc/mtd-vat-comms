@@ -22,7 +22,8 @@ import models.{BadRequest, NotFoundNoMatch, SecureCommsMessageModel}
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
+import uk.gov.hmrc.mongo.workitem.WorkItem
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.{LoggerUtil, SecureCommsMessageParser}
 
 import scala.concurrent.{ExecutionContext, Future}

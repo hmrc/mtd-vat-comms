@@ -16,29 +16,30 @@
 
 package repositories
 
+import akka.stream.impl.Stages.DefaultAttributes.recover
 import config.{AppConfig, ConfigKeys}
 
 import javax.inject.{Inject, Singleton}
 import models.SecureCommsMessageModel
 import org.joda.time.{DateTime, Duration}
 import play.api.libs.json.{JsObject, JsString, Json}
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.{BSONDocument, BSONObjectID}
-import reactivemongo.play.json.ImplicitBSONHandlers._
+import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemRepository}
+import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemRepository}
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
+import uk.gov.hmrc.workitem.WorkItemFieldNames
 import utils.LoggerUtil
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
+class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: MongoComponent)
   extends WorkItemRepository[SecureCommsMessageModel, BSONObjectID](
     "SecureMessageQueue",
-    reactiveMongoComponent.mongoConnector.db,
+    mongoComponent.database,
     WorkItem.workItemMongoFormat[SecureCommsMessageModel],
     appConfig.configuration.underlying
   ) {
@@ -47,7 +48,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
 
   override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
-  override def now: DateTime = DateTimeUtils.now
+//  override def now: DateTime = DateTimeUtils.now
 
   override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
     val receivedAt = "receivedAt"
@@ -78,7 +79,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongo
     }
   }
 
-  def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
+  def pushNew(item: SecureCommsMessageModel, receivedAt: Instant)
                       : Future[WorkItem[SecureCommsMessageModel]] =
     super.pushNew(item, receivedAt)
 

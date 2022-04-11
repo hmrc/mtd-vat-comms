@@ -20,43 +20,44 @@ import config.{AppConfig, ConfigKeys}
 
 import javax.inject.{Inject, Singleton}
 import models.SecureCommsMessageModel
+import org.bson.types.ObjectId
 import org.joda.time.{DateTime, Duration}
 import play.api.libs.json.{JsObject, JsString, Json}
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.{BSONDocument, BSONObjectID}
-import reactivemongo.play.json.ImplicitBSONHandlers._
-import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemRepository}
+import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemFields, WorkItemRepository}
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.LoggerUtil
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class EmailMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
-  extends WorkItemRepository[SecureCommsMessageModel, BSONObjectID](
+class EmailMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: MongoComponent)
+  extends WorkItemRepository[SecureCommsMessageModel](
     "EmailMessageQueue",
-    reactiveMongoComponent.mongoConnector.db,
-    WorkItem.workItemMongoFormat[SecureCommsMessageModel],
+    mongoComponent,
+    WorkItem.formatForFields[SecureCommsMessageModel],
     appConfig.configuration.underlying
   ) {
 
   val appLogger: LoggerUtil = new LoggerUtil{}
 
-  override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
+  val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
-  override def now: DateTime = DateTimeUtils.now
+//  override def now: DateTime = DateTimeUtils.now
 
-  override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
-    val receivedAt = "receivedAt"
-    val updatedAt = "updatedAt"
-    val availableAt = "receivedAt"
-    val status = "status"
-    val id = "_id"
-    val failureCount = "failureCount"
-  }
+  override lazy val workItemFields: WorkItemFields = new WorkItemFields (
+    receivedAt = "receivedAt",
+    updatedAt = "updatedAt",
+    availableAt = "receivedAt",
+    status = "status",
+    id = "_id",
+    failureCount = "failureCount",
+    item = "item"
+  )
 
   val fieldName = "receivedAt"
   val createdIndexName = "workItemExpiry"
@@ -78,7 +79,7 @@ class EmailMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoC
     }
   }
 
-  def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
+  def pushNew(item: SecureCommsMessageModel, receivedAt: Instant)
                       : Future[WorkItem[SecureCommsMessageModel]] =
     super.pushNew(item, receivedAt)
 
@@ -87,9 +88,9 @@ class EmailMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoC
   def pullOutstanding: Future[Option[WorkItem[SecureCommsMessageModel]]] =
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
 
-  def complete(id: BSONObjectID): Future[Boolean] = {
+  def complete(id: ObjectId): Future[Boolean] = {
     val selector = JsObject(
-      Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> JsString(InProgress.name)))
+      Seq("_id" -> Json.toJson(id)(MongoFormats.objectIdFormat), "status" -> JsString(InProgress.name)))
     collection.delete().one(selector).map(_.n > 0)
   }
 }
