@@ -21,16 +21,14 @@ import config.{AppConfig, ConfigKeys}
 import javax.inject.{Inject, Singleton}
 import models.VatChangeEvent
 import org.bson.types.ObjectId
-import org.joda.time.DateTime
 import play.api.libs.json.{JsObject, JsString, Json}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus.InProgress
-import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemFields, WorkItemRepository}
-import uk.gov.hmrc.workitem._
 import utils.LoggerUtil
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -47,7 +45,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
 
   lazy val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
 
-  override def now: DateTime = DateTimeUtils.now
+//  override def now: DateTime = DateTimeUtils.now
 
   override lazy val workItemFields: WorkItemFields = new WorkItemFields (
     receivedAt = "receivedAt",
@@ -79,7 +77,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
     }
   }
 
-  def pushNew(item: VatChangeEvent, receivedAt: DateTime):
+  def pushNew(item: VatChangeEvent, receivedAt: Instant):
   Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
 
   def pullOutstanding: Future[Option[WorkItem[VatChangeEvent]]] = {

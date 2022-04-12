@@ -21,11 +21,11 @@ import metrics.QueueMetrics
 import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
-import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.mongo.workitem.WorkItem
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.LoggerUtil
 
+import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository,
@@ -35,7 +35,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.secureMessageEnqueued()
-    secureMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+    secureMessageQueueRepository.pushNew(item, Instant.now).map(_ => true)
   }
 
   def retrieveWorkItems: Future[Seq[SecureCommsMessageModel]] = {

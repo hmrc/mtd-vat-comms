@@ -25,7 +25,6 @@ import org.joda.time.{DateTime, Duration}
 import play.api.libs.json.{JsObject, JsString, Json}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
-import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemFields, WorkItemRepository}
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.LoggerUtil

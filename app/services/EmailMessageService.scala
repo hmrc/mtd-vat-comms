@@ -21,11 +21,11 @@ import metrics.QueueMetrics
 import models.{BadRequest, NotFoundNoMatch, SecureCommsMessageModel}
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.EmailMessageQueueRepository
-import uk.gov.hmrc.time.DateTimeUtils
 import uk.gov.hmrc.mongo.workitem.WorkItem
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.{LoggerUtil, SecureCommsMessageParser}
 
+import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
 
 class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQueueRepository,
@@ -35,7 +35,7 @@ class EmailMessageService @Inject()(emailMessageQueueRepository: EmailMessageQue
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.emailMessageEnqueued()
-    emailMessageQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+    emailMessageQueueRepository.pushNew(item, Instant.now).map(_ => true)
   }
 
   def retrieveWorkItems: Future[Seq[SecureCommsMessageModel]] = {
