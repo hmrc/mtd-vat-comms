@@ -17,29 +17,33 @@
 package testOnly.controllers
 
 import base.BaseSpec
-import org.mockito.Mockito.when
+import models.SecureCommsMessageModel
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
-import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{await, contentAsString, defaultAwaitTimeout}
 import repositories.EmailMessageQueueRepository
 import services.EmailMessageQueuePollingService
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
+import uk.gov.hmrc.mongo.workitem.WorkItem
+import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
 import scala.concurrent.Future
 
-class EmailMessageQueueControllerSpec extends BaseSpec with MockitoSugar {
+class EmailMessageQueueControllerSpec extends BaseSpec with MockitoSugar with
+  DefaultPlayMongoRepositorySupport[WorkItem[SecureCommsMessageModel]] {
 
-  val repository: EmailMessageQueueRepository = mock[EmailMessageQueueRepository]
+  override lazy val repository = new EmailMessageQueueRepository(mockAppConfig, mongoComponent)
   val scheduler: EmailMessageQueuePollingService = mock[EmailMessageQueuePollingService]
   val controller = new EmailMessageQueueController(repository, scheduler, cc)
-  val recordCount = 99
 
   "The count action" should {
 
     "return the total number of records in the EmailMessageQueue database" in {
-      when(repository.count(ec)) thenReturn Future.successful(recordCount)
+      await(repository.pushNew(expectedResponseEverything))
+      await(repository.pushNew(expectedResponseEverything))
       lazy val result: Future[Result] = controller.count(request)
 
-      contentAsString(result) shouldBe recordCount.toString
+      contentAsString(result) shouldBe "2"
     }
   }
 }

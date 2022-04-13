@@ -25,9 +25,9 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"                % "0.62.0",
   "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.62.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "5.20.0"
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "5.20.0",
+  "com.typesafe.play" %% "play-iteratees"                    % "2.6.1"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
@@ -39,8 +39,7 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.mockito"            %  "mockito-core"                 % "2.24.5"            % scope,
   "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope,
-  "com.vladsch.flexmark"   % "flexmark-all"                  % "0.62.2"            % scope
+  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {

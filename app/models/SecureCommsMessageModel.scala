@@ -20,7 +20,7 @@ import common.Constants.SecureCommsMessageFields._
 import models.secureMessageAlertModels._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{Format, JsPath, Json, Reads, Writes}
 
 case class SecureCommsMessageModel(
                                     templateId: String,
@@ -163,4 +163,6 @@ object SecureCommsMessageModel {
   }
 
   implicit val writes: Writes[SecureCommsMessageModel] = Json.writes[SecureCommsMessageModel]
+
+  val format: Format[SecureCommsMessageModel] = Format(reads, writes)
 }

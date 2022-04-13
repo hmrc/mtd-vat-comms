@@ -21,7 +21,7 @@ import models.VatChangeEvent
 import org.scalamock.handlers.{CallHandler0, CallHandler1, CallHandler2}
 import org.scalamock.scalatest.MockFactory
 import services.CommsEventService
-import uk.gov.hmrc.workitem.WorkItem
+import uk.gov.hmrc.mongo.workitem.WorkItem
 
 import scala.concurrent.Future
 

@@ -20,7 +20,6 @@ import java.time.format.DateTimeParseException
 import base.BaseSpec
 import common.Constants.MessageKeys._
 import connectors.SecureCommsServiceConnector
-import mocks.MockAppConfig
 import models._
 import models.secureCommsServiceModels._
 import org.scalamock.scalatest.MockFactory
@@ -34,8 +33,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAfterAll {
 
   val mockConnector: SecureCommsServiceConnector = mock[SecureCommsServiceConnector]
-
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
 
   val sCSViews: SecureCommsServiceInjections = new SecureCommsServiceInjections(injector)
 

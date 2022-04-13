@@ -16,22 +16,25 @@
 
 package testOnly.controllers
 
-import com.google.inject.Inject
 import controllers.MicroserviceBaseController
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.CommsEventQueueRepository
 import services.CommsEventQueuePollingService
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration.{Duration, SECONDS}
 
 class CommsEventQueueController @Inject()(repository: CommsEventQueueRepository,
                                           scheduler: CommsEventQueuePollingService,
                                           cc: ControllerComponents)
                                          (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
-  def count: Action[AnyContent] = Action.async {
-    val result: Future[Int] = repository.count
-    result.map(count => Ok(count.toString))
+  def count: Action[AnyContent] = Action {
+    val counts: Set[Future[Long]] = ProcessingStatus.values.map(repository.count)
+    val sum = counts.map(x => Await.result(x, Duration(1, SECONDS))).sum
+    Ok(sum.toString)
   }
 
   def poll: Action[AnyContent] = Action {
