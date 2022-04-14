@@ -18,14 +18,12 @@ package config
 
 import com.google.inject.ImplementedBy
 import config.{ConfigKeys => Keys}
-import javax.inject.{Inject, Singleton}
-import play.api._
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import javax.inject.{Inject, Singleton}
 
 @ImplementedBy(classOf[MicroserviceAppConfig])
 trait AppConfig {
-  val configuration: Configuration
-
   val retryIntervalMillis: Long
 
   def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String
@@ -51,14 +49,10 @@ trait AppConfig {
 }
 
 @Singleton
-class MicroserviceAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment,
-                                      implicit val sc: ServicesConfig)
+class MicroserviceAppConfig @Inject()(implicit val sc: ServicesConfig)
   extends AppConfig {
 
-  override val configuration: Configuration = runModeConfiguration
-  protected def mode: Mode = environment.mode
-
-  override lazy val retryIntervalMillis: Long = runModeConfiguration.getMillis(Keys.failureRetryAfterProperty)
+  override lazy val retryIntervalMillis: Long = sc.getInt(Keys.failureRetryAfterProperty)
 
   private lazy val desBase: String = sc.baseUrl(Keys.desBase)
   override def sendSecureCommsMessageUrl(service: String, regNumber: String, communicationId: String): String =

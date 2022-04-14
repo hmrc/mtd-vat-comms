@@ -23,7 +23,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.{Application, Configuration}
+import play.api.Application
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -39,8 +39,7 @@ trait ViewBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuit
   lazy val injector: Injector = app.injector
   implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.injector.instanceOf[Configuration])
-
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig()
   override def afterAll(): Unit = {
     app.stop()
     super.afterAll()

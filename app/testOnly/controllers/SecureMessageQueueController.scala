@@ -17,21 +17,24 @@
 package testOnly.controllers
 
 import controllers.MicroserviceBaseController
-import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import repositories.SecureMessageQueueRepository
 import services.SecureMessageQueuePollingService
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import scala.concurrent.duration.{Duration, SECONDS}
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 class SecureMessageQueueController @Inject()(repository: SecureMessageQueueRepository,
                                              scheduler: SecureMessageQueuePollingService,
                                              cc: ControllerComponents)
                                             (implicit ec: ExecutionContext) extends MicroserviceBaseController(cc) {
 
-  def count: Action[AnyContent] = Action.async {
-    val result: Future[Int] = repository.count
-    result.map(count => Ok(count.toString))
+  def count: Action[AnyContent] = Action {
+    val counts: Set[Future[Long]] = ProcessingStatus.values.map(repository.count)
+    val sum = counts.map(x => Await.result(x, Duration(1, SECONDS))).sum
+    Ok(sum.toString)
   }
 
   def poll: Action[AnyContent] = Action {

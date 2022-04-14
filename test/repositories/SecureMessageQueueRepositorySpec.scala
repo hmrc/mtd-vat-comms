@@ -16,96 +16,96 @@
 
 package repositories
 
+import base.BaseSpec
 import models.SecureCommsMessageModel
-import org.joda.time.DateTime
+import org.bson.types.ObjectId
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import reactivemongo.api.ReadPreference
-import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem._
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
+import uk.gov.hmrc.mongo.workitem.WorkItem
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-class SecureMessageQueueRepositorySpec extends MongoSpec[SecureCommsMessageModel, SecureMessageQueueRepository] {
+import java.time.Instant
 
-  val anInstant: DateTime = DateTimeUtils.now
+class SecureMessageQueueRepositorySpec extends BaseSpec with
+  DefaultPlayMongoRepositorySupport[WorkItem[SecureCommsMessageModel]] {
+
+  override lazy val repository = new SecureMessageQueueRepository(mockAppConfig, mongoComponent)
+  val now: Instant = Instant.now
 
   "SecureMessageQueue Repository" should {
 
     "ensure indexes are created" in {
-      await(repo.collection.indexesManager.list()).size shouldBe 5
+      await(repository.collection.listIndexes().toFuture()).size shouldBe 5
     }
 
     "be able to save and reload an item" in {
-      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      val workItem = await(repository.pushNew(expectedResponseEverything, now))
 
-      await(repo.findById(workItem.id)).get should have(
+      await(repository.findById(workItem.id)).get should have(
         'item (expectedResponseEverything),
         'status (ToDo),
-        'receivedAt (anInstant),
+        'receivedAt (now),
         'updatedAt (workItem.updatedAt)
       )
     }
 
     "be able to save the same item twice" in {
-      val firstItem = await(repo.pushNew(expectedResponseEverything, anInstant))
-      val secondItem = await(repo.pushNew(expectedResponseEverything, anInstant))
+      val firstItem = await(repository.pushNew(expectedResponseEverything, now))
+      val secondItem = await(repository.pushNew(expectedResponseEverything, now))
+      val requests = await(repository.collection.find().toFuture())
 
-      val requests = await(repo.findAll(ReadPreference.primaryPreferred))
       requests should have(size(2))
-
 
       requests.head should have(
         'item (expectedResponseEverything),
         'status (ToDo),
-        'receivedAt (anInstant),
+        'receivedAt (now),
         'updatedAt (firstItem.updatedAt)
       )
       requests(1) should have(
         'item (expectedResponseEverything),
         'status (ToDo),
-        'receivedAt (anInstant),
+        'receivedAt (now),
         'updatedAt (secondItem.updatedAt)
       )
     }
 
     "pull ToDo items" in {
       val payloadDetails = expectedResponseEverything
-      await(repo.pushNew(payloadDetails, anInstant))
+      await(repository.pushNew(payloadDetails, repository.now))
 
-      await(repo.pullOutstanding).get should have(
+      await(repository.pullOutstanding).get should have(
         'item (payloadDetails),
         'status (InProgress)
       )
     }
 
     "pull nothing if no items exist" in {
-      await(repo.pullOutstanding) should be(None)
+      await(repository.pullOutstanding) should be(None)
     }
 
     "not pull items failed after the failedBefore time" in {
-      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
-      await(repo.markAs(workItem.id, Failed)) shouldBe true
-
-      await(repo.pullOutstanding) should be(None)
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      await(repository.markAs(workItem.id, Failed)) shouldBe true
+      await(repository.pullOutstanding) shouldBe None
     }
 
     "complete and delete an item if it is in progress" in {
-      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
-      await(repo.markAs(workItem.id, InProgress)) shouldBe true
-      await(repo.complete(workItem.id)) shouldBe true
-
-      await(repo.findById(workItem.id)) shouldBe None
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      await(repository.markAs(workItem.id, InProgress)) shouldBe true
+      await(repository.complete(workItem.id)) shouldBe true
+      await(repository.findById(workItem.id)) shouldBe None
     }
 
     "not complete an item if it is not in progress" in {
-
-      val workItem = await(repo.pushNew(expectedResponseEverything, anInstant))
-      await(repo.complete(workItem.id)) shouldBe false
-      await(repo.findById(workItem.id)) shouldBe Some(workItem)
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      await(repository.complete(workItem.id)) shouldBe false
+      await(repository.findById(workItem.id)) shouldBe Some(workItem)
     }
 
     "not complete an item if it cannot be found" in {
-      await(repo.complete(BSONObjectID.generate)) shouldBe false
+      await(repository.complete(ObjectId.get())) shouldBe false
     }
   }
 }

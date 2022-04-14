@@ -18,17 +18,16 @@ package services
 
 import common.ApiConstants.serviceName
 import common.Constants.ChannelPreferences.DIGITAL
-
-import javax.inject.{Inject, Singleton}
 import metrics.QueueMetrics
 import models._
 import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.GatewayTimeoutException
-import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{Failed, PermanentlyFailed, WorkItem}
+import uk.gov.hmrc.mongo.workitem.WorkItem
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.LoggerUtil
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -42,7 +41,7 @@ class CommsEventService @Inject()(commsEventQueueRepository: CommsEventQueueRepo
   def queueRequest(item: VatChangeEvent): Future[Boolean] = {
     logger.debug(s"[CommsEventService][queueRequest] - Item queued: $item")
     metrics.commsEventEnqueued()
-    commsEventQueueRepository.pushNew(item, DateTimeUtils.now).map(_ => true)
+    commsEventQueueRepository.pushNew(item, commsEventQueueRepository.now).map(_ => true)
   }
 
   def retrieveWorkItems: Future[Seq[VatChangeEvent]] = {

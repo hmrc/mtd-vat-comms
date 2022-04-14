@@ -17,6 +17,7 @@
 package base
 
 import akka.actor.ActorSystem
+import mocks.MockAppConfig
 import modules.SchedulerModule
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -39,6 +40,7 @@ trait BaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
   implicit lazy val cc: ControllerComponents = injector.instanceOf[ControllerComponents]
   implicit lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  implicit lazy val mockAppConfig: MockAppConfig = new MockAppConfig()
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
   lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()

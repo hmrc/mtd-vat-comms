@@ -16,24 +16,24 @@
 
 package services
 
-import java.net.UnknownHostException
-
 import base.BaseSpec
 import common.ApiConstants.vatChangeEventModel
 import metrics.QueueMetrics
 import models._
-import org.joda.time.{DateTime, DateTimeZone}
+import org.bson.types.ObjectId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import reactivemongo.bson.BSONObjectID
 import repositories.CommsEventQueueRepository
 import uk.gov.hmrc.http.GatewayTimeoutException
-import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus.InProgress
+import uk.gov.hmrc.mongo.workitem.{ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._
 
+import java.net.UnknownHostException
+import java.time.Instant
 import scala.concurrent.Future
 
 class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
@@ -220,10 +220,10 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
   }
 
   trait TestSetup {
-    val now: DateTime = new DateTime(0, DateTimeZone.UTC)
+    val now: Instant = Instant.now
     val exampleVatChangeEvent: VatChangeEvent = vatChangeEventModel("Email Address Change")
     val exampleWorkItem: WorkItem[VatChangeEvent] =
-      WorkItem[VatChangeEvent](BSONObjectID.generate, now, now, now, InProgress, 0, exampleVatChangeEvent)
+      WorkItem[VatChangeEvent](ObjectId.get(), now, now, now, InProgress, 0, exampleVatChangeEvent)
     val queue: CommsEventQueueRepository = mock[CommsEventQueueRepository]
     val secureCommsAlertService: SecureCommsAlertService = mock[SecureCommsAlertService]
     val emailMessageService: EmailMessageService = mock[EmailMessageService]
@@ -247,10 +247,10 @@ class CommsEventServiceSpec extends BaseSpec with MockitoSugar {
       when(queue.complete(any())).thenReturn(Future.successful(response))
 
     def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
-      when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))
+      when(queue.markAs(any(), any[ProcessingStatus], any())).thenReturn(Future.successful(true))
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
-      when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
+      when(queue.markAs(any(), any(), any())).thenReturn(Future.successful(true))
 
     lazy val commsEventService =
       new CommsEventService(queue, secureCommsAlertService, emailMessageService, secureMessageService, metrics)

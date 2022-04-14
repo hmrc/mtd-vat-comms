@@ -16,24 +16,24 @@
 
 package services
 
-import java.net.UnknownHostException
-
 import base.BaseSpec
 import metrics.QueueMetrics
 import models.responseModels.EmailRendererResponseModel
 import models.{BadRequest, ErrorModel, NotFoundNoMatch, SecureCommsMessageModel}
-import org.joda.time.{DateTime, DateTimeZone}
+import org.bson.types.ObjectId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.ACCEPTED
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import reactivemongo.bson.BSONObjectID
 import repositories.EmailMessageQueueRepository
-import uk.gov.hmrc.workitem.{InProgress, ProcessingStatus, WorkItem}
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus.InProgress
+import uk.gov.hmrc.mongo.workitem.{ProcessingStatus, WorkItem}
 import utils.SecureCommsMessageTestData.Responses._
 
+import java.time.Instant
+import java.net.UnknownHostException
 import scala.concurrent.Future
 
 class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
@@ -130,7 +130,7 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
 
       "mark the item as permanently failed and not remove the item from the queue" in new TestSetup {
         val failureWorkItem: WorkItem[SecureCommsMessageModel] =
-          WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, expectedResponseEverything)
+          WorkItem[SecureCommsMessageModel](ObjectId.get(), now, now, now, InProgress, 0, expectedResponseEverything)
         markItemAsPermanentlyFailedMock
 
         await(emailMessageService.processWorkItem(Seq.empty, failureWorkItem))
@@ -141,10 +141,10 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
   }
 
   trait TestSetup {
-    val now: DateTime = new DateTime(0, DateTimeZone.UTC)
+    val now: Instant = Instant.now
     val exampleSecureCommsModel: SecureCommsMessageModel = expectedResponsePPOBChange
     val exampleWorkItem: WorkItem[SecureCommsMessageModel] =
-      WorkItem[SecureCommsMessageModel](BSONObjectID.generate, now, now, now, InProgress, 0, exampleSecureCommsModel)
+      WorkItem[SecureCommsMessageModel](ObjectId.get(), now, now, now, InProgress, 0, exampleSecureCommsModel)
     val queue: EmailMessageQueueRepository = mock[EmailMessageQueueRepository]
     val emailService: EmailService = mock[EmailService]
     val metrics: QueueMetrics = mock[QueueMetrics]
@@ -153,10 +153,10 @@ class EmailMessageServiceSpec extends BaseSpec with MockitoSugar {
       when(queue.complete(any())).thenReturn(Future.successful(response))
 
     def markItemAsFailedMock: OngoingStubbing[Future[Boolean]] =
-      when(queue.markAs(any(), any(), any())(any())).thenReturn(Future.successful(true))
+      when(queue.markAs(any(), any(), any())).thenReturn(Future.successful(true))
 
     def markItemAsPermanentlyFailedMock: OngoingStubbing[Future[Boolean]] =
-      when(queue.markAs(any(), any[ProcessingStatus], any())(any())).thenReturn(Future.successful(true))
+      when(queue.markAs(any(), any[ProcessingStatus], any())).thenReturn(Future.successful(true))
 
     def emailServiceMock(response: Either[ErrorModel, EmailRendererResponseModel]):
     OngoingStubbing[Future[Either[ErrorModel, EmailRendererResponseModel]]] =

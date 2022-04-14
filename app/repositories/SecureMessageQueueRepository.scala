@@ -16,80 +16,52 @@
 
 package repositories
 
-import config.{AppConfig, ConfigKeys}
-
-import javax.inject.{Inject, Singleton}
+import config.AppConfig
 import models.SecureCommsMessageModel
-import org.joda.time.{DateTime, Duration}
-import play.api.libs.json.{JsObject, JsString, Json}
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.{BSONDocument, BSONObjectID}
-import reactivemongo.play.json.ImplicitBSONHandlers._
-import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
-import uk.gov.hmrc.time.DateTimeUtils
-import uk.gov.hmrc.workitem.{InProgress, WorkItem, WorkItemFieldNames, WorkItemRepository}
-import utils.LoggerUtil
+import org.bson.types.ObjectId
+import org.mongodb.scala.model.Filters.{and, equal}
+import org.mongodb.scala.model.{IndexModel, IndexOptions, Indexes}
+import uk.gov.hmrc.mongo.{MongoComponent, MongoUtils}
+import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemFields, WorkItemRepository}
+import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import java.time.{Duration, Instant}
+import java.util.concurrent.TimeUnit
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, reactiveMongoComponent: ReactiveMongoComponent)
-  extends WorkItemRepository[SecureCommsMessageModel, BSONObjectID](
+class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: MongoComponent)
+                                            (implicit ec: ExecutionContext)
+  extends WorkItemRepository[SecureCommsMessageModel](
     "SecureMessageQueue",
-    reactiveMongoComponent.mongoConnector.db,
-    WorkItem.workItemMongoFormat[SecureCommsMessageModel],
-    appConfig.configuration.underlying
+    mongoComponent,
+    SecureCommsMessageModel.format,
+    WorkItemFields.default
   ) {
 
-  val appLogger: LoggerUtil = new LoggerUtil{}
+  override lazy val inProgressRetryAfter: Duration = Duration.ofMillis(appConfig.retryIntervalMillis)
 
-  override val inProgressRetryAfterProperty: String = ConfigKeys.failureRetryAfterProperty
+  override def now: Instant = Instant.now()
 
-  override def now: DateTime = DateTimeUtils.now
+  override def ensureIndexes: Future[Seq[String]] =
+    MongoUtils.ensureIndexes(
+      collection,
+      Seq(IndexModel(
+        Indexes.ascending("receivedAt"),
+        IndexOptions().name("workItemExpiry").expireAfter(appConfig.queueItemExpirySeconds, TimeUnit.SECONDS)
+      )),
+      replaceIndexes = false
+    )
 
-  override lazy val workItemFields: WorkItemFieldNames = new WorkItemFieldNames {
-    val receivedAt = "receivedAt"
-    val updatedAt = "updatedAt"
-    val availableAt = "receivedAt"
-    val status = "status"
-    val id = "_id"
-    val failureCount = "failureCount"
-  }
-
-  val fieldName = "receivedAt"
-  val createdIndexName = "workItemExpiry"
-  val expireAfterSeconds = "expireAfterSeconds"
-  lazy val timeToLiveInSeconds: Int = appConfig.queueItemExpirySeconds
-
-  createIndex(fieldName, createdIndexName, timeToLiveInSeconds)
-
-  private def createIndex(field: String, indexName: String, ttl: Int): Future[Boolean] = {
-    collection.indexesManager.ensure(Index(Seq((field, IndexType.Ascending)), Some(indexName),
-      options = BSONDocument(expireAfterSeconds -> ttl))) map {
-      result =>
-        appLogger.logger.debug(s"set [$indexName] with value $ttl -> result : $result")
-        result
-    } recover {
-      case e =>
-        appLogger.logger.error("Failed to set TTL index", e)
-        false
-    }
-  }
-
-  def pushNew(item: SecureCommsMessageModel, receivedAt: DateTime)
-                      : Future[WorkItem[SecureCommsMessageModel]] =
+  def pushNew(item: SecureCommsMessageModel, receivedAt: Instant): Future[WorkItem[SecureCommsMessageModel]] =
     super.pushNew(item, receivedAt)
-
-  override lazy val inProgressRetryAfter: Duration = Duration.millis(appConfig.retryIntervalMillis)
 
   def pullOutstanding: Future[Option[WorkItem[SecureCommsMessageModel]]] =
     super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
 
-  def complete(id: BSONObjectID): Future[Boolean] = {
-    val selector = JsObject(
-      Seq("_id" -> Json.toJson(id)(ReactiveMongoFormats.objectIdFormats), "status" -> JsString(InProgress.name)))
-    collection.delete().one(selector).map(_.n > 0)
+  def complete(id: ObjectId): Future[Boolean] = {
+    val query = and(equal("_id", id), equal("status", InProgress.name))
+    collection.deleteOne(query).toFuture().map(_.getDeletedCount > 0)
   }
 }

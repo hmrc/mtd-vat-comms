@@ -17,29 +17,34 @@
 package testOnly.controllers
 
 import base.BaseSpec
-import org.mockito.Mockito.when
+import common.ApiConstants.vatChangeEventModel
+import models.VatChangeEvent
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
-import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout}
+import play.api.test.Helpers.{await, contentAsString, defaultAwaitTimeout}
 import repositories.CommsEventQueueRepository
 import services.CommsEventQueuePollingService
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
+import uk.gov.hmrc.mongo.workitem.WorkItem
 
 import scala.concurrent.Future
 
-class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar {
+class CommsEventQueueControllerSpec extends BaseSpec with MockitoSugar with
+  DefaultPlayMongoRepositorySupport[WorkItem[VatChangeEvent]]{
 
-  val repository: CommsEventQueueRepository = mock[CommsEventQueueRepository]
+  override lazy val repository = new CommsEventQueueRepository(mockAppConfig, mongoComponent)
   val scheduler: CommsEventQueuePollingService = mock[CommsEventQueuePollingService]
   val controller = new CommsEventQueueController(repository, scheduler, cc)
-  val recordCount = 99
+  val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
   "The count action" should {
 
     "return the total number of records in the CommsEventQueue database" in {
-      when(repository.count(ec)) thenReturn Future.successful(recordCount)
+      await(repository.pushNew(vatChangeEvent))
+      await(repository.pushNew(vatChangeEvent))
       lazy val result: Future[Result] = controller.count(request)
 
-      contentAsString(result) shouldBe recordCount.toString
+      contentAsString(result) shouldBe "2"
     }
   }
 }
