@@ -51,7 +51,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
         Indexes.ascending("receivedAt"),
         IndexOptions().name("workItemExpiry").expireAfter(appConfig.queueItemExpirySeconds, TimeUnit.SECONDS)
       )),
-      replaceIndexes = false
+      replaceIndexes = true
     )
 
   def pushNew(item: VatChangeEvent, receivedAt: Instant): Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)

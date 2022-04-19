@@ -51,7 +51,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponen
         Indexes.ascending("receivedAt"),
         IndexOptions().name("workItemExpiry").expireAfter(appConfig.queueItemExpirySeconds, TimeUnit.SECONDS)
       )),
-      replaceIndexes = false
+      replaceIndexes = true
     )
 
   def pushNew(item: SecureCommsMessageModel, receivedAt: Instant): Future[WorkItem[SecureCommsMessageModel]] =
