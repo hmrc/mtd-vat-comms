@@ -45,45 +45,40 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
 
       await(repository.findById(workItem.id)).get should have(
         'item (vatChangeEvent),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (workItem.updatedAt)
+        'status (ToDo)
       )
     }
 
     "be able to save the same requests twice" in {
-      val firstItem = await(repository.pushNew(vatChangeEvent, now))
-      val secondItem = await(repository.pushNew(vatChangeEvent, now))
+      val requests = {
+        await(repository.pushNew(vatChangeEvent, now))
+        await(repository.pushNew(vatChangeEvent, now))
+        await(repository.collection.find().toFuture())
+      }
 
-      val requests = await(repository.collection.find().toFuture())
       requests should have(size(2))
 
       requests.head should have(
         'item (vatChangeEvent),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (firstItem.updatedAt)
+        'status (ToDo)
       )
       requests(1) should have(
         'item (vatChangeEvent),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (secondItem.updatedAt)
+        'status (ToDo)
       )
     }
 
     "pull ToDo vat change requests" in {
-      val payloadDetails = vatChangeEvent
-      await(repository.pushNew(payloadDetails, repository.now))
+      await(repository.pushNew(vatChangeEvent, repository.now))
 
       await(repository.pullOutstanding).get should have(
-        'item (payloadDetails),
+        'item (vatChangeEvent),
         'status (InProgress)
       )
     }
 
     "pull nothing if no vat change requests exist" in {
-      await(repository.pullOutstanding) should be(None)
+      await(repository.pullOutstanding) shouldBe None
     }
 
     "not pull vat change requests failed after the failedBefore time" in {

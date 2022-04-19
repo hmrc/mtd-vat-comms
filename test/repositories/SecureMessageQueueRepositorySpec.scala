@@ -44,30 +44,26 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with
 
       await(repository.findById(workItem.id)).get should have(
         'item (expectedResponseEverything),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (workItem.updatedAt)
+        'status (ToDo)
       )
     }
 
     "be able to save the same item twice" in {
-      val firstItem = await(repository.pushNew(expectedResponseEverything, now))
-      val secondItem = await(repository.pushNew(expectedResponseEverything, now))
-      val requests = await(repository.collection.find().toFuture())
+      val requests = {
+        await(repository.pushNew(expectedResponseEverything, now))
+        await(repository.pushNew(expectedResponseEverything, now))
+        await(repository.collection.find().toFuture())
+      }
 
       requests should have(size(2))
 
       requests.head should have(
         'item (expectedResponseEverything),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (firstItem.updatedAt)
+        'status (ToDo)
       )
       requests(1) should have(
         'item (expectedResponseEverything),
-        'status (ToDo),
-        'receivedAt (now),
-        'updatedAt (secondItem.updatedAt)
+        'status (ToDo)
       )
     }
 
@@ -82,7 +78,7 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with
     }
 
     "pull nothing if no items exist" in {
-      await(repository.pullOutstanding) should be(None)
+      await(repository.pullOutstanding) shouldBe None
     }
 
     "not pull items failed after the failedBefore time" in {
