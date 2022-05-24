@@ -25,12 +25,9 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.mongo.workitem.WorkItem
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 
-import java.time.Instant
-
 class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoRepositorySupport[WorkItem[VatChangeEvent]] {
 
   override lazy val repository = new CommsEventQueueRepository(mockAppConfig, mongoComponent)
-  val now: Instant = Instant.now
 
   "CommsEventQueue Repository" should {
 
@@ -41,7 +38,7 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
     val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
     "be able to save and reload a vat change request" in {
-      val workItem = await(repository.pushNew(vatChangeEvent, now))
+      val workItem = await(repository.pushNew(vatChangeEvent, repository.now))
 
       await(repository.findById(workItem.id)).get should have(
         'item (vatChangeEvent),
@@ -51,8 +48,8 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
 
     "be able to save the same requests twice" in {
       val requests = {
-        await(repository.pushNew(vatChangeEvent, now))
-        await(repository.pushNew(vatChangeEvent, now))
+        await(repository.pushNew(vatChangeEvent, repository.now))
+        await(repository.pushNew(vatChangeEvent, repository.now))
         await(repository.collection.find().toFuture())
       }
 
@@ -92,12 +89,13 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
       await(repository.markAs(workItem.id, InProgress)) shouldBe true
       await(repository.complete(workItem.id)) shouldBe true
       await(repository.findById(workItem.id)) shouldBe None
+      await(repository.count(InProgress)) shouldBe 0
     }
 
     "not complete a vat change request if it is not in progress" in {
-      val workItem = await(repository.pushNew(vatChangeEvent, receivedAt = repository.now))
+      val workItem = await(repository.pushNew(vatChangeEvent, repository.now))
       await(repository.complete(workItem.id)) shouldBe false
-      await(repository.findById(workItem.id)) shouldBe Some(workItem)
+      await(repository.count(ToDo)) shouldBe 1
     }
 
     "not complete a vat change request if it cannot be found" in {

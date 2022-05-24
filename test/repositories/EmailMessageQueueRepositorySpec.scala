@@ -25,13 +25,10 @@ import uk.gov.hmrc.mongo.workitem.WorkItem
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
 import utils.SecureCommsMessageTestData.Responses.expectedResponseEverything
 
-import java.time.Instant
-
 class EmailMessageQueueRepositorySpec extends BaseSpec with
   DefaultPlayMongoRepositorySupport[WorkItem[SecureCommsMessageModel]] {
 
   override lazy val repository = new EmailMessageQueueRepository(mockAppConfig, mongoComponent)
-  val now: Instant = Instant.now
 
   "EmailMessageQueue Repository" should {
 
@@ -40,7 +37,7 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
     }
 
     "be able to save and reload an item" in {
-      val workItem = await(repository.pushNew(expectedResponseEverything, now))
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
 
       await(repository.findById(workItem.id)).get should have(
         'item (expectedResponseEverything),
@@ -50,8 +47,8 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
 
     "be able to save the same item twice" in {
       val requests = {
-        await(repository.pushNew(expectedResponseEverything, now))
-        await(repository.pushNew(expectedResponseEverything, now))
+        await(repository.pushNew(expectedResponseEverything, repository.now))
+        await(repository.pushNew(expectedResponseEverything, repository.now))
         await(repository.collection.find().toFuture())
       }
 
@@ -92,15 +89,15 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
       val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
       await(repository.markAs(workItem.id, InProgress)) shouldBe true
       await(repository.complete(workItem.id)) shouldBe true
-
       await(repository.findById(workItem.id)) shouldBe None
+      await(repository.count(InProgress)) shouldBe 0
     }
 
     "not complete an item if it is not in progress" in {
 
       val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
       await(repository.complete(workItem.id)) shouldBe false
-      await(repository.findById(workItem.id)) shouldBe Some(workItem)
+      await(repository.count(ToDo)) shouldBe 1
     }
 
     "not complete an item if it cannot be found" in {
