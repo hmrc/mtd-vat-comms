@@ -352,24 +352,6 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
-    val expectedResponseOptOut = SecureCommsMessageModel(
-      "CC07C_SM11C",
-      "123456789",
-      "092000003080",
-      "testBusinessName",
-      None,
-      None,
-      None,
-      None,
-      None,
-      Some("3"),
-      None,
-      None,
-      transactorModel,
-      CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
-    )
-
     val expectedResponseWebAddress = SecureCommsMessageModel(
       "VRT12A_SM14A",
       "123456789",
@@ -835,42 +817,6 @@ object SecureCommsMessageTestData {
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 
-    val optOutRequest = SecureCommsMessageModel(
-      "CC07A_SM11A",
-      "123456789",
-      "092000003080",
-      "testBusinessName",
-      None,
-      None,
-      None,
-      None,
-      None,
-      Some("3"),
-      None,
-      None,
-      TransactorModel("", ""),
-      CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
-    )
-
-    val optOutRequestRepresented = SecureCommsMessageModel(
-      "CC07C_SM11C",
-      "123456789",
-      "092000003080",
-      "testBusinessName",
-      None,
-      None,
-      None,
-      None,
-      None,
-      Some("3"),
-      None,
-      None,
-      TransactorModel("agent@CoCHoldings.co.uk", "CoC Agent"),
-      CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
-    )
-
     val emailValidRejectedClientRequest = SecureCommsMessageModel(
       "VRT14A_SM10A",
       "123456789",
@@ -1196,28 +1142,6 @@ object SecureCommsMessageTestData {
         F_PREFS -> TEXT
       )
     )
-
-    val validJsonForModelOptOut: JsObject = Json.obj(
-      TEMPLATE_ID -> "CC07C_SM11C",
-      VRN -> "123456789",
-      FORM_BUNDLE_REFERENCE -> "092000003080",
-      BUSINESS_NAME -> "testBusinessName",
-      TRANSACTOR_DETAILS -> Json.obj(
-        TRANSACTOR_EMAIL -> "test@email.co.uk",
-        TRANSACTOR_NAME -> "testTransactorName"
-      ),
-      CUSTOMER_DETAILS -> Json.obj(
-        C_EMAIL -> "testCustomer@email.co.uk",
-        C_EMAIL_STATUS -> VERIFIED
-      ),
-      MANDATION_STATUS -> "3",
-      PREFS -> Json.obj(
-        N_PREFS -> EMAIL,
-        C_PREFS -> DIGITAL,
-        L_PREFS -> ENGLISH,
-        F_PREFS -> TEXT
-      )
-    )
   }
 
   object ResponseAsModel {
@@ -1284,17 +1208,6 @@ object SecureCommsMessageTestData {
       "businessName",
       transactorModel,
       CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
-    )
-
-    val expectedResponseOptOut = OptOutModel(
-      "CC07C_SM11C",
-      "123456789",
-      "092000003080",
-      "testBusinessName",
-      transactorModel,
-      CustomerModel("testCustomer@email.co.uk", VERIFIED),
-      "3",
       PreferencesModel(EMAIL, DIGITAL, ENGLISH, TEXT)
     )
 

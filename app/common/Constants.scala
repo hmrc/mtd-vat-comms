@@ -99,7 +99,6 @@ object Constants {
     val PPOB_BASE_KEY = "ppob"
     val BANK_DETAILS_BASE_KEY = "bankDetails"
     val STAGGER_BASE_KEY = "stagger"
-    val OPT_OUT_BASE_KEY = "optOut"
     val WEBSITE_BASE_KEY = "website"
     val CONTACT_NUMBERS_BASE_KEY = "contactNumbers"
     val APPROVED_SUFFIX = "Approved"

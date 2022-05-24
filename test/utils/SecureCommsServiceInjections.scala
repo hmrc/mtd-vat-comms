@@ -31,8 +31,6 @@ class SecureCommsServiceInjections (injector: Injector) {
   val vatStaggerApproved: VatStaggerApproved = injector.instanceOf[VatStaggerApproved]
   val vatStaggerRejected: VatStaggerRejected = injector.instanceOf[VatStaggerRejected]
   val vatStaggerApprovedLeaveAnnualAccounting: VatStaggerApprovedLeaveAnnualAccounting = injector.instanceOf[VatStaggerApprovedLeaveAnnualAccounting]
-  val vatOptOutApprovedRepresented: VatOptOutApprovedRepresented = injector.instanceOf[VatOptOutApprovedRepresented]
-  val vatOptOutApproved: VatOptOutApproved = injector.instanceOf[VatOptOutApproved]
   val vatContactNumberApproved: VatContactNumbersApproved = injector.instanceOf[VatContactNumbersApproved]
   val vatContactNumbersRejected: VatContactNumbersRejected = injector.instanceOf[VatContactNumbersRejected]
   val vatWebsiteApproved: VatWebsiteApproved = injector.instanceOf[VatWebsiteApproved]

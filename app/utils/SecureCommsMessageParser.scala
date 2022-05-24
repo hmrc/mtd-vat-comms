@@ -59,8 +59,6 @@ object SecureCommsMessageParser extends LoggerUtil {
         Right(toGivenModel[VATStaggerChangeModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, Some(_), None, None, None, _, _, _) =>
         Right(toGivenModel[EmailAddressChangeModel](x))
-      case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, Some(_), None, None, _, _, _) =>
-        Right(toGivenModel[OptOutModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, None, Some(_), None, _, _, _) =>
         Right(toGivenModel[WebAddressChangeModel](x))
       case x@SecureCommsMessageModel(_, _, _, _, None, None, None, None, None, None, None, Some(_), _, _, _) =>

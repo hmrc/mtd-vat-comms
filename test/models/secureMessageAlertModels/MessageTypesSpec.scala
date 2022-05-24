@@ -30,8 +30,7 @@ class MessageTypesSpec extends BaseSpec {
       expectedResponseRepaymentsBankAccountChange, validJsonForModelRepaymentsBankAccountChangeModel.as[RepaymentsBankAccountChangeModel]),
     ("VAT Stagger", expectedResponseStagger, validJsonForModelVATStaggerChange.as[VATStaggerChangeModel]),
     ("Email Change", expectedResponseEmailChange, validJsonForModelEmailAddressChange.as[EmailAddressChangeModel]),
-    ("Business Name Change", expectedResponseBusinessNameChange, validJsonForModelBusinessNameChange.as[BusinessNameChangeModel]),
-    ("Opt Out", expectedResponseOptOut, validJsonForModelOptOut.as[OptOutModel])
+    ("Business Name Change", expectedResponseBusinessNameChange, validJsonForModelBusinessNameChange.as[BusinessNameChangeModel])
   )
 
   jsonModelMapping.foreach { case (testName, expectedResponse, testArgument) =>

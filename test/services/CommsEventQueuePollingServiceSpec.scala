@@ -19,7 +19,6 @@ package services
 import base.BaseSpec
 import common.ApiConstants.vatChangeEventModel
 import config.AppConfig
-import mocks.MockAppConfig
 import models.VatChangeEvent
 import org.mockito.Mockito
 import org.mockito.Mockito.{timeout, verify, when}
