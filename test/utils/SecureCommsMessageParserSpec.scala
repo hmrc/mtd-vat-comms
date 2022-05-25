@@ -69,7 +69,6 @@ class SecureCommsMessageParserSpec extends BaseSpec {
       Responses.expectedResponseBankRepaymentAccountChange, ResponseAsModel.expectedResponseRepaymentsBankAccountChange),
     ("VAT Stagger", Responses.expectedResponseStagger, ResponseAsModel.expectedResponseStagger),
     ("Email Change", Responses.expectedResponseEmailChange, ResponseAsModel.expectedResponseEmailChange),
-    ("Opt Out", Responses.expectedResponseOptOut, ResponseAsModel.expectedResponseOptOut),
     ("Web Address Change", Responses.expectedResponseWebAddress, ResponseAsModel.expectedResponseWebAddress)
   )
 

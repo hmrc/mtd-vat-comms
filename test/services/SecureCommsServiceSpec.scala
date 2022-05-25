@@ -40,7 +40,7 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
     sCSViews.vatEmailApproved, sCSViews.vatEmailRejected, sCSViews.vatBankDetailsApproved, sCSViews.vatBankDetailsRejected,
     sCSViews.vatDeregApproved, sCSViews.vatDeregRejected, sCSViews.vatPPOBApproved, sCSViews.vatPPOBRejected, sCSViews.vatStaggerApproved,
     sCSViews.vatStaggerRejected, sCSViews.vatStaggerApprovedLeaveAnnualAccounting,
-    sCSViews.vatOptOutApprovedRepresented, sCSViews.vatOptOutApproved, sCSViews.vatContactNumberApproved, sCSViews.vatContactNumbersRejected,
+    sCSViews.vatContactNumberApproved, sCSViews.vatContactNumbersRejected,
     sCSViews.vatWebsiteApproved, sCSViews.vatWebsiteRejected)
 
   val serviceName = "testServiceName"
@@ -169,13 +169,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         result shouldBe Right(true)
       }
 
-      "return a successful response for a transactor's opt out approval" in {
-        setupSuccessResponse
-
-        val result = await(service.sendSecureCommsMessage(optOutRequestRepresented))
-        result shouldBe Right(true)
-      }
-
       "return a successful response for a client ppob approval" in {
         setupSuccessResponse
 
@@ -201,13 +194,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         setupSuccessResponse
 
         val result = await(service.sendSecureCommsMessage(emailValidRejectedClientRequest))
-        result shouldBe Right(true)
-      }
-
-      "return a successful response for a non represented user's opt out approval" in {
-        setupSuccessResponse
-
-        val result = await(service.sendSecureCommsMessage(optOutRequest))
         result shouldBe Right(true)
       }
 
@@ -399,18 +385,6 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
       "it is for a client rejected change" in {
         val result = service.getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval = false, isTransactor = false)
         result shouldBe "We have rejected the change to your bank details for VAT repayments"
-      }
-    }
-
-    "return the expected subject for an opt out secure message" when {
-      "it is for a non-represented user" in {
-        val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = false)
-        result shouldBe "You have opted out of Making Tax Digital for VAT"
-      }
-
-      "it is for a represented user" in {
-        val result = service.getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval = true, isTransactor = true)
-        result shouldBe "Your agent has opted your business out of Making Tax Digital for VAT"
       }
     }
 

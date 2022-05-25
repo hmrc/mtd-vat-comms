@@ -6,6 +6,5 @@ POST        /events/repyt-bank-account      controllers.BankAccountController.ha
 POST        /events/vat/stagger             controllers.StaggerController.handleEvent
 POST        /events/comm-email              controllers.EmailController.handleEvent
 POST        /events/business-name           controllers.BusinessNameController.handleEvent
-POST        /events/opt-out                 controllers.OptOutController.handleEvent
 POST        /events/web-address             controllers.WebAddressController.handleEvent
 POST        /events/contact-numbers         controllers.ContactNumbersController.handleEvent

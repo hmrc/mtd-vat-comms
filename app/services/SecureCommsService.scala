@@ -46,7 +46,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
                                    vatPPOBRejected: VatPPOBRejected, vatStaggerApproved: VatStaggerApproved,
                                    vatStaggerRejected: VatStaggerRejected,
                                    vatStaggerApprovedLeaveAnnualAccounting: VatStaggerApprovedLeaveAnnualAccounting,
-                                   vatOptOutApprovedRepresented: VatOptOutApprovedRepresented, vatOptOutApproved: VatOptOutApproved,
                                    vatContactNumbersApproved: VatContactNumbersApproved, vatContactNumbersRejected: VatContactNumbersRejected,
                                    vatWebsiteApproved: VatWebsiteApproved, vatWebsiteRejected: VatWebsiteRejected)
                                   (implicit val appConfig: AppConfig, val messagesApi: MessagesApi) extends I18nSupport {
@@ -120,12 +119,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         val subject = getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval, isTransactor)
         buildSecureCommsServiceRequestModel(
           html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
-      case optOutModel: OptOutModel =>
-        val html = getOptOutHtml(isTransactor, vrn)
-        val subject = getSubjectForBaseKey(baseSubjectKey = OPT_OUT_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
-          html, optOutModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
         )
       case websiteModel: WebAddressChangeModel =>
         val isRemoval: Boolean = websiteModel.websiteAddress.isEmpty
@@ -236,13 +229,6 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       }
     } else {
       vatStaggerRejected().toString
-    }
-
-  private def getOptOutHtml(isTransactor: Boolean, vrn: String): String =
-    if (isTransactor) {
-      vatOptOutApprovedRepresented(vrn).toString
-    } else {
-      vatOptOutApproved(vrn).toString
     }
 
   private def getWebAddressChangeHtml(isTransactor: Boolean, websiteAddress: Option[String],
