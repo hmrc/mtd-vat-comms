@@ -25,14 +25,14 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
 
 val compile = Seq(
-  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.64.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "5.24.0",
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.68.0",
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "6.4.0",
   "com.typesafe.play" %% "play-iteratees"                    % "2.6.1"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "5.24.0"            % scope,
-  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.64.0"            % scope,
+  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.68.0"            % scope,
   "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
   "com.github.tomakehurst" %  "wiremock-jre8"                % "2.26.3"            % scope,
@@ -80,7 +80,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
-    scalaVersion := "2.12.15",
+    scalaVersion := "2.12.16",
     PlayKeys.playDefaultPort := 9579,
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
