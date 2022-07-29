@@ -26,7 +26,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround(
 
 val compile = Seq(
   "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.68.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "5.24.0",
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "6.4.0",
   "com.typesafe.play" %% "play-iteratees"                    % "2.6.1"
 )
 
@@ -80,7 +80,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
-    scalaVersion := "2.12.15",
+    scalaVersion := "2.12.16",
     PlayKeys.playDefaultPort := 9579,
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
