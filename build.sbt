@@ -22,22 +22,18 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "mtd-vat-comms"
 
-lazy val appDependencies: Seq[ModuleID] = compile ++ test() ++ tmpMacWorkaround()
+lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
 val compile = Seq(
-  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.68.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "6.4.0",
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.73.0",
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.3.0",
   "com.typesafe.play" %% "play-iteratees"                    % "2.6.1"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "5.24.0"            % scope,
-  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.68.0"            % scope,
-  "org.pegdown"            %  "pegdown"                      % "1.6.0"             % scope,
+  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.3.0"             % scope,
+  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.73.0"            % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
-  "com.github.tomakehurst" %  "wiremock-jre8"                % "2.26.3"            % scope,
-  "org.mockito"            %  "mockito-core"                 % "2.24.5"            % scope,
-  "org.scalacheck"         %% "scalacheck"                   % "1.14.0"            % scope,
   "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
   "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope
 )
@@ -85,20 +81,15 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     routesGenerator := InjectedRoutesGenerator,
-    resourceDirectory in Test := baseDirectory.value / "test" / "resources"
+    Test / resourceDirectory := baseDirectory.value / "test" / "resources"
   )
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
   .settings(
-    Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest)(base => Seq(base / "it")).value,
-    resourceDirectory in IntegrationTest := baseDirectory.value / "test" / "resources",
-    addTestReportOption(IntegrationTest, "int-test-reports"),
-    testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
-    parallelExecution in IntegrationTest := false
+    IntegrationTest / Keys.fork := false,
+    IntegrationTest / unmanagedSourceDirectories := (IntegrationTest / baseDirectory)(base => Seq(base / "it")).value,
+    IntegrationTest / resourceDirectory := baseDirectory.value / "test" / "resources",
+    IntegrationTest / testGrouping  := oneForkedJvmPerTest((IntegrationTest / definedTests).value),
+    IntegrationTest / parallelExecution := false,
+    addTestReportOption(IntegrationTest, "int-test-reports")
   )
-
-def tmpMacWorkaround(): Seq[ModuleID] =
-  if (sys.props.get("os.name").fold(false)(_.toLowerCase.contains("mac")))
-    Seq("org.reactivemongo" % "reactivemongo-shaded-native" % "0.16.1-osx-x86-64" % "runtime,test,it")
-  else Seq()

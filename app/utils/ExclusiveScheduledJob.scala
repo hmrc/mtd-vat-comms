@@ -47,5 +47,5 @@ trait ExclusiveScheduledJob {
 
   def isRunning: Future[Boolean] = Future.successful(mutex.availablePermits() == 0)
 
-  override def toString() = s"$name after $initialDelay every $interval"
+  override def toString: String = s"$name after $initialDelay every $interval"
 }
