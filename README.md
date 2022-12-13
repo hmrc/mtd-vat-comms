@@ -4,7 +4,7 @@
 
 ## Summary
 
-This is the repository for MTD VAT Comms
+This is the repository for MTD VAT Comms.
 
 This service receives and processes events from MTD services.
 
@@ -16,7 +16,7 @@ This service is written in [Scala](http://www.scala-lang.org/) and [Play](http:/
 
 In order to run this microservice, you must have SBT installed. You should be able to start the application using:
 
-`sbt "run 9579"`
+`./run.sh`
 
 ## Testing
 
