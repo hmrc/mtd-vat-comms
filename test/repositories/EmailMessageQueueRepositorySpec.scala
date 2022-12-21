@@ -37,40 +37,40 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
     }
 
     "be able to save and reload an item" in {
-      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now()))
 
       await(repository.findById(workItem.id)).get should have(
-        'item (expectedResponseEverything),
-        'status (ToDo)
+        Symbol("item") (expectedResponseEverything),
+        Symbol("status") (ToDo)
       )
     }
 
     "be able to save the same item twice" in {
       val requests = {
-        await(repository.pushNew(expectedResponseEverything, repository.now))
-        await(repository.pushNew(expectedResponseEverything, repository.now))
+        await(repository.pushNew(expectedResponseEverything, repository.now()))
+        await(repository.pushNew(expectedResponseEverything, repository.now()))
         await(repository.collection.find().toFuture())
       }
 
       requests should have(size(2))
 
       requests.head should have(
-        'item (expectedResponseEverything),
-        'status (ToDo)
+        Symbol("item") (expectedResponseEverything),
+        Symbol("status") (ToDo)
       )
       requests(1) should have(
-        'item (expectedResponseEverything),
-        'status (ToDo)
+        Symbol("item") (expectedResponseEverything),
+        Symbol("status") (ToDo)
       )
     }
 
     "pull ToDo items" in {
       val payloadDetails = expectedResponseEverything
-      await(repository.pushNew(payloadDetails, repository.now))
+      await(repository.pushNew(payloadDetails, repository.now()))
 
       await(repository.pullOutstanding).get should have(
-        'item (payloadDetails),
-        'status (InProgress)
+        Symbol("item") (payloadDetails),
+        Symbol("status") (InProgress)
       )
     }
 
@@ -79,14 +79,14 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
     }
 
     "not pull items failed after the failedBefore time" in {
-      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now()))
       await(repository.markAs(workItem.id, Failed)) shouldBe true
 
       await(repository.pullOutstanding) shouldBe None
     }
 
     "complete and delete an item if it is in progress" in {
-      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now()))
       await(repository.markAs(workItem.id, InProgress)) shouldBe true
       await(repository.complete(workItem.id)) shouldBe true
       await(repository.findById(workItem.id)) shouldBe None
@@ -95,7 +95,7 @@ class EmailMessageQueueRepositorySpec extends BaseSpec with
 
     "not complete an item if it is not in progress" in {
 
-      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now))
+      val workItem = await(repository.pushNew(expectedResponseEverything, repository.now()))
       await(repository.complete(workItem.id)) shouldBe false
       await(repository.count(ToDo)) shouldBe 1
     }

@@ -25,17 +25,17 @@ val appName = "mtd-vat-comms"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
 val compile = Seq(
-  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.73.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.3.0",
-  "com.typesafe.play" %% "play-iteratees"                    % "2.6.1"
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.74.0",
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.12.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.3.0"             % scope,
-  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.73.0"            % scope,
+  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.12.0"            % scope,
+  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.74.0"            % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
-  "org.scalamock"          %% "scalamock-scalatest-support"  % "3.6.0"             % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.13.1"            % scope
+  "org.scalamock"          %% "scalamock"                    % "5.2.0"             % scope,
+  "org.jsoup"              %  "jsoup"                        % "1.15.3"            % scope,
+  "org.specs2"             %% "specs2-core"                  % "4.19.0"            % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
@@ -53,7 +53,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
   Seq(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimumStmtTotal := 95,
+    ScoverageKeys.coverageMinimumStmtTotal := 85,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true
   )
@@ -76,7 +76,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
-    scalaVersion := "2.12.16",
+    scalaVersion := "2.13.8",
     PlayKeys.playDefaultPort := 9579,
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,

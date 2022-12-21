@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext
 trait BaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit val actorSystem: ActorSystem = ActorSystem("TestActorSystem")
 
-  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
+  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build()
   lazy val injector: Injector = app.injector
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
   implicit lazy val cc: ControllerComponents = injector.instanceOf[ControllerComponents]

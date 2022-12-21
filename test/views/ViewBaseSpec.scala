@@ -30,12 +30,12 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 trait ViewBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with BeforeAndAfterAll {
 
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build
+  override implicit lazy val app: Application = new GuiceApplicationBuilder().disable[SchedulerModule].build()
   lazy val injector: Injector = app.injector
   implicit val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)

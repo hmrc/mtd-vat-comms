@@ -36,7 +36,7 @@ trait MockCommsEventService extends BaseSpec with MockFactory {
       .returning(response)
 
   def mockRetrieveWorkItems(response: Future[Seq[VatChangeEvent]]): CallHandler0[Future[Seq[VatChangeEvent]]] =
-    (mockCommsEventService.retrieveWorkItems _)
+    (() => mockCommsEventService.retrieveWorkItems)
       .expects()
       .returning(response)
 

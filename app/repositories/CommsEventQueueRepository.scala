@@ -42,7 +42,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
 
   override lazy val inProgressRetryAfter: Duration = Duration.ofMillis(appConfig.retryIntervalMillis)
 
-  override def now: Instant = Instant.now()
+  override def now(): Instant = Instant.now()
 
   override def ensureIndexes: Future[Seq[String]] =
     MongoUtils.ensureIndexes(
@@ -57,7 +57,7 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
   def pushNew(item: VatChangeEvent, receivedAt: Instant): Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
 
   def pullOutstanding: Future[Option[WorkItem[VatChangeEvent]]] =
-    super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
+    super.pullOutstanding(now().minusMillis(appConfig.retryIntervalMillis.toInt), now())
 
   def complete(id: ObjectId): Future[Boolean] = {
     val query = and(equal("_id", id), equal("status", InProgress.name))

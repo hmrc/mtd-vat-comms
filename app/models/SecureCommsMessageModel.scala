@@ -21,6 +21,7 @@ import models.secureMessageAlertModels._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json.{Format, JsPath, Json, Reads, Writes}
+import scala.language.postfixOps
 
 case class SecureCommsMessageModel(
                                     templateId: String,
