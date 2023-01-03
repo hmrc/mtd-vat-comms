@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponen
 
   override lazy val inProgressRetryAfter: Duration = Duration.ofMillis(appConfig.retryIntervalMillis)
 
-  override def now: Instant = Instant.now()
+  override def now(): Instant = Instant.now()
 
   override def ensureIndexes: Future[Seq[String]] =
     MongoUtils.ensureIndexes(
@@ -58,7 +58,7 @@ class SecureMessageQueueRepository @Inject()(appConfig: AppConfig, mongoComponen
     super.pushNew(item, receivedAt)
 
   def pullOutstanding: Future[Option[WorkItem[SecureCommsMessageModel]]] =
-    super.pullOutstanding(now.minusMillis(appConfig.retryIntervalMillis.toInt), now)
+    super.pullOutstanding(now().minusMillis(appConfig.retryIntervalMillis.toInt), now())
 
   def complete(id: ObjectId): Future[Boolean] = {
     val query = and(equal("_id", id), equal("status", InProgress.name))

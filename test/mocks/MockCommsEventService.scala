@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ trait MockCommsEventService extends BaseSpec with MockFactory {
       .returning(response)
 
   def mockRetrieveWorkItems(response: Future[Seq[VatChangeEvent]]): CallHandler0[Future[Seq[VatChangeEvent]]] =
-    (mockCommsEventService.retrieveWorkItems _)
+    (() => mockCommsEventService.retrieveWorkItems)
       .expects()
       .returning(response)
 

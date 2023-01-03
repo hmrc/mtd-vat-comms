@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,39 +38,39 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
     val vatChangeEvent: VatChangeEvent = vatChangeEventModel("PPOB Change")
 
     "be able to save and reload a vat change request" in {
-      val workItem = await(repository.pushNew(vatChangeEvent, repository.now))
+      val workItem = await(repository.pushNew(vatChangeEvent, repository.now()))
 
       await(repository.findById(workItem.id)).get should have(
-        'item (vatChangeEvent),
-        'status (ToDo)
+        Symbol("item") (vatChangeEvent),
+        Symbol("status") (ToDo)
       )
     }
 
     "be able to save the same requests twice" in {
       val requests = {
-        await(repository.pushNew(vatChangeEvent, repository.now))
-        await(repository.pushNew(vatChangeEvent, repository.now))
+        await(repository.pushNew(vatChangeEvent, repository.now()))
+        await(repository.pushNew(vatChangeEvent, repository.now()))
         await(repository.collection.find().toFuture())
       }
 
       requests should have(size(2))
 
       requests.head should have(
-        'item (vatChangeEvent),
-        'status (ToDo)
+        Symbol("item") (vatChangeEvent),
+        Symbol("status") (ToDo)
       )
       requests(1) should have(
-        'item (vatChangeEvent),
-        'status (ToDo)
+        Symbol("item") (vatChangeEvent),
+        Symbol("status") (ToDo)
       )
     }
 
     "pull ToDo vat change requests" in {
-      await(repository.pushNew(vatChangeEvent, repository.now))
+      await(repository.pushNew(vatChangeEvent, repository.now()))
 
       await(repository.pullOutstanding).get should have(
-        'item (vatChangeEvent),
-        'status (InProgress)
+        Symbol("item") (vatChangeEvent),
+        Symbol("status") (InProgress)
       )
     }
 
@@ -79,13 +79,13 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
     }
 
     "not pull vat change requests failed after the failedBefore time" in {
-      val workItem: WorkItem[VatChangeEvent] = await(repository.pushNew(vatChangeEvent, repository.now))
+      val workItem: WorkItem[VatChangeEvent] = await(repository.pushNew(vatChangeEvent, repository.now()))
       await(repository.markAs(workItem.id, Failed)) shouldBe true
       await(repository.pullOutstanding) shouldBe None
     }
 
     "complete and delete a vat change request if it is in progress" in {
-      val workItem = await(repository.pushNew(vatChangeEvent, repository.now))
+      val workItem = await(repository.pushNew(vatChangeEvent, repository.now()))
       await(repository.markAs(workItem.id, InProgress)) shouldBe true
       await(repository.complete(workItem.id)) shouldBe true
       await(repository.findById(workItem.id)) shouldBe None
@@ -93,7 +93,7 @@ class CommsEventQueueRepositorySpec extends BaseSpec with DefaultPlayMongoReposi
     }
 
     "not complete a vat change request if it is not in progress" in {
-      val workItem = await(repository.pushNew(vatChangeEvent, repository.now))
+      val workItem = await(repository.pushNew(vatChangeEvent, repository.now()))
       await(repository.complete(workItem.id)) shouldBe false
       await(repository.count(ToDo)) shouldBe 1
     }

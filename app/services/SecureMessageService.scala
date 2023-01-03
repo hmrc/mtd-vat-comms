@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ package services
 
 import metrics.QueueMetrics
 import models._
-import play.api.libs.iteratee.{Enumerator, Iteratee}
 import repositories.SecureMessageQueueRepository
 import uk.gov.hmrc.mongo.workitem.WorkItem
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
-import utils.LoggerUtil
-
+import utils.{Enumerator, Iteratee, LoggerUtil}
 import javax.inject.Inject
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessageQueueRepository,
@@ -34,7 +33,7 @@ class SecureMessageService @Inject()(secureMessageQueueRepository: SecureMessage
 
   def queueRequest(item: SecureCommsMessageModel): Future[Boolean] = {
     metrics.secureMessageEnqueued()
-    secureMessageQueueRepository.pushNew(item, secureMessageQueueRepository.now).map(_ => true)
+    secureMessageQueueRepository.pushNew(item, secureMessageQueueRepository.now()).map(_ => true)
   }
 
   def retrieveWorkItems: Future[Seq[SecureCommsMessageModel]] = {

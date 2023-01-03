@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ class SecureCommsMessageParserSpec extends BaseSpec {
 
   "parseMessage" should {
     "successfully parse an incoming string into valid json" in {
-      val parsedJson = SecureCommsMessageParser.parseMessage(stringToParse).right.get.as[JsObject]
+      val parsedJson = SecureCommsMessageParser.parseMessage(stringToParse).toOption.get.as[JsObject]
       val parsedJsonAsPrettyString = parsedJson.fields.sortBy(_._1).toMap[String, JsValue]
       val expectedJsonAsPrettyString = expectedJson.fields.sortBy(_._1).toMap[String, JsValue]
 
