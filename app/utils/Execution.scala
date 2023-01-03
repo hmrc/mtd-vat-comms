@@ -18,20 +18,19 @@ package utils
 
 import java.util
 
+import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 object Execution {
 
-  def defaultExecutionContext: ExecutionContext = Implicits.defaultExecutionContext
-
   object Implicits {
     implicit def defaultExecutionContext: ExecutionContext = Execution.Trampoline
-
-    implicit def trampoline: ExecutionContextExecutor = Execution.Trampoline
   }
+
   object Trampoline extends ExecutionContextExecutor {
     private val local = new ThreadLocal[AnyRef]
     private object Empty
+    @tailrec
     private def executeScheduled(): Unit = local.get match {
       case Empty => ( /* Nothing to run */ )
 
