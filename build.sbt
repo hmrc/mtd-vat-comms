@@ -35,7 +35,7 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
   "org.scalamock"          %% "scalamock"                    % "5.2.0"             % scope,
   "org.jsoup"              %  "jsoup"                        % "1.15.3"            % scope,
-  "org.specs2"             %% "specs2-core"                  % "4.19.0"            % scope
+  "org.specs2"             %% "specs2-core"                  % "4.19.1"            % scope
 )
 
 lazy val coverageSettings: Seq[Setting[_]] = {
