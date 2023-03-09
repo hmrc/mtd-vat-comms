@@ -19,16 +19,14 @@ package models.secureMessageAlertModels.messageTypes
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, StaggerDetailsModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
-case class VATStaggerChangeModel(
-                                  templateId: String,
-                                  vrn: String,
-                                  formBundleReference: String,
-                                  businessName: String,
-                                  transactorDetails: TransactorModel,
-                                  customerDetails: CustomerModel,
-                                  preferences: PreferencesModel,
-                                  staggerDetails: StaggerDetailsModel
-                                )
+case class VATStaggerChangeModel(override val templateId: String,
+                                 override val vrn: String,
+                                 formBundleReference: String,
+                                 override val businessName: String,
+                                 override val transactorDetails: TransactorModel,
+                                 customerDetails: CustomerModel,
+                                 preferences: PreferencesModel,
+                                 staggerDetails: StaggerDetailsModel)
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }
 

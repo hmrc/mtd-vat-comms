@@ -53,7 +53,7 @@ class SecureMessageQueuePollingService @Inject()(actorSystem: ActorSystem,
     })
   }
 
-  actorSystem.scheduler.schedule(initialDelay, interval) {
+  actorSystem.scheduler.scheduleWithFixedDelay(initialDelay, interval) { () =>
     if (appConfig.pollingToggle) {
       executor()
     } else {

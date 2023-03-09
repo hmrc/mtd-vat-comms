@@ -19,15 +19,13 @@ package models.secureMessageAlertModels.messageTypes
 import models.secureMessageAlertModels.{CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
-case class BusinessNameChangeModel(
-                                    templateId: String,
-                                    vrn: String,
-                                    formBundleReference: String,
-                                    businessName: String,
-                                    transactorDetails: TransactorModel,
-                                    customerDetails: CustomerModel,
-                                    preferences: PreferencesModel
-                                  )
+case class BusinessNameChangeModel(override val templateId: String,
+                                   override val vrn: String,
+                                   formBundleReference: String,
+                                   override val businessName: String,
+                                   override val transactorDetails: TransactorModel,
+                                   customerDetails: CustomerModel,
+                                   preferences: PreferencesModel)
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }
 

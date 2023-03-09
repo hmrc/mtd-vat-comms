@@ -26,7 +26,7 @@ object SecureCommsMessageParser extends LoggerUtil {
       .replace("-", " ")
       .split(" ")
 
-    allLowerCase.head + allLowerCase.tail.map(word => word.head.toUpper + word.tail).mkString
+    allLowerCase.head + allLowerCase.tail.map(word => s"${word.head.toUpper}${word.tail}").mkString
   }
 
   def parseMessage(message: String): Either[ErrorModel, JsValue] = {

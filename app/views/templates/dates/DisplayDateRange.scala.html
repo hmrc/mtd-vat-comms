@@ -16,10 +16,10 @@
 
 @import views.html.templates.dates.DisplayDate
 
-
 @this(displayDate: DisplayDate)
 
 @(from: String, to: String, useShortMonthFormat: Boolean = false)(implicit messages: Messages)@{
-
-displayDate(from, true, useShortMonthFormat) + " " +  messages("common.dateRangeSeparator") + " " + displayDate(to, true, useShortMonthFormat)
+  displayDate(from, showYear = true, useShortMonthFormat = useShortMonthFormat).toString() + " " +
+  messages("common.dateRangeSeparator") + " " +
+  displayDate(to, showYear = true, useShortMonthFormat = useShortMonthFormat).toString()
 }

@@ -72,11 +72,11 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
 
   private def getRequest(messageModel: MessageModel): Either[ErrorModel, SecureCommsServiceRequestModel] = {
 
-    val isTransactor = messageModel.getTemplateId.endsWith("C")
+    val isTransactor = messageModel.templateId.endsWith("C")
 
-    isTemplateIdApproval(messageModel.getTemplateId) match {
+    isTemplateIdApproval(messageModel.templateId) match {
       case None =>
-        logger.warn(s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.getTemplateId}")
+        logger.warn(s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.templateId}")
         Left(GenericQueueNoRetryError)
       case Some(isApproval) =>
         Right(buildResponse(messageModel, isTransactor, isApproval))
@@ -87,8 +87,8 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
   private[services] def buildResponse(messageModel: MessageModel, isTransactor: Boolean,
                                       isApproval: Boolean): SecureCommsServiceRequestModel = {
 
-    val vrn = messageModel.getVrn
-    val businessName = messageModel.getBusinessName
+    val vrn = messageModel.vrn
+    val businessName = messageModel.businessName
     messageModel match {
       case deregModel: DeRegistrationModel =>
         val html = getDeregistrationChangeHtml(deregModel, isApproval)

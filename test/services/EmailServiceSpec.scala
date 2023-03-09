@@ -16,8 +16,6 @@
 
 package services
 
-import java.util.NoSuchElementException
-
 import base.BaseSpec
 import common.Constants.ChannelPreferences.PAPER
 import common.Constants.EmailStatus.VERIFIED
@@ -74,12 +72,12 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
   )
 
   val emailRequestModel: EmailRequestModel = EmailRequestModel(
-    Seq(messageModel.getTransactorDetails.transactorEmail),
+    Seq(messageModel.transactorDetails.transactorEmail),
     "newMessageAlert_VRT12B",
     Map(
-      "transactorName" -> messageModel.getTransactorDetails.transactorName,
-      "clientName" -> messageModel.getBusinessName,
-      "clientVrn" -> messageModel.getVrn
+      "transactorName" -> messageModel.transactorDetails.transactorName,
+      "clientName" -> messageModel.businessName,
+      "clientVrn" -> messageModel.vrn
     )
   )
 
@@ -154,7 +152,7 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
           PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT),
           "mynewemail@vat.change"
         )
-        val params = Map("recipientName_line1" -> mModel.getBusinessName)
+        val params = Map("recipientName_line1" -> mModel.businessName)
 
         service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("mynewemail@vat.change"), templateId, params))
       }
@@ -171,9 +169,9 @@ class EmailServiceSpec extends BaseSpec with MockFactory {
           PreferencesModel(EMAIL, PAPER, ENGLISH, TEXT)
         )
         val params = Map(
-          "transactorName" -> mModel.getTransactorDetails.transactorName,
-          "clientName" -> mModel.getBusinessName,
-          "clientVrn" -> mModel.getVrn
+          "transactorName" -> mModel.transactorDetails.transactorName,
+          "clientName" -> mModel.businessName,
+          "clientVrn" -> mModel.vrn
         )
 
         service.toRequest(templateId, mModel) shouldBe Right(EmailRequestModel(Seq("agent@email.me.no"), templateId, params))
