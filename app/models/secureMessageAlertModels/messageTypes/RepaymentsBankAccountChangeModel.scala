@@ -19,16 +19,14 @@ package models.secureMessageAlertModels.messageTypes
 import models.secureMessageAlertModels.{BankDetailsModel, CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
-case class RepaymentsBankAccountChangeModel(
-                                             templateId: String,
-                                             vrn: String,
-                                             formBundleReference: String,
-                                             businessName: String,
-                                             transactorDetails: TransactorModel,
-                                             customerDetails: CustomerModel,
-                                             preferences: PreferencesModel,
-                                             bankAccountDetails: BankDetailsModel
-                                           )
+case class RepaymentsBankAccountChangeModel(override val templateId: String,
+                                            override val vrn: String,
+                                            formBundleReference: String,
+                                            override val businessName: String,
+                                            override val transactorDetails: TransactorModel,
+                                            customerDetails: CustomerModel,
+                                            preferences: PreferencesModel,
+                                            bankAccountDetails: BankDetailsModel)
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }
 

@@ -18,7 +18,6 @@ import play.sbt.routes.RoutesKeys
 import sbt.Keys.testGrouping
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "mtd-vat-comms"
 
@@ -26,15 +25,14 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
 val compile = Seq(
   "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "0.74.0",
-  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.12.0"
+  "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.14.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.12.0"            % scope,
+  "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.14.0"            % scope,
   "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "0.74.0"            % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
   "org.scalamock"          %% "scalamock"                    % "5.2.0"             % scope,
-  "org.jsoup"              %  "jsoup"                        % "1.15.3"            % scope,
   "org.specs2"             %% "specs2-core"                  % "4.19.1"            % scope
 )
 
@@ -72,7 +70,6 @@ lazy val microservice = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(coverageSettings: _*)
   .settings(scalaSettings: _*)
-  .settings(publishingSettings: _*)
   .settings(majorVersion := 0)
   .settings(defaultSettings(): _*)
   .settings(
@@ -81,7 +78,8 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     routesGenerator := InjectedRoutesGenerator,
-    Test / resourceDirectory := baseDirectory.value / "test" / "resources"
+    Test / resourceDirectory := baseDirectory.value / "test" / "resources",
+    scalacOptions ++= Seq("-Wconf:cat=unused-imports&site=.*views.html.*:s")
   )
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)

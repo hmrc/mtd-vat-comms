@@ -19,16 +19,14 @@ package models.secureMessageAlertModels.messageTypes
 import models.secureMessageAlertModels.{AddressDetailsModel, CustomerModel, PreferencesModel, TransactorModel}
 import play.api.libs.json.{Json, OFormat}
 
-case class PPOBChangeModel(
-                            templateId: String,
-                            vrn: String,
-                            formBundleReference: String,
-                            businessName: String,
-                            transactorDetails: TransactorModel,
-                            customerDetails: CustomerModel,
-                            preferences: PreferencesModel,
-                            addressDetails: AddressDetailsModel
-                          )
+case class PPOBChangeModel(override val templateId: String,
+                           override val vrn: String,
+                           formBundleReference: String,
+                           override val businessName: String,
+                           override val transactorDetails: TransactorModel,
+                           customerDetails: CustomerModel,
+                           preferences: PreferencesModel,
+                           addressDetails: AddressDetailsModel)
   extends MessageModel(templateId, vrn, formBundleReference, businessName, transactorDetails, customerDetails, preferences) {
 }
 

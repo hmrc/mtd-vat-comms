@@ -17,16 +17,15 @@
 @import java.time.LocalDate
 @import java.time.format.{DateTimeFormatter, ResolverStyle}
 
-
 @this()
 
 @(stringDate: String, showYear: Boolean = true, useShortMonthFormat: Boolean = false) @{
 
-    val pattern = DateTimeFormatter.ofPattern("yyyyMMdd")
-    val date = LocalDate.parse(stringDate,pattern)
+  val pattern = DateTimeFormatter.ofPattern("yyyyMMdd")
+  val date = LocalDate.parse(stringDate,pattern)
 
-    val format = (if(useShortMonthFormat) "d MMM" else "d MMMM") + (if(showYear) " uuuu" else "")
+  val format = (if(useShortMonthFormat) "d MMM" else "d MMMM") + (if(showYear) " uuuu" else "")
 
-    val formatter = DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT)
-    date.format(formatter)
+  val formatter = DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT)
+  date.format(formatter).replace(" ", "\u00a0")
 }

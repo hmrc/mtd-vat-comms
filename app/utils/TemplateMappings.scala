@@ -75,6 +75,6 @@ object TemplateMappings {
   )
 
   def isTemplateIdApproval(templateId: String): Option[Boolean] =
-    templateIdApprovalMap.filterKeys(_ == templateId).values.headOption
+    templateIdApprovalMap.view.filterKeys(_ == templateId).values.headOption
 
 }

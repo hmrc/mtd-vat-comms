@@ -16,7 +16,6 @@
 
 package services
 
-import java.util.NoSuchElementException
 import common.Constants.TemplateIdReadableNames._
 import connectors.EmailConnector
 import javax.inject.Inject
@@ -32,7 +31,7 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
   @throws(classOf[NoSuchElementException])
   def sendEmailRequest(message: MessageModel)
                       (implicit ec: ExecutionContext): Future[Either[ErrorModel, EmailRendererResponseModel]] = {
-    val mappedTemplateId = mapTemplateId(message.getTemplateId)
+    val mappedTemplateId = mapTemplateId(message.templateId)
     toRequest(mappedTemplateId, message) match {
       case Right(request) => emailRendererConnector.sendEmailRequest(request)
       case Left(error) => Future.successful(Left(error))
@@ -63,18 +62,18 @@ class EmailService @Inject()(emailRendererConnector: EmailConnector) {
     messageModel match {
 
       case model: EmailAddressChangeModel if templateId == CLIENT_NOTIFICATION_SELF_CHANGE =>
-        val notificationDependentDetails: Map[String, String] = Map("recipientName_line1" -> model.getBusinessName)
+        val notificationDependentDetails: Map[String, String] = Map("recipientName_line1" -> model.businessName)
         Right(EmailRequestModel(Seq(model.originalEmailAddress), templateId, notificationDependentDetails))
 
       case _ if templateId == AGENT_NOTIFICATION_CHANGE_ACCEPTED || templateId == AGENT_NOTIFICATION_CHANGE_REJECTED ||
         templateId == AGENT_NOTIFICATION_OPT_OUT =>
         val notificationDependentDetails: Map[String, String] = Map(
-          "transactorName" -> messageModel.getTransactorDetails.transactorName,
-          "clientName" -> messageModel.getBusinessName,
-          "clientVrn" -> messageModel.getVrn
+          "transactorName" -> messageModel.transactorDetails.transactorName,
+          "clientName" -> messageModel.businessName,
+          "clientVrn" -> messageModel.vrn
         )
         Right(EmailRequestModel(
-          Seq(messageModel.getTransactorDetails.transactorEmail), templateId, notificationDependentDetails
+          Seq(messageModel.transactorDetails.transactorEmail), templateId, notificationDependentDetails
         ))
       case _ => Left(ErrorModel("ERROR_CREATING_REQUEST", s"Template ID '$templateId' is not supported."))
     }
