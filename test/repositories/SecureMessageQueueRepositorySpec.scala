@@ -19,6 +19,7 @@ package repositories
 import base.BaseSpec
 import models.SecureCommsMessageModel
 import org.bson.types.ObjectId
+import org.mongodb.scala.bson.{BsonInt64, BsonString}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus._
@@ -34,6 +35,17 @@ class SecureMessageQueueRepositorySpec extends BaseSpec with
 
     "ensure indexes are created" in {
       await(repository.collection.listIndexes().toFuture()).size shouldBe 5
+    }
+
+    "have a TTL index on the receivedAt field, with an expiry time set by AppConfig" in {
+      val indexes = {
+        await(repository.ensureIndexes())
+        await(repository.collection.listIndexes().toFuture())
+      }
+      val ttlIndex = indexes.find(_.get("name").contains(BsonString("workItemExpiry")))
+
+      ttlIndex.get("key").toString shouldBe """{"receivedAt": 1}"""
+      ttlIndex.get("expireAfterSeconds") shouldBe BsonInt64(mockAppConfig.queueItemExpirySeconds)
     }
 
     "be able to save and reload an item" in {
