@@ -21,7 +21,7 @@ import models.VatChangeEvent
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.Filters.{and, equal}
 import org.mongodb.scala.model.{IndexModel, IndexOptions, Indexes}
-import uk.gov.hmrc.mongo.{MongoComponent, MongoUtils}
+import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.workitem.ProcessingStatus.InProgress
 import uk.gov.hmrc.mongo.workitem.{WorkItem, WorkItemFields, WorkItemRepository}
 
@@ -37,22 +37,17 @@ class CommsEventQueueRepository @Inject()(appConfig: AppConfig, mongoComponent: 
     "CommsEventQueue",
     mongoComponent,
     VatChangeEvent.formats,
-    WorkItemFields.default
+    WorkItemFields.default,
+    extraIndexes = Seq(IndexModel(
+      Indexes.ascending("receivedAt"),
+      IndexOptions().name("workItemExpiry").expireAfter(appConfig.queueItemExpirySeconds, TimeUnit.SECONDS)
+    )),
+    replaceIndexes = true
   ) {
 
   override lazy val inProgressRetryAfter: Duration = Duration.ofMillis(appConfig.retryIntervalMillis)
 
   override def now(): Instant = Instant.now()
-
-  override def ensureIndexes: Future[Seq[String]] =
-    MongoUtils.ensureIndexes(
-      collection,
-      Seq(IndexModel(
-        Indexes.ascending("receivedAt"),
-        IndexOptions().name("workItemExpiry").expireAfter(appConfig.queueItemExpirySeconds, TimeUnit.SECONDS)
-      )),
-      replaceIndexes = true
-    )
 
   def pushNew(item: VatChangeEvent, receivedAt: Instant): Future[WorkItem[VatChangeEvent]] = super.pushNew(item, receivedAt)
 
