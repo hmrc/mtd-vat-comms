@@ -35,6 +35,12 @@ trait MockHttpClient extends AnyWordSpecLike with Matchers with MockitoSugar wit
     reset(mockHttpClient)
   }
 
+  def mockHttpGet[A](response: Future[A]): Unit =
+    when(mockHttpClient.GET[A]
+      (any(), any(), any())
+      (any(), any(), any()))
+      .thenReturn(response)
+
   def mockHttpPost[I, O](response: Future[O]): Unit =
     when(mockHttpClient.POST[I, O]
       (any(), any(), any())

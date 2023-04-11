@@ -17,8 +17,6 @@
 package mocks
 
 import config.AppConfig
-import org.scalatestplus.mockito.MockitoSugar.mock
-import uk.gov.hmrc.http.HttpClient
 
 class MockAppConfig(override val pollingToggle: Boolean = false) extends AppConfig {
 
