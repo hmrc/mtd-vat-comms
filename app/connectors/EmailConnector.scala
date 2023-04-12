@@ -23,8 +23,7 @@ import models.emailRendererModels.EmailRequestModel
 import models.responseModels.EmailRendererResponseModel
 import models.{BadRequest, ErrorModel, NotFoundNoMatch}
 import play.api.http.Status._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpException, HttpReads, HttpResponse}
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -56,6 +55,10 @@ class EmailConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) ext
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    httpClient.POST[EmailRequestModel, EmailResponse](appConfig.emailServiceUrl, input)
+    httpClient.POST[EmailRequestModel, EmailResponse](appConfig.emailServiceUrl, input).recover {
+      case ex: HttpException =>
+        logger.warn(s"[EmailConnector][sendEmailRequest] - HTTP exception received: ${ex.message}")
+        Left(ErrorModel(BAD_GATEWAY.toString, ex.message))
+    }
   }
 }

@@ -22,8 +22,7 @@ import javax.inject.Inject
 import models._
 import models.secureCommsServiceModels.SecureCommsServiceRequestModel
 import play.api.http.Status._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpException, HttpReads, HttpResponse}
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -58,6 +57,10 @@ class SecureCommsServiceConnector @Inject()(httpClient: HttpClient, appConfig: A
 
     httpClient.POST[SecureCommsServiceRequestModel, SecureCommsResponse](
       appConfig.secureCommsServiceUrl, request
-    )
+    ).recover {
+      case ex: HttpException =>
+        logger.warn(s"[SecureCommsServiceConnector][sendMessage] - HTTP exception received: ${ex.message}")
+        Left(ErrorModel(BAD_GATEWAY.toString, ex.message))
+    }
   }
 }

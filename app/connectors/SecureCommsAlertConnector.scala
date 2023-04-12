@@ -22,7 +22,7 @@ import models._
 import models.responseModels.SecureCommsResponseModel
 import play.api.http.Status._
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpException, HttpReads, HttpResponse}
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -59,7 +59,11 @@ class SecureCommsAlertConnector @Inject()(httpClient: HttpClient,
 
     val url = appConfig.sendSecureCommsMessageUrl(service, regNumber, communicationId)
 
-    httpClient.GET[SecureCommsAlertResponse](url,headers = desHeaders)
+    httpClient.GET[SecureCommsAlertResponse](url,headers = desHeaders).recover {
+      case ex: HttpException =>
+        logger.warn(s"[SecureCommsAlertConnector][getSecureCommsMessage] - HTTP exception received: ${ex.message}")
+        Left(ErrorModel(BAD_GATEWAY.toString, ex.message))
+    }
   }
 
   private def handleOk(response: HttpResponse): SecureCommsAlertResponse =
