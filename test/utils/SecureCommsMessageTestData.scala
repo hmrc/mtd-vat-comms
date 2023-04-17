@@ -723,6 +723,10 @@ object SecureCommsMessageTestData {
       staggerDetails = Some(StaggerDetailsModel("InvalidStaggerCode", "", "", "", "", ""))
     )
 
+    val staggerBlankCodeRequest: SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
+      staggerDetails = Some(StaggerDetailsModel("", "", "", "", "", ""))
+    )
+
     val staggerInvalidDatesRequest: SecureCommsMessageModel = staggerValidApprovedClientRequest.copy(
       staggerDetails = Some(StaggerDetailsModel("MM", "00000000", "00000000", "YE", "00000000", "00000000"))
     )
