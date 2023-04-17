@@ -16,16 +16,11 @@
 
 package services
 
-import java.time.format.DateTimeParseException
-import java.util.Locale.ENGLISH
-import java.util.UUID
-
 import common.Constants.MessageKeys._
 import common.Constants.TemplateIdReadableNames._
 import common.Constants._
 import config.AppConfig
 import connectors.SecureCommsServiceConnector
-import javax.inject.Inject
 import models.secureCommsServiceModels.{SecureCommsServiceRequestModel, _}
 import models.secureMessageAlertModels.messageTypes._
 import models.viewModels.VatPPOBViewModel
@@ -37,6 +32,10 @@ import utils.SecureCommsMessageParser._
 import utils.TemplateMappings._
 import views.html._
 
+import java.time.format.DateTimeParseException
+import java.util.Locale.ENGLISH
+import java.util.UUID
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServiceConnector, vatEmailApproved: VatEmailApproved,
@@ -79,13 +78,13 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
         logger.warn(s"[SecureCommsService][getRequest] - Unexpected Template Id encountered:  ${messageModel.templateId}")
         Left(GenericQueueNoRetryError)
       case Some(isApproval) =>
-        Right(buildResponse(messageModel, isTransactor, isApproval))
+        buildResponse(messageModel, isTransactor, isApproval)
     }
   }
 
   //scalastyle:off method.length
   private[services] def buildResponse(messageModel: MessageModel, isTransactor: Boolean,
-                                      isApproval: Boolean): SecureCommsServiceRequestModel = {
+                                      isApproval: Boolean): Either[ErrorModel, SecureCommsServiceRequestModel] = {
 
     val vrn = messageModel.vrn
     val businessName = messageModel.businessName
@@ -93,46 +92,49 @@ class SecureCommsService @Inject()(secureCommsServiceConnector: SecureCommsServi
       case deregModel: DeRegistrationModel =>
         val html = getDeregistrationChangeHtml(deregModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = DEREG_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, deregModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
       case ppobModel: PPOBChangeModel =>
         val html = getPpobChangeHtml(ppobModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = PPOB_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, ppobModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
       case repaymentModel: RepaymentsBankAccountChangeModel =>
         val html = getBankDetailsChangeHtml(repaymentModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = BANK_DETAILS_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, repaymentModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
+      case staggerModel: VATStaggerChangeModel if staggerModel.staggerDetails.stagger.trim.isEmpty =>
+        logger.warn("[SecureCommsService][buildResponse] - Blank stagger code received, queueing permanent failure.")
+        Left(GenericQueueNoRetryError)
       case staggerModel: VATStaggerChangeModel =>
         val html = getStaggerChangeHtml(staggerModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = STAGGER_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, staggerModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
       case emailModel: EmailAddressChangeModel =>
         val html = getEmailChangeHtml(emailModel, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = EMAIL_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, emailModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
       case websiteModel: WebAddressChangeModel =>
         val isRemoval: Boolean = websiteModel.websiteAddress.isEmpty
         val webAddressOpt: Option[String] = Option(websiteModel.websiteAddress).filter(_.nonEmpty)
         val html = getWebAddressChangeHtml(isTransactor, webAddressOpt, isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = WEBSITE_BASE_KEY, isApproval, isTransactor, isRemoval)
-        buildSecureCommsServiceRequestModel(html, websiteModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        Right(buildSecureCommsServiceRequestModel(html, websiteModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
+        ))
       case contactNumbersModel: ContactNumbersChangeModel =>
         val html = getContactNumbersChangeHtml(isApproval)
         val subject = getSubjectForBaseKey(baseSubjectKey = CONTACT_NUMBERS_BASE_KEY, isApproval, isTransactor)
-        buildSecureCommsServiceRequestModel(
+        Right(buildSecureCommsServiceRequestModel(
           html, contactNumbersModel.customerDetails.customerEmail, subject, vrn, businessName, isTransactor
-        )
+        ))
     }
   }
 

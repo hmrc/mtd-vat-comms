@@ -266,6 +266,12 @@ class SecureCommsServiceSpec extends BaseSpec with MockFactory with BeforeAndAft
         result shouldBe Left(GenericQueueNoRetryError)
       }
     }
+
+    "return an error when the event is a stagger change but the stagger is blank" in {
+      val result = await(service.sendSecureCommsMessage(staggerBlankCodeRequest))
+      result shouldBe Left(GenericQueueNoRetryError)
+    }
+
     "return an error" when {
       "an exception is encountered" in {
         (mockConnector.sendMessage(_: SecureCommsServiceRequestModel)(_: ExecutionContext))
