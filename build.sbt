@@ -20,17 +20,18 @@ import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
 
 val appName = "mtd-vat-comms"
+val hmrcMongoVersion = "1.2.0"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
 val compile = Seq(
-  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % "1.1.0",
+  "uk.gov.hmrc.mongo" %% "hmrc-mongo-work-item-repo-play-28" % hmrcMongoVersion,
   "uk.gov.hmrc"       %% "bootstrap-backend-play-28"         % "7.15.0"
 )
 
 def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "uk.gov.hmrc"            %% "bootstrap-test-play-28"       % "7.15.0"            % scope,
-  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % "1.1.0"             % scope,
+  "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"      % hmrcMongoVersion    % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"          % scope,
   "org.scalamock"          %% "scalamock"                    % "5.2.0"             % scope,
   "org.specs2"             %% "specs2-core"                  % "4.19.1"            % scope
