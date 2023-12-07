@@ -1,1 +1,1 @@
-sbt 'run -Dplay.http.router=testOnly.Routes -Dlogger.resource=logback-test.xml'
+sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes -Dlogger.resource=logback-test.xml run
