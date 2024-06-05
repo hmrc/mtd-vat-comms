@@ -18,7 +18,7 @@ package metrics
 
 import base.BaseSpec
 import com.codahale.metrics.MetricRegistry
-import com.kenshoo.play.metrics.Metrics
+import uk.gov.hmrc.play.bootstrap.metrics.Metrics
 import org.scalatestplus.mockito.MockitoSugar
 
 
@@ -250,8 +250,6 @@ class QueueMetricsSpec extends BaseSpec with MockitoSugar {
 
     private class MockMetrics extends Metrics {
       override def defaultRegistry: MetricRegistry = mockedRegistry
-
-      override def toJson: String = ???
     }
 
   }

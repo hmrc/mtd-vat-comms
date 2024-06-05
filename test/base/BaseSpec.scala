@@ -16,7 +16,7 @@
 
 package base
 
-import akka.actor.ActorSystem
+import org.apache.pekko.actor.ActorSystem
 import mocks.MockAppConfig
 import modules.SchedulerModule
 import org.scalatest.matchers.should.Matchers

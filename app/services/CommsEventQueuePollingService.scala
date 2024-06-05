@@ -16,7 +16,7 @@
 
 package services
 
-import akka.actor.ActorSystem
+import org.apache.pekko.actor.ActorSystem
 import com.google.inject.{Inject, Singleton}
 import config.AppConfig
 import utils.ExclusiveScheduledJob
