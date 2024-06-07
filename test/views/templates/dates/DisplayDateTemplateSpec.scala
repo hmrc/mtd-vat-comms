@@ -37,6 +37,10 @@ class DisplayDateTemplateSpec extends TemplateBaseSpec {
       "render the date with year" in {
         document.body().text() shouldEqual "1 January 2017"
       }
+
+      "uses non breaking spaces to display the date" in {
+        document.body().text().contains("1\u00a0January\u00a02017")
+      }
     }
 
     "showYear is true and use short month format is true" should {
@@ -56,6 +60,10 @@ class DisplayDateTemplateSpec extends TemplateBaseSpec {
 
       "render the date without year" in {
         document.body().text() shouldEqual "1 January"
+      }
+
+      "uses non breaking spaces to display the year" in {
+        document.body().text().contains("1\u00a0January")
       }
     }
 
