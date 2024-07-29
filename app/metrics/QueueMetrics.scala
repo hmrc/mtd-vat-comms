@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 package metrics
 
 import com.codahale.metrics.Counter
-import com.kenshoo.play.metrics.Metrics
+import uk.gov.hmrc.play.bootstrap.metrics.Metrics
+//import com.codahale.metrics.MetricRegistry
 import javax.inject.Inject
 
 class QueueMetrics @Inject()(metrics: Metrics) {
