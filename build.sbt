@@ -18,7 +18,7 @@ import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
 
 val appName = "mtd-vat-comms"
-val hmrcMongoVersion = "1.7.0"
+val hmrcMongoVersion = "2.6.0"
 val bootstrapPlayVersion = "8.6.0"
 ThisBuild / majorVersion := 0
 ThisBuild / scalaVersion := "2.13.16"
