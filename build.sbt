@@ -18,10 +18,10 @@ import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings}
 
 val appName = "mtd-vat-comms"
-val hmrcMongoVersion = "2.6.0"
-val bootstrapPlayVersion = "8.6.0"
+val hmrcMongoVersion = "2.10.0"
+val bootstrapPlayVersion = "10.4.0"
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "2.13.17"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 
@@ -34,7 +34,7 @@ def test(scope: String = "test,it"): Seq[ModuleID] = Seq(
   "uk.gov.hmrc"            %% "bootstrap-test-play-30"       % bootstrapPlayVersion % scope,
   "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-30"      % hmrcMongoVersion     % scope,
   "org.scalatestplus"      %% "mockito-3-4"                  % "3.2.10.0"           % scope,
-  "org.scalamock"          %% "scalamock"                    % "5.2.0"              % scope,
+  "org.scalamock"          %% "scalamock"                    % "7.5.1"              % scope,
   "org.specs2"             %% "specs2-core"                  % "4.20.6"             % scope
 )
 
